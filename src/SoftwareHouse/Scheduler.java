@@ -15,10 +15,10 @@ public class Scheduler {
 		if (projectName == null || projectName.trim().isEmpty()) {
 			throw new NoNameException();
 		}
-		if (projects.stream().anyMatch(x -> x.getName().equals(projectName))) {
+		if (projects.stream().anyMatch(x -> x.getName().equals(projectName.trim()))) {
 			throw new DuplicateProjectNameException();
 		}
-		projects.add(new Project(projectName));
+		projects.add(new Project(this, projectName));
 	}
 
 	/**

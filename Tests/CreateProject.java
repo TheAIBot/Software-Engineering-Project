@@ -14,7 +14,6 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateProjectNameException;
 import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.NoNameException;
-import sun.security.util.PropertyExpander.ExpandException;
 
 public class CreateProject {
 

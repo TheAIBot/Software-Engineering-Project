@@ -1,11 +1,13 @@
 package SoftwareHouse;
 
 public class Project {
+	private Scheduler scheduler;
 	private String name;
 	
-	public Project(String projectName)
+	public Project(Scheduler scheduler, String projectName)
 	{
-		name = projectName;
+		this.scheduler = scheduler;
+		this.name = projectName;
 	}
 
 	/**
