@@ -1,4 +1,4 @@
-package SoftwareHouse;
+package SoftwareHouse.ExceptionTypes;
 
 public class NoNameException extends Exception {
 

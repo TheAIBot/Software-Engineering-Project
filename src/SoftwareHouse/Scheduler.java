@@ -3,6 +3,10 @@ package SoftwareHouse;
 import java.util.ArrayList;
 import java.util.List;
 
+import SoftwareHouse.ExceptionTypes.DuplicateProjectNameException;
+import SoftwareHouse.ExceptionTypes.MissingProjectException;
+import SoftwareHouse.ExceptionTypes.NoNameException;
+
 public class Scheduler {
 
 	private List<Project> projects = new ArrayList<Project>();
