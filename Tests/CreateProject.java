@@ -9,56 +9,84 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.junit.Assert;
 import org.junit.Test;
 
+import SoftwareHouse.DuplicateProjectNameException;
+import SoftwareHouse.MissingProjectException;
+import SoftwareHouse.NoNameException;
+import SoftwareHouse.Project;
+import SoftwareHouse.Scheduler;
+import sun.security.util.PropertyExpander.ExpandException;
+
 public class CreateProject {
 
 	@Test
 	public void createProjectSuccessTest()
 	{
-		Scheduler.createProject("Derp");
-		assertEquals(Scheduler.getProjectes().count, 1);
-		assertEquals(Scheduler.getProjectes().get(0).getName(), "Derp");
-		Project project = Scheduler.getProject("Derp");
-		assertEquals(project.getName(), "Derp");
+		Scheduler scheduler = new Scheduler();
+		try {
+			scheduler.createProject("Derp");
+		} catch (Exception e1) {
+			Assert.fail();
+		}
+		assertEquals(scheduler.getProjects().size(), 1);
+		assertEquals(scheduler.getProjects().get(0).getName(), "Derp");
+		try {
+			Project project = scheduler.getProject("Derp");
+			assertEquals(project.getName(), "Derp");
+		} catch (MissingProjectException e) {
+			Assert.fail();
+		}
 	}
 	
 	@Test
 	public void createProjectDuplicateName()
 	{
-		Scheduler.createProject("Derp");
+		Scheduler scheduler = new Scheduler();
 		try {
-			Scheduler.createProject("Derp");
+			scheduler.createProject("Derp");
+		} catch (Exception e1) {
 			Assert.fail();
-		} catch (DuplicateProjectNameException e) {
+		}
+		try {
+			scheduler.createProject("Derp");
+			Assert.fail();
+		} catch (NoNameException e) {
+			Assert.fail();
+		} catch (DuplicateProjectNameException e) {		
 		}
 	}
 	
 	@Test
 	public void createProjectNoNameTest()
 	{
+		Scheduler scheduler = new Scheduler();
 		try {
-			Scheduler.createProject("");
+			scheduler.createProject("");
 			Assert.fail();
 		} catch (NoNameException  e) {
-			// TODO: handle exception
+		} catch (DuplicateProjectNameException e) {
+			Assert.fail();
 		}
 		//need to refractor this into a method call
 		try {
-			Scheduler.createProject(" ");
+			scheduler.createProject(" ");
 			Assert.fail();
 		} catch (NoNameException  e) {
-			// TODO: handle exception
+		} catch (DuplicateProjectNameException e) {
+			Assert.fail();
 		}
 		try {
-			Scheduler.createProject("     ");
+			scheduler.createProject("     ");
 			Assert.fail();
 		} catch (NoNameException  e) {
-			// TODO: handle exception
+		} catch (DuplicateProjectNameException e) {
+			Assert.fail();
 		}
 		try {
-			Scheduler.createProject(null);
+			scheduler.createProject(null);
 			Assert.fail();
 		} catch (NoNameException  e) {
-			// TODO: handle exception
+		} catch (DuplicateProjectNameException e) {
+			Assert.fail();
 		}
 	}
 }
