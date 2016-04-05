@@ -9,11 +9,24 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.junit.Assert;
 import org.junit.Test;
 
+import SoftwareHouse.Project;
+import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.DuplicateProjectNameException;
+import SoftwareHouse.ExceptionTypes.NoNameException;
+
 public class DeleteActivity {
 
 	@Test
 	public void DeleteActivitySuccessTest()
 	{
-		Scheduler.createProject("Derp");
+		Scheduler scheduler = new Scheduler();
+		try {
+			scheduler.createProject("Derp");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		Project project = scheduler.getProject("Derp");
+		project.addActivity();
+		project.deleteActivity();
 	}
 }

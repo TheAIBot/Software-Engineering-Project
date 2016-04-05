@@ -1,52 +1,85 @@
 package SoftwareHouse;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 public class Activity {
 	
-	private String name;
-	private String description;
-	private int budgetedTime;
-	private Timeperiod timePeriod;
+	private String title;
+	private String detailText;
+	private List<Employee> assignedEmployees = new ArrayList<Employee>();
+	private TimePeriod timePeriod;
+	private int budgettedTime;
 	
-	public Activity(String name, String description, int budgetedTime, Timeperiod timeperiod) {
-		this.setName(name);
-		this.setDescription(description);
-		this.setBudgetedTime(budgetedTime);
-		this.setTimePeriod(timeperiod);
+	public Activity(String title, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime) {
+		this.title = title;
+		this.detailText = detailText;
+		this.assignedEmployees.addAll(employees);
+		this.setTimePeriod(new TimePeriod(startDate, endDate));
+		this.budgettedTime = budgettedTime;
 	}
 
-	public String getName() {
-		return name;
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getDescription() {
-		return description;
+	/**
+	 * @return the detailText
+	 */
+	public String getDetailText() {
+		return detailText;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	/**
+	 * @param detailText the detailText to set
+	 */
+	public void setDetailText(String detailText) {
+		this.detailText = detailText;
 	}
 
-	public int getBudgetedTime() {
-		return budgetedTime;
+	/**
+	 * @return the budgettedTime
+	 */
+	public int getBudgettedTime() {
+		return budgettedTime;
 	}
 
-	public void setBudgetedTime(int budgetedTime) {
-		this.budgetedTime = budgetedTime;
+	/**
+	 * @param budgettedTime the budgettedTime to set
+	 */
+	public void setBudgettedTime(int budgettedTime) {
+		this.budgettedTime = budgettedTime;
 	}
 
-	public Timeperiod getTimePeriod() {
+	/**
+	 * @return the assignedEmployees
+	 */
+	public List<Employee> getAssignedEmployees() {
+		return assignedEmployees;
+	}
+
+	/**
+	 * @return the timePeriod
+	 */
+	public TimePeriod getTimePeriod() {
 		return timePeriod;
 	}
 
-	public void setTimePeriod(Timeperiod timePeriod) {
+	/**
+	 * @param timePeriod the timePeriod to set
+	 */
+	public void setTimePeriod(TimePeriod timePeriod) {
 		this.timePeriod = timePeriod;
 	}
-	
-	
-	
-
 }

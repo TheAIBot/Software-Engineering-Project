@@ -2,7 +2,17 @@ package SoftwareHouse;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.activity.InvalidActivityException;
+
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class Project {
 	private Scheduler scheduler;
@@ -54,10 +64,39 @@ public class Project {
 	}
 
 	
-	public void addAcitivity(String activityName, String activityDetailedDescription, int i, Calendar startTime,
-			Calendar endTime) {
-		if (condition) {
-			
-		}		
+	public void addAcitivity(String title, 
+							 String detailText, 
+							 List<String> employeeInitials, 
+							 Calendar startTime, 
+							 Calendar endTime, 
+							 int budgettedTime) throws MissingInformationException, 
+													   InvalidInformationException, 
+													   EmployeeNotFoundException {
+		if (title == null || title.trim().isEmpty()) {
+			throw new MissingInformationException("Missing title");
+		} else if (detailText == null || detailText.trim().isEmpty()) {
+			throw new MissingInformationException("Missing detailText");
+		} else if (employeeInitials == null || employeeInitials.size() == 0) {
+			throw new MissingInformationException("Missing employees");
+		} else if (startTime == null) {
+			throw new MissingInformationException("Missing start time");
+		} else if (endTime == null) {
+			throw new MissingInformationException("Missing end time");
+		} else if (startTime.after(endTime)) {
+			throw new InvalidInformationException("End time has to start after start time");
+		} else if (budgettedTime < 0) {
+			throw new InvalidInformationException("Budgetted time can't be less than 0");
+		}
+		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgettedTime);
+	}
+	
+	public void forceAddAcitivity(String title, String detailText, List<String> employeeInitials, Calendar startTime, Calendar endTime, int budgettedTime) throws EmployeeNotFoundException {
+		//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
+		//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
+		List<Employee> employees = new ArrayList<Employee>();
+		for (String initials : employeeInitials) {
+			employees.add(scheduler.getEmployeeFromInitials(initials));
+		}
+		openActivities.add(new Activity(title, detailText, employees, startTime, endTime, budgettedTime));	
 	}
 }
