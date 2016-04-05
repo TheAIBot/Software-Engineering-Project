@@ -9,12 +9,18 @@ import org.junit.Test;
 
 import com.sun.swing.internal.plaf.metal.resources.metal;
 
+import SoftwareHouse.Activity;
+import SoftwareHouse.Project;
+import SoftwareHouse.Scheduler;
+
 public class CreateActivityTests {
 	
 	@Test
-	public void testCreateNormal() {				
-		Project project = new Project("Navision Stat");
-		assertTrue(project.getOpenActivites.size() == 0);
+	public void testCreateNormal() {	
+		Scheduler scheduler = new Scheduler();
+		scheduler.createProject("Navision Stat");
+		Project project = scheduler.getProject("Navision Stat");
+		assertTrue(project.getOpenActivities().size() == 0);
 		String activityName = "Udvikling af brugerinterface";
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int excepctedHours = 200;
@@ -23,8 +29,8 @@ public class CreateActivityTests {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2016, 4, 18);
 		project.addAcitivity(activityName,	activityDetailedDescription, 200, startTime, endTime);
-		assertTrue(project.getOpenActivites.size() == 1);
-		Activity activity = project.getOpenActivities.get(0);
+		assertTrue(project.getOpenActivities().size() == 1);
+		Activity activity = project.getOpenActivities().get(0);
 		assertTrue(activity.getName() == activityName);
 		assertTrue(activity.getDescription() == activityDetailedDescription);
 		assertTrue(activity.getBudgetedTime() == excepctedHours);
