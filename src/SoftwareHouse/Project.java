@@ -10,6 +10,7 @@ import javax.activity.InvalidActivityException;
 
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
+import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
@@ -21,6 +22,9 @@ public class Project {
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
 	private List<Activity> deletedActivities = new ArrayList<Activity>();
+	
+	private List<Employee> employees = new ArrayList<Employee>();
+	
 	
 	public Project(Scheduler scheduler, String projectName)
 	{
@@ -98,5 +102,30 @@ public class Project {
 			employees.add(scheduler.getEmployeeFromInitials(initials));
 		}
 		openActivities.add(new Activity(title, detailText, employees, startTime, endTime, budgettedTime));	
+	}
+
+	public void addEmployee(String initials) throws EmployeeNotFoundException {
+		employees.add(scheduler.getEmployeeFromInitials(initials));
+	}
+
+	
+	/**
+	 * @return the employees
+	 */
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void deleteActivity(String activityTitle) throws ActivityNotFoundException {
+		if (!openActivities.stream()
+						   .anyMatch(x -> x.getTitle().equals(activityTitle))) {
+			throw new ActivityNotFoundException();
+		}
+		Activity activity = openActivities.stream()
+										  .filter(x -> x.getTitle().equals(activityTitle))
+										  .collect(Collectors.toList()).get(0);
+		openActivities.remove(activity);
+		deletedActivities.add(activity);
+		
 	}
 }
