@@ -105,7 +105,10 @@ public class Project {
 	}
 
 	public void addEmployee(String initials) throws EmployeeNotFoundException {
-		employees.add(scheduler.getEmployeeFromInitials(initials));
+		Employee employee = scheduler.getEmployeeFromInitials(initials);
+		employees.add(employee);
+		employee.addProject(this);
+		
 	}
 
 	
