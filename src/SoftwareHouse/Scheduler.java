@@ -58,6 +58,7 @@ public class Scheduler {
 		if (employees.containsKey(initials)) {
 			throw new DuplicateNameException("An employee with those initials already exist");
 		}	
+		employees.put(initials, new Employee(this, initials));
 	}
 
 }
