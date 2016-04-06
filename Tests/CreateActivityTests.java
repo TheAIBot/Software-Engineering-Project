@@ -9,8 +9,6 @@ import org.junit.Test;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.DuplicateNameException;
-import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 import org.junit.Assert;
 
