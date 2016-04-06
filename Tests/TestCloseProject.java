@@ -21,6 +21,6 @@ public class TestCloseProject {
 	}
 	
 	@Test
-	public void testCloseProject()) {
+	public void testCloseProject() {
 	}
 }

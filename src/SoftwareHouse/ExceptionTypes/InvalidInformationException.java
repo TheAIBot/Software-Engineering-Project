@@ -1,0 +1,8 @@
+package SoftwareHouse.ExceptionTypes;
+
+public class InvalidInformationException extends Exception {
+	public InvalidInformationException(String message)
+	{
+		super(message);
+	}
+}
