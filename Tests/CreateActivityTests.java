@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -11,6 +9,9 @@ import org.junit.Test;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
+
 import org.junit.Assert;
 
 public class CreateActivityTests {
@@ -34,16 +35,27 @@ public class CreateActivityTests {
 		
 		String activityName = "Udvikling af brugerinterface";
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
-		int excepctedHours = 200;
+		int expectedHours = 200;
 		Calendar startDate = new GregorianCalendar();
 		startDate.set(2016, 3, 16);
 		Calendar endDate = new GregorianCalendar();
 		endDate.set(2016, 4, 18);
-		//need to add some employees to this test
+		try {
+			scheduler.addEmployee("JBS");
+			scheduler.addEmployee("ELL");
+			scheduler.addEmployee("AGC");
+			scheduler.addEmployee("NR");
+		} catch (Exception e) {
+			Assert.fail();
+		}
 		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
 		
 		try {
-			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, excepctedHours);
+			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -52,7 +64,7 @@ public class CreateActivityTests {
 		Activity activity = project.getOpenActivities().get(0);
 		assertEquals(activity.getTitle(), activityName);
 		assertEquals(activity.getDetailText(), activityDetailedDescription);
-		assertEquals(activity.getBudgettedTime(), excepctedHours);
+		assertEquals(activity.getBudgettedTime(), expectedHours);
 		assertEquals(activity.getTimePeriod().getStartDate(), startDate);
 		assertEquals(activity.getTimePeriod().getEndDate(), endDate);		
 	}

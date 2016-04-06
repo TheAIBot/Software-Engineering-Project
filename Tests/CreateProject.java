@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.DuplicateProjectNameException;
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
@@ -48,7 +48,7 @@ public class CreateProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			Assert.fail();
-		} catch (DuplicateProjectNameException e) {		
+		} catch (DuplicateNameException e) {		
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class CreateProject {
 			Assert.fail();
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing project name");
-		} catch (DuplicateProjectNameException e) {
+		} catch (DuplicateNameException e) {
 			Assert.fail();
 		}
 		try {
@@ -70,7 +70,7 @@ public class CreateProject {
 			Assert.fail();
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing project name");
-		} catch (DuplicateProjectNameException e) {
+		} catch (DuplicateNameException e) {
 			Assert.fail();
 		}
 		try {
@@ -78,7 +78,7 @@ public class CreateProject {
 			Assert.fail();
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing project name");
-		} catch (DuplicateProjectNameException e) {
+		} catch (DuplicateNameException e) {
 			Assert.fail();
 		}
 		try {
@@ -86,7 +86,7 @@ public class CreateProject {
 			Assert.fail();
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing project name");
-		} catch (DuplicateProjectNameException e) {
+		} catch (DuplicateNameException e) {
 			Assert.fail();
 		}
 	}
