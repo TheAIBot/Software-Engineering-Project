@@ -3,35 +3,42 @@ package SoftwareHouse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class Activity {
 	
-	private String title;
+	private String name;
 	private String detailText;
 	private List<Employee> assignedEmployees = new ArrayList<Employee>();
 	private TimePeriod timePeriod;
 	private int budgettedTime;
+	private final Project inProject;
 	
-	public Activity(String title, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime) {
-		this.title = title;
+	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) {
+		this.name = name;
 		this.detailText = detailText;
 		this.assignedEmployees.addAll(employees);
 		this.setTimePeriod(new TimePeriod(startDate, endDate));
 		this.budgettedTime = budgettedTime;
+		this.inProject = inProject;
 	}
 
 	/**
 	 * @return the title
 	 */
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
 	/**
 	 * @param title the title to set
 	 */
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -81,5 +88,20 @@ public class Activity {
 	 */
 	public void setTimePeriod(TimePeriod timePeriod) {
 		this.timePeriod = timePeriod;
+	}
+
+	public void addEmployee(String initials) throws EmployeeMaxActivitiesReachedException, EmployeeNotFoundException, EmployeeAlreadyAssignedException {
+		if (inProject.getEmployees().stream().anyMatch(x -> x.getInitials().equals(initials))) {
+			if (!assignedEmployees.stream().anyMatch(x -> x.getInitials().equals(initials))) {
+				Employee employee = inProject.getEmployees().stream().filter(x -> x.getInitials().equals(initials)).collect(Collectors.toList()).get(0);
+				employee.addActivity(this);
+				assignedEmployees.add(employee);
+			} else {
+				throw new EmployeeAlreadyAssignedException(initials + " is already assigned to this activity");
+			}
+
+		} else {
+			throw new EmployeeNotFoundException("Employee does not exists or is not part of this project");
+		}
 	}
 }

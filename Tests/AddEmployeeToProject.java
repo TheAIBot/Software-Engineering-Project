@@ -78,6 +78,7 @@ public class AddEmployeeToProject {
 			project.addEmployee("LSB");
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
+			assertEquals(e.getMessage(), "No employee with those initials exists");
 		}
 	}
 }
