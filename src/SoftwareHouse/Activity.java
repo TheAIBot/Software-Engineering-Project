@@ -91,9 +91,9 @@ public class Activity {
 	}
 
 	public void addEmployee(String initials) throws EmployeeMaxActivitiesReachedException, EmployeeNotFoundException, EmployeeAlreadyAssignedException {
-		if (inProject.getEmployees().stream().anyMatch(x -> x.getInitials().equals(initials))) {
-			if (!assignedEmployees.stream().anyMatch(x -> x.getInitials().equals(initials))) {
-				Employee employee = inProject.getEmployees().stream().filter(x -> x.getInitials().equals(initials)).collect(Collectors.toList()).get(0);
+		if (Tools.containsEmployee(inProject.getEmployees(), initials)) {
+			if (!Tools.containsEmployee(assignedEmployees, initials)) {
+				Employee employee = Tools.getEmployeeFromInitials(inProject.getEmployees(), initials);
 				employee.addActivity(this);
 				assignedEmployees.add(employee);
 			} else {
