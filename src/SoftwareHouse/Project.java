@@ -101,16 +101,15 @@ public class Project {
 		for (String initials : employeeInitials) {
 			employees.add(scheduler.getEmployeeFromInitials(initials));
 		}
-		openActivities.add(new Activity(title, detailText, employees, startTime, endTime, budgettedTime));	
+		openActivities.add(new Activity(title, detailText, employees, startTime, endTime, budgettedTime, this));	
 	}
 
 	public void addEmployee(String initials) throws EmployeeNotFoundException {
 		Employee employee = scheduler.getEmployeeFromInitials(initials);
-		employees.add(employee);
 		employee.addProject(this);
+		employees.add(employee);
 		
 	}
-
 	
 	/**
 	 * @return the employees
@@ -121,11 +120,11 @@ public class Project {
 
 	public void deleteActivity(String activityTitle) throws ActivityNotFoundException {
 		if (!openActivities.stream()
-						   .anyMatch(x -> x.getTitle().equals(activityTitle))) {
+						   .anyMatch(x -> x.getName().equals(activityTitle))) {
 			throw new ActivityNotFoundException();
 		}
 		Activity activity = openActivities.stream()
-										  .filter(x -> x.getTitle().equals(activityTitle))
+										  .filter(x -> x.getName().equals(activityTitle))
 										  .collect(Collectors.toList()).get(0);
 		openActivities.remove(activity);
 		deletedActivities.add(activity);
