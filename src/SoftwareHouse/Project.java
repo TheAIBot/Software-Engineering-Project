@@ -76,9 +76,9 @@ public class Project {
 							 int budgettedTime) throws MissingInformationException, 
 													   InvalidInformationException, 
 													   EmployeeNotFoundException {
-		if (title == null || title.trim().isEmpty()) {
+		if (Tools.isNullOrEmpty(title)) {
 			throw new MissingInformationException("Missing title");
-		} else if (detailText == null || detailText.trim().isEmpty()) {
+		} else if (Tools.isNullOrEmpty(detailText)) {
 			throw new MissingInformationException("Missing detailText");
 		} else if (employeeInitials == null || employeeInitials.size() == 0) {
 			throw new MissingInformationException("Missing employees");
@@ -101,16 +101,15 @@ public class Project {
 		for (String initials : employeeInitials) {
 			employees.add(scheduler.getEmployeeFromInitials(initials));
 		}
-		openActivities.add(new Activity(title, detailText, employees, startTime, endTime, budgettedTime));	
+		openActivities.add(new Activity(title, detailText, employees, startTime, endTime, budgettedTime, this));	
 	}
 
 	public void addEmployee(String initials) throws EmployeeNotFoundException {
 		Employee employee = scheduler.getEmployeeFromInitials(initials);
-		employees.add(employee);
 		employee.addProject(this);
+		employees.add(employee);
 		
 	}
-
 	
 	/**
 	 * @return the employees
@@ -120,13 +119,10 @@ public class Project {
 	}
 
 	public void deleteActivity(String activityTitle) throws ActivityNotFoundException {
-		if (!openActivities.stream()
-						   .anyMatch(x -> x.getTitle().equals(activityTitle))) {
+		if (!Tools.containsActivity(openActivities, activityTitle)) {
 			throw new ActivityNotFoundException();
 		}
-		Activity activity = openActivities.stream()
-										  .filter(x -> x.getTitle().equals(activityTitle))
-										  .collect(Collectors.toList()).get(0);
+		Activity activity = Tools.getActivityFromName(openActivities, activityTitle);
 		openActivities.remove(activity);
 		deletedActivities.add(activity);
 		
