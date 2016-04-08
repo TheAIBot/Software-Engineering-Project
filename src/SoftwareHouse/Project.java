@@ -118,13 +118,22 @@ public class Project {
 		return employees;
 	}
 
-	public void deleteActivity(String activityTitle) throws ActivityNotFoundException {
-		if (!Tools.containsActivity(openActivities, activityTitle)) {
+	public void deleteActivity(String activityName) throws ActivityNotFoundException {
+		if (!Tools.containsActivity(openActivities, activityName)) {
 			throw new ActivityNotFoundException();
 		}
-		Activity activity = Tools.getActivityFromName(openActivities, activityTitle);
+		Activity activity = Tools.getActivityFromName(openActivities, activityName);
 		openActivities.remove(activity);
 		deletedActivities.add(activity);
 		
+	}
+
+	public void closeActivity(String activityName) throws ActivityNotFoundException {
+		if (!Tools.containsActivity(openActivities, activityName)) {
+			throw new ActivityNotFoundException();
+		}
+		Activity activity = Tools.getActivityFromName(openActivities, activityName);
+		openActivities.remove(activity);
+		closedActivities.add(activity);
 	}
 }
