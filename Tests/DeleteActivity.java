@@ -15,11 +15,12 @@ import org.junit.Test;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class DeleteActivity {
 
 	@Test
-	public void DeleteActivitySuccessTest()
+	public void deleteActivitySuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
 		try {
@@ -51,6 +52,16 @@ public class DeleteActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
+		
+		try {
+			project.addEmployee("JBS");
+			project.addEmployee("ELL");
+			project.addEmployee("AGC");
+			project.addEmployee("NR");
+		} catch (EmployeeNotFoundException e1) {
+			Assert.fail();
+		}
+		
 		List<String> employeeInitials = new ArrayList<String>();
 		employeeInitials.add("JBS");
 		employeeInitials.add("ELL");
@@ -74,7 +85,8 @@ public class DeleteActivity {
 		assertEquals(project.getDeletedActivities().size(), 1);
 	}
 
-	public void DeleteActivityMissingActivitytest()
+	@Test
+	public void deleteActivityMissingActivitytest()
 	{
 		Scheduler scheduler = new Scheduler();
 		try {
