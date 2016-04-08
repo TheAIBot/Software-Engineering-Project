@@ -22,7 +22,7 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 public class RegisterTime {
 
 	@Test
-	RegisterTimeSuccessTest()
+	public void RegisterTimeSuccessTest()
 	{
 		
 	}
