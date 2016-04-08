@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,14 +16,9 @@ import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 public class AddEmployeeToActivity {
 	Scheduler scheduler = null;
