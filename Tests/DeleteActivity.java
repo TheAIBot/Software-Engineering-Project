@@ -19,7 +19,7 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 public class DeleteActivity {
 
 	@Test
-	public void DeleteActivitySuccessTest()
+	public void deleteActivitySuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
 		try {
@@ -74,7 +74,8 @@ public class DeleteActivity {
 		assertEquals(project.getDeletedActivities().size(), 1);
 	}
 
-	public void DeleteActivityMissingActivitytest()
+	@Test
+	public void deleteActivityMissingActivitytest()
 	{
 		Scheduler scheduler = new Scheduler();
 		try {
