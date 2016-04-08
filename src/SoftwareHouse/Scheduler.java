@@ -18,7 +18,9 @@ public class Scheduler {
 
 	private List<Project> projects = new ArrayList<Project>();
 	private Map<String, Employee> employees = new HashMap<String, Employee>();
-	
+	private boolean anyoneLoggedIn = false;
+	private Employee loggedInEmployee;
+
 	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException {
 		if (Tools.isNullOrEmpty(projectName)) {
 			throw new MissingInformationException("Missing project name");
@@ -77,6 +79,25 @@ public class Scheduler {
 		} else {
 			throw new ProjectNotFoundException();
 		}
+	}
+
+	
+	public boolean isAnyoneLoggedIn() {
+		return anyoneLoggedIn;
+	}
+
+	public void login(String initials) throws EmployeeNotFoundException {
+		if (employees.containsKey(initials)) {
+			Employee employee = employees.get(initials);
+			loggedInEmployee = employee;
+			anyoneLoggedIn = true;
+		} else {
+			throw new EmployeeNotFoundException("No employee with those initials exists");
+		}
+	}
+
+	public Employee getLoggedInEmployee() {
+		return loggedInEmployee;
 	}
 
 }
