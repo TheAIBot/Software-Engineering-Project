@@ -11,6 +11,7 @@ import javax.activity.InvalidActivityException;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
@@ -75,7 +76,8 @@ public class Project {
 							 Calendar endTime, 
 							 int budgettedTime) throws MissingInformationException, 
 													   InvalidInformationException, 
-													   EmployeeNotFoundException {
+													   EmployeeNotFoundException, 
+													   DuplicateNameException {
 		if (Tools.isNullOrEmpty(title)) {
 			throw new MissingInformationException("Missing title");
 		} else if (Tools.isNullOrEmpty(detailText)) {
@@ -83,25 +85,33 @@ public class Project {
 		} else if (employeeInitials == null || employeeInitials.size() == 0) {
 			throw new MissingInformationException("Missing employees");
 		} else if (startTime == null) {
-			throw new MissingInformationException("Missing start time");
+			throw new MissingInformationException("Missing start date");
 		} else if (endTime == null) {
-			throw new MissingInformationException("Missing end time");
+			throw new MissingInformationException("Missing end date");
 		} else if (startTime.after(endTime)) {
-			throw new InvalidInformationException("End time has to start after start time");
+			throw new InvalidInformationException("End date has to start after start date");
 		} else if (budgettedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}
 		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgettedTime);
 	}
 	
-	public void forceAddAcitivity(String title, String detailText, List<String> employeeInitials, Calendar startTime, Calendar endTime, int budgettedTime) throws EmployeeNotFoundException {
+	public void forceAddAcitivity(String title, String detailText, List<String> employeeInitials, Calendar startTime, Calendar endTime, int budgettedTime) throws EmployeeNotFoundException, DuplicateNameException {
+		if (Tools.containsActivity(openActivities, title)) {
+			throw new DuplicateNameException("An activity with that name already exists");
+		}
+		
 		//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
 		//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
-		List<Employee> employees = new ArrayList<Employee>();
+		List<Employee> activityEmployees = new ArrayList<Employee>();
 		for (String initials : employeeInitials) {
-			employees.add(scheduler.getEmployeeFromInitials(initials));
+			if (Tools.containsEmployee(employees, initials)) {
+				activityEmployees.add(Tools.getEmployeeFromInitials(employees, initials));
+			} else {
+				throw new EmployeeNotFoundException("Employee with initials: " + initials + " does not exist or is not part of this project");
+			}
 		}
-		openActivities.add(new Activity(title, detailText, employees, startTime, endTime, budgettedTime, this));	
+		openActivities.add(new Activity(title, detailText, activityEmployees, startTime, endTime, budgettedTime, this));	
 	}
 
 	public void addEmployee(String initials) throws EmployeeNotFoundException {
@@ -118,13 +128,22 @@ public class Project {
 		return employees;
 	}
 
-	public void deleteActivity(String activityTitle) throws ActivityNotFoundException {
-		if (!Tools.containsActivity(openActivities, activityTitle)) {
+	public void deleteActivity(String activityName) throws ActivityNotFoundException {
+		if (!Tools.containsActivity(openActivities, activityName)) {
 			throw new ActivityNotFoundException();
 		}
-		Activity activity = Tools.getActivityFromName(openActivities, activityTitle);
+		Activity activity = Tools.getActivityFromName(openActivities, activityName);
 		openActivities.remove(activity);
 		deletedActivities.add(activity);
 		
+	}
+
+	public void closeActivity(String activityName) throws ActivityNotFoundException {
+		if (!Tools.containsActivity(openActivities, activityName)) {
+			throw new ActivityNotFoundException();
+		}
+		Activity activity = Tools.getActivityFromName(openActivities, activityName);
+		openActivities.remove(activity);
+		closedActivities.add(activity);
 	}
 }
