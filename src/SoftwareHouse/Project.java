@@ -15,10 +15,12 @@ import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 
 public class Project {
 	private Scheduler scheduler;
 	private String name;
+	private boolean isOpen = true;
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
@@ -145,5 +147,32 @@ public class Project {
 		Activity activity = Tools.getActivityFromName(openActivities, activityName);
 		openActivities.remove(activity);
 		closedActivities.add(activity);
+	}
+
+	
+	public void close() throws ProjectAlreadyClosedException {
+		if (isOpen) {
+			isOpen = false;
+			
+			openActivities.stream().forEach(x -> closedActivities.add(x));
+			openActivities.clear();
+			
+		} else {
+			throw new ProjectAlreadyClosedException("The project \"" + name + "\" is already closed");
+		}
+	}
+
+	/**
+	 * @return the isOpen
+	 */
+	public boolean isOpen() {
+		return isOpen;
+	}
+
+	/**
+	 * @param isOpen the isOpen to set
+	 */
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
 	}
 }
