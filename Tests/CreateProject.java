@@ -1,0 +1,93 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import SoftwareHouse.Project;
+import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.MissingProjectException;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
+
+public class CreateProject {
+
+	@Test
+	public void createProjectSuccessTest()
+	{
+		Scheduler scheduler = new Scheduler();
+		try {
+			scheduler.createProject("Derp");
+		} catch (Exception e1) {
+			Assert.fail();
+		}
+		assertEquals(scheduler.getProjects().size(), 1);
+		assertEquals(scheduler.getProjects().get(0).getName(), "Derp");
+		try {
+			Project project = scheduler.getProject("Derp");
+			assertEquals(project.getName(), "Derp");
+		} catch (MissingProjectException e) {
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void createProjectDuplicateName()
+	{
+		Scheduler scheduler = new Scheduler();
+		try {
+			scheduler.createProject("Derp");
+		} catch (Exception e1) {
+			Assert.fail();
+		}
+		try {
+			scheduler.createProject("Derp");
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
+		} catch (DuplicateNameException e) {		
+		}
+	}
+	
+	@Test
+	public void createProjectNoNameTest()
+	{
+		Scheduler scheduler = new Scheduler();
+		//need to refractor this into method calls
+		try {
+			scheduler.createProject("");
+			Assert.fail();
+		} catch (MissingInformationException  e) {
+			assertEquals(e.getMessage(), "Missing project name");
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		}
+		try {
+			scheduler.createProject(" ");
+			Assert.fail();
+		} catch (MissingInformationException  e) {
+			assertEquals(e.getMessage(), "Missing project name");
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		}
+		try {
+			scheduler.createProject("     ");
+			Assert.fail();
+		} catch (MissingInformationException  e) {
+			assertEquals(e.getMessage(), "Missing project name");
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		}
+		try {
+			scheduler.createProject(null);
+			Assert.fail();
+		} catch (MissingInformationException  e) {
+			assertEquals(e.getMessage(), "Missing project name");
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		}
+	}
+}
