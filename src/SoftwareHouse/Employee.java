@@ -38,11 +38,14 @@ public class Employee {
 		activities.add(activity);
 	}
 
-
 	/**
 	 * @return the projects
 	 */
 	public List<Project> getProjects() {
 		return projects;
+	}
+	
+	public List<Activity> getActivities() {
+		return activities;
 	}
 }

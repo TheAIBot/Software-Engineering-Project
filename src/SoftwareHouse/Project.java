@@ -15,6 +15,7 @@ import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import sun.net.www.content.audio.x_aiff;
 
 public class Project {
 	private Scheduler scheduler;
@@ -68,6 +69,13 @@ public class Project {
 		return deletedActivities;
 	}
 
+	public Activity getOpenActivityFromName(String activityName) throws ActivityNotFoundException{
+		try {
+			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); //There can only be one activity with a given name, for a given project.
+		} catch (Exception e) {
+			throw new ActivityNotFoundException();
+		}
+	}
 	
 	public void addAcitivity(String title, 
 							 String detailText, 

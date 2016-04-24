@@ -2,7 +2,6 @@ package SoftwareHouse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,9 +9,10 @@ import java.util.stream.Collectors;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
-import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import sun.net.www.content.audio.x_aiff;
 
 public class Scheduler {
 
@@ -30,7 +30,15 @@ public class Scheduler {
 		}
 		projects.add(new Project(this, projectName));
 	}
-
+	
+	public List<Employee> getEmployeesContainingString(String partOfInitials){
+		return employees.entrySet()
+												 .stream()
+												 .filter(x-> x.getKey().contains(partOfInitials))
+												 .map(x -> x.getValue())
+												 .collect(Collectors.toList());
+	}
+	
 	public Employee getEmployeeFromInitials(String initials) throws EmployeeNotFoundException
 	{
 		if (employees.containsKey(initials)) {
@@ -80,7 +88,6 @@ public class Scheduler {
 			throw new ProjectNotFoundException();
 		}
 	}
-
 	
 	public boolean isAnyoneLoggedIn() {
 		return anyoneLoggedIn;
