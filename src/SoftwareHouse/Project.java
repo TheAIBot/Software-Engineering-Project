@@ -173,6 +173,15 @@ public class Project {
 	public boolean isOpen() {
 		return isOpen;
 	}
+	
+	public Activity getOpenActivityFromName(String activityName) throws ActivityNotFoundException{
+		try {
+			//There can only be one activity with a given name, for a given project.
+			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); 		
+		} catch (Exception e) {
+			throw new ActivityNotFoundException();
+		}
+	}
 
 	/**
 	 * @param isOpen the isOpen to set

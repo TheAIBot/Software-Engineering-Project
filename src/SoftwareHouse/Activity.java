@@ -3,7 +3,8 @@ package SoftwareHouse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.junit.experimental.theories.Theories;
 
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
@@ -38,6 +39,7 @@ public class Activity {
 
 	/**
 	 * @param title the title to set
+	 * @throws MissingInformationException 
 	 */
 	public void setName(String name) throws MissingInformationException {
 		if (Tools.isNullOrEmpty(name)) {
@@ -69,6 +71,7 @@ public class Activity {
 
 	/**
 	 * @param budgettedTime the budgettedTime to set
+	 * @throws InvalidInformationException 
 	 */
 	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
 		if (budgettedTime < 0) {
@@ -110,5 +113,9 @@ public class Activity {
 		} else {
 			throw new EmployeeNotFoundException("Employee does not exists or is not part of this project");
 		}
+	}
+
+	public String getProjectName() {
+		return inProject.getName();
 	}
 }
