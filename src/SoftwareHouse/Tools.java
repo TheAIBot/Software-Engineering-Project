@@ -18,12 +18,12 @@ public class Tools {
 	
 	public static boolean containsActivity(List<Activity> activities, String activityName)
 	{
-		return activities.stream()
-				   		 .anyMatch(x -> x.getName().equals(activityName));
+		return activities.stream().anyMatch(x -> x.getName().equals(activityName));
 	}
 	
 	public static boolean containsEmployee(List<Employee> employees, String initials)
 	{
+		
 		return employees.stream()
 		   		 		.anyMatch(x -> x.getInitials().equals(initials));
 	}
