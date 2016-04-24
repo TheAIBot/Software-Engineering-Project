@@ -24,6 +24,7 @@ public class DeleteActivity {
 	public void deleteActivitySuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {
@@ -90,6 +91,7 @@ public class DeleteActivity {
 	public void deleteActivityMissingActivitytest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {

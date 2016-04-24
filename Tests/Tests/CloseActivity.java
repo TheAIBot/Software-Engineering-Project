@@ -20,6 +20,7 @@ public class CloseActivity {
 	public void closeActivitySuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {
@@ -86,6 +87,7 @@ public class CloseActivity {
 	public void closeActivityMissingActivitytest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {

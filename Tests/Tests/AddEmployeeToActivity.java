@@ -28,6 +28,7 @@ public class AddEmployeeToActivity {
 	public void Setup()
 	{
 		scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {
