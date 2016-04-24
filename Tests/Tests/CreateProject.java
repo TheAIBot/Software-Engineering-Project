@@ -1,3 +1,4 @@
+package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,8 +29,8 @@ public class CreateProject {
 		try {
 			assertEquals(scheduler.getProjects().size(), 1);
 			assertEquals(scheduler.getProjects().get(0).getName(), "Derp");
-		} catch (NotLoggedInException e1) {
-			throw new NotLoggedInException();
+		} catch (Exception e1) {
+			Assert.fail();
 		}
 		try {
 			Project project = scheduler.getProject("Derp");
