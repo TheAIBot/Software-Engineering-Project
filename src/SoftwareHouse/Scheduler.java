@@ -1,5 +1,6 @@
 package SoftwareHouse;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
@@ -20,15 +21,20 @@ public class Scheduler {
 	private Map<String, Employee> employees = new HashMap<String, Employee>();
 	private boolean anyoneLoggedIn = false;
 	private Employee loggedInEmployee;
+	private TimeVault timeVault = new TimeVault(this);
 
-	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException {
-		if (Tools.isNullOrEmpty(projectName)) {
-			throw new MissingInformationException("Missing project name");
+	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException {
+		if (isAnyoneLoggedIn()) {
+			if (Tools.isNullOrEmpty(projectName)) {
+				throw new MissingInformationException("Missing project name");
+			}
+			if (Tools.containsProject(projects, projectName.trim())) {
+				throw new DuplicateNameException("A project with that title already exists");
+			}
+			projects.add(new Project(this, projectName));
+		} else {
+			throw new NotLoggedInException();
 		}
-		if (Tools.containsProject(projects, projectName.trim())) {
-			throw new DuplicateNameException("A project with that title already exists");
-		}
-		projects.add(new Project(this, projectName));
 	}
 
 	public Employee getEmployeeFromInitials(String initials) throws EmployeeNotFoundException
@@ -42,16 +48,25 @@ public class Scheduler {
 	
 	/**
 	 * @return the projects
+	 * @throws NotLoggedInException 
 	 */
-	public List<Project> getProjects() {
-		return projects;
+	public List<Project> getProjects() throws NotLoggedInException {
+		if (isAnyoneLoggedIn()) {
+			return projects;
+		} else {
+			throw new NotLoggedInException();
+		}
 	}
 
-	public Project getProject(String projectName) throws MissingProjectException {
-		if (Tools.containsProject(projects, projectName)) {
-			return Tools.getProjectFromName(projects, projectName);
+	public Project getProject(String projectName) throws ProjectNotFoundException, NotLoggedInException {
+		if (isAnyoneLoggedIn()) {
+			if (Tools.containsProject(projects, projectName)) {
+				return Tools.getProjectFromName(projects, projectName);
+			} else {
+				throw new ProjectNotFoundException();
+			}
 		} else {
-			throw new MissingProjectException();
+			throw new NotLoggedInException();
 		}
 	}
 
@@ -65,19 +80,23 @@ public class Scheduler {
 		employees.put(initials, new Employee(this, initials));
 	}
 
-	public Activity getActivity(String projectName, String activityName) throws ProjectNotFoundException, ActivityNotFoundException {
-		if (Tools.containsProject(projects, projectName)) {
-			Project project = Tools.getProjectFromName(projects, projectName);
-			
-			//need to handle that the activity is deleted or archived
-			//will add that functionality later
-			if (Tools.containsActivity(project.getOpenActivities(), activityName)) {
-				return Tools.getActivityFromName(project.getOpenActivities(), activityName);
+	public Activity getActivity(String projectName, String activityName) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException {
+		if (isAnyoneLoggedIn()) {
+			if (Tools.containsProject(projects, projectName)) {
+				Project project = Tools.getProjectFromName(projects, projectName);
+				
+				//need to handle that the activity is deleted or archived
+				//will add that functionality later
+				if (Tools.containsActivity(project.getOpenActivities(), activityName)) {
+					return Tools.getActivityFromName(project.getOpenActivities(), activityName);
+				} else {
+					throw new ActivityNotFoundException();
+				}
 			} else {
-				throw new ActivityNotFoundException();
+				throw new ProjectNotFoundException();
 			}
 		} else {
-			throw new ProjectNotFoundException();
+			throw new NotLoggedInException();
 		}
 	}
 
@@ -100,4 +119,9 @@ public class Scheduler {
 		return loggedInEmployee;
 	}
 
+	public TimeVault getTimeVault()
+	{
+		return timeVault;
+	}
+	
 }
