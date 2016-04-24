@@ -3,11 +3,7 @@ package SoftwareHouse;
 import java.util.ArrayList;
 import java.util.List;
 
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
-import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 public class Employee {
 	private final String initials;
@@ -48,9 +44,5 @@ public class Employee {
 	 */
 	public List<Project> getProjects() {
 		return projects;
-	}
-
-	public void registerTime(String projectName, String activityName, String message, int time) throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException, InvalidInformationException {
-		scheduler.getTimeVault().addTime(projectName, activityName, initials, new RegisteredTime(this, message, time));
 	}
 }
