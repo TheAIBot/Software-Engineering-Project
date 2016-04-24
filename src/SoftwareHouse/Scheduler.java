@@ -1,5 +1,6 @@
 package SoftwareHouse;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +11,6 @@ import java.util.stream.Collectors;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
@@ -21,6 +21,7 @@ public class Scheduler {
 	private Map<String, Employee> employees = new HashMap<String, Employee>();
 	private boolean anyoneLoggedIn = false;
 	private Employee loggedInEmployee;
+	private TimeVault timeVault = new TimeVault(this);
 
 	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
@@ -57,12 +58,12 @@ public class Scheduler {
 		}
 	}
 
-	public Project getProject(String projectName) throws MissingProjectException, NotLoggedInException {
+	public Project getProject(String projectName) throws ProjectNotFoundException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
 			if (Tools.containsProject(projects, projectName)) {
 				return Tools.getProjectFromName(projects, projectName);
 			} else {
-				throw new MissingProjectException();
+				throw new ProjectNotFoundException();
 			}
 		} else {
 			throw new NotLoggedInException();
@@ -118,4 +119,9 @@ public class Scheduler {
 		return loggedInEmployee;
 	}
 
+	public TimeVault getTimeVault()
+	{
+		return timeVault;
+	}
+	
 }
