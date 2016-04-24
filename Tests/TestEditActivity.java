@@ -14,6 +14,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
@@ -23,7 +24,7 @@ public class TestEditActivity {
 	
 	@Before
 	public void setup() {
-		Scheduler scheduler = new Scheduler();
+		scheduler = new Scheduler();
 		
 		// Create employees
 		try {
@@ -83,9 +84,58 @@ public class TestEditActivity {
 		
 		assertNotNull(activity);
 		assertEquals(activity.getBudgettedTime(), 150);
-		activity.setBudgettedTime(275);
+		try {
+			activity.setBudgettedTime(275);
+		} catch (InvalidInformationException e) {
+			e.printStackTrace();
+			Assert.fail();
+		}
 		assertEquals(activity.getBudgettedTime(), 275);
-		
 	}
+	
+	@Test
+	public void testEditActivityRemoveInformation() {
+		Activity activity = null;
+		try {
+			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
+		} catch (ProjectNotFoundException e) {
+			e.printStackTrace();
+		} catch (ActivityNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//Try to remove the title of the activity
+		assertNotNull(activity);
+		assertEquals(activity.getName(), "Brugerinterface");
+		try {
+			activity.setName(null);
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("Missing title", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testEditActivityInvalidInformation() {
+		Activity activity = null;
+		try {
+			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
+		} catch (ProjectNotFoundException e) {
+			e.printStackTrace();
+		} catch (ActivityNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//Try to change the budgeted time to a negative value 
+		assertNotNull(activity);
+		assertEquals(activity.getName(), "Brugerinterface");
+		try {
+			activity.setBudgettedTime(-1);
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("Budgetted time can't be less than 0", e.getMessage());
+		}
+	}
+	
 	
 }

@@ -20,10 +20,5 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class RegisterTime {
-
-	@Test
-	RegisterTimeSuccessTest()
-	{
-		
-	}
+	
 }
