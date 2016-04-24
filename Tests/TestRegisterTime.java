@@ -88,8 +88,6 @@ public class TestRegisterTime {
 		
 		//TODO Finish test
 		
-		
-		
 	}
 	
 }
