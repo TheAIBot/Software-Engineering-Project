@@ -17,6 +17,7 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 
+
 public class Project {
 	private Scheduler scheduler;
 	private String name;
@@ -70,6 +71,13 @@ public class Project {
 		return deletedActivities;
 	}
 
+	public Activity getOpenActivityFromName(String activityName) throws ActivityNotFoundException{
+		try {
+			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); //There can only be one activity with a given name, for a given project.
+		} catch (Exception e) {
+			throw new ActivityNotFoundException();
+		}
+	}
 	
 	public void addAcitivity(String title, 
 							 String detailText, 

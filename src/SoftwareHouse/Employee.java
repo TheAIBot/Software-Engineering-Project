@@ -42,15 +42,20 @@ public class Employee {
 		activities.add(activity);
 	}
 
-
 	/**
 	 * @return the projects
 	 */
 	public List<Project> getProjects() {
 		return projects;
 	}
+<<<<<<< HEAD
 
 	public void registerTime(String projectName, String activityName, String message, int time) throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException, InvalidInformationException {
 		scheduler.getTimeVault().addTime(projectName, activityName, initials, new RegisteredTime(this, message, time));
+=======
+	
+	public List<Activity> getActivities() {
+		return activities;
+>>>>>>> refs/remotes/origin/Jesper
 	}
 }
