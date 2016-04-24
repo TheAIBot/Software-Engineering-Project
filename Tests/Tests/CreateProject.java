@@ -11,8 +11,8 @@ import org.junit.Test;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class CreateProject {
@@ -36,7 +36,7 @@ public class CreateProject {
 		try {
 			Project project = scheduler.getProject("Derp");
 			assertEquals(project.getName(), "Derp");
-		} catch (MissingProjectException e) {
+		} catch (ProjectNotFoundException e) {
 			Assert.fail();
 		} catch (NotLoggedInException e) {
 			Assert.fail();
