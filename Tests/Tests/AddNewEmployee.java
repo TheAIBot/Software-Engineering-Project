@@ -27,13 +27,14 @@ public class AddNewEmployee {
 	public void addEmployeeDuplicateInitialsTest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
-			TestTools.addEmployee(new Scheduler(), "DERP");
+			TestTools.addEmployee(scheduler, "DERP");
 		} catch (Exception e) {
 			Assert.fail();
 		}
 		try {
-			TestTools.addEmployee(new Scheduler(), "DERP");
+			TestTools.addEmployee(scheduler, "DERP");
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();

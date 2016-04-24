@@ -24,6 +24,7 @@ public class AddEmployeeToProject {
 	public void AddEmployeeSuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Derp");
 		} catch (Exception e) {
@@ -63,6 +64,7 @@ public class AddEmployeeToProject {
 	public void AddEmployeeIncorrectInitialsTest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Derp");
 		} catch (Exception e) {

@@ -21,6 +21,7 @@ public class CreateProject {
 	public void createProjectSuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Derp");
 		} catch (Exception e1) {
@@ -46,6 +47,7 @@ public class CreateProject {
 	public void createProjectDuplicateName()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Derp");
 		} catch (Exception e1) {
@@ -66,6 +68,7 @@ public class CreateProject {
 	public void createProjectNoNameTest()
 	{
 		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		//need to refractor this into method calls
 		try {
 			scheduler.createProject("");
