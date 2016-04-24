@@ -107,7 +107,6 @@ public class Activity {
 			} else {
 				throw new EmployeeAlreadyAssignedException(initials + " is already assigned to this activity");
 			}
-
 		} else {
 			throw new EmployeeNotFoundException("Employee does not exists or is not part of this project");
 		}
