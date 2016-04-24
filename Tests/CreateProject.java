@@ -11,6 +11,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.MissingProjectException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class CreateProject {
@@ -24,12 +25,18 @@ public class CreateProject {
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		assertEquals(scheduler.getProjects().size(), 1);
-		assertEquals(scheduler.getProjects().get(0).getName(), "Derp");
+		try {
+			assertEquals(scheduler.getProjects().size(), 1);
+			assertEquals(scheduler.getProjects().get(0).getName(), "Derp");
+		} catch (NotLoggedInException e1) {
+			throw new NotLoggedInException();
+		}
 		try {
 			Project project = scheduler.getProject("Derp");
 			assertEquals(project.getName(), "Derp");
 		} catch (MissingProjectException e) {
+			Assert.fail();
+		} catch (NotLoggedInException e) {
 			Assert.fail();
 		}
 	}
@@ -49,6 +56,8 @@ public class CreateProject {
 		} catch (MissingInformationException e) {
 			Assert.fail();
 		} catch (DuplicateNameException e) {		
+		} catch (NotLoggedInException e) {
+			Assert.fail();
 		}
 	}
 	
@@ -64,6 +73,8 @@ public class CreateProject {
 			assertEquals(e.getMessage(), "Missing project name");
 		} catch (DuplicateNameException e) {
 			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
 		}
 		try {
 			scheduler.createProject(" ");
@@ -71,6 +82,8 @@ public class CreateProject {
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing project name");
 		} catch (DuplicateNameException e) {
+			Assert.fail();
+		} catch (NotLoggedInException e) {
 			Assert.fail();
 		}
 		try {
@@ -80,6 +93,8 @@ public class CreateProject {
 			assertEquals(e.getMessage(), "Missing project name");
 		} catch (DuplicateNameException e) {
 			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
 		}
 		try {
 			scheduler.createProject(null);
@@ -87,6 +102,8 @@ public class CreateProject {
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing project name");
 		} catch (DuplicateNameException e) {
+			Assert.fail();
+		} catch (NotLoggedInException e) {
 			Assert.fail();
 		}
 	}
