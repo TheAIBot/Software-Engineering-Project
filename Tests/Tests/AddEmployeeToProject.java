@@ -16,7 +16,6 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
 
 public class AddEmployeeToProject {
 
