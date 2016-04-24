@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.junit.validator.PublicClassValidator;
-
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -100,7 +98,6 @@ public class Activity {
 			} else {
 				throw new EmployeeAlreadyAssignedException(initials + " is already assigned to this activity");
 			}
-
 		} else {
 			throw new EmployeeNotFoundException("Employee does not exists or is not part of this project");
 		}
