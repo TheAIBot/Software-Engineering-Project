@@ -1,3 +1,4 @@
+package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -33,6 +34,7 @@ public class SeeEmployeeInformation {
 	public void setup()
 	{
 		scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("15-puzzle-spil");			
 		} catch (Exception e) {

@@ -1,3 +1,4 @@
+package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -27,6 +28,7 @@ public class AddEmployeeToActivity {
 	public void Setup()
 	{
 		scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {

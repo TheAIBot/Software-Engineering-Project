@@ -1,5 +1,8 @@
 package SoftwareHouse;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,11 +20,12 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 
-
 public class Project {
 	private Scheduler scheduler;
 	private String name;
 	private boolean isOpen = true;
+	private final String REPORTS_PATH = "res/reports/";
+	private final String FILE_EXTENTION = ".txt";
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
@@ -71,13 +75,6 @@ public class Project {
 		return deletedActivities;
 	}
 
-	public Activity getOpenActivityFromName(String activityName) throws ActivityNotFoundException{
-		try {
-			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); //There can only be one activity with a given name, for a given project.
-		} catch (Exception e) {
-			throw new ActivityNotFoundException();
-		}
-	}
 	
 	public void addAcitivity(String title, 
 							 String detailText, 
@@ -176,11 +173,53 @@ public class Project {
 	public boolean isOpen() {
 		return isOpen;
 	}
+	
+	public Activity getOpenActivityFromName(String activityName) throws ActivityNotFoundException{
+		try {
+			//There can only be one activity with a given name, for a given project.
+			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); 		
+		} catch (Exception e) {
+			throw new ActivityNotFoundException();
+		}
+	}
 
 	/**
 	 * @param isOpen the isOpen to set
 	 */
 	public void setOpen(boolean isOpen) {
 		this.isOpen = isOpen;
+	}
+
+	public void generateReport() {
+		PrintWriter writer = null;
+		String fileName = getFilePath();
+		try {
+			writer = new PrintWriter(fileName, "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		for (Activity activity : openActivities) {
+			writer.println("Activity name: " + activity.getName());
+			writer.println("Bugeted time: " + activity.getBudgettedTime());
+			writer.println("Detailed text: " + activity.getDetailText());
+			String str = "Employee initials: ";
+			for (Employee employee : activity.getAssignedEmployees()) {
+				str += employee.getInitials() + " ";
+			}
+			writer.println(str);
+			writer.println("\n");
+		}
+		
+		writer.close();
+	}
+
+	public String getFilePath() {
+		String fileName = name.replaceAll("\\s", "_");
+		fileName = fileName.replaceAll("[^\\w.-]", "");
+		fileName += FILE_EXTENTION;
+		return REPORTS_PATH + fileName;
 	}
 }

@@ -1,3 +1,4 @@
+package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -19,12 +20,38 @@ import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
-public class RegisterOffTime {
+public class Login {
 
 	@Test
-	public void RegisterOffTimeSuccessTest()
+	public void loginSuccessTest()
+	{
+		Scheduler scheduler = new Scheduler();
+		try {
+			scheduler.addEmployee("DERP");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		assertFalse(scheduler.isAnyoneLoggedIn());
+		try {
+			scheduler.login("DERP");
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		}
+		assertTrue(scheduler.isAnyoneLoggedIn());
+		assertEquals(scheduler.getLoggedInEmployee().getInitials(), "DERP");
+	}
+	
+	@Test
+	public void loginEmployeeNotFoundTest()
 	{
 		Scheduler scheduler = new Scheduler();
 		
+		try {
+			scheduler.login("DERP");
+			Assert.fail();
+		} catch (EmployeeNotFoundException e) {
+			assertEquals(e.getMessage(), "No employee with those initials exists");
+		}
 	}
 }

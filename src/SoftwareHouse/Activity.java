@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.junit.experimental.theories.Theories;
+
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class Activity {
 	
@@ -35,8 +39,12 @@ public class Activity {
 
 	/**
 	 * @param title the title to set
+	 * @throws MissingInformationException 
 	 */
-	public void setName(String name) {
+	public void setName(String name) throws MissingInformationException {
+		if (Tools.isNullOrEmpty(name)) {
+			throw new MissingInformationException("Missing title");
+		}
 		this.name = name;
 	}
 
@@ -63,8 +71,12 @@ public class Activity {
 
 	/**
 	 * @param budgettedTime the budgettedTime to set
+	 * @throws InvalidInformationException 
 	 */
-	public void setBudgettedTime(int budgettedTime) {
+	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
+		if (budgettedTime < 0) {
+			throw new InvalidInformationException("Budgetted time can't be less than 0");
+		}
 		this.budgettedTime = budgettedTime;
 	}
 
