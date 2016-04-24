@@ -1,3 +1,5 @@
+package Tests;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -19,7 +21,6 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 /**
@@ -32,7 +33,7 @@ public class TestGenerateReport {
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
-		
+		TestTools.login(scheduler);
 		// Create employees
 		try {
 			scheduler.addEmployee("AGC");
@@ -52,7 +53,7 @@ public class TestGenerateReport {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat?");
-		} catch (MissingProjectException e1) {
+		} catch (Exception e1) {
 			Assert.fail();
 		}
 		try {
@@ -102,8 +103,7 @@ public class TestGenerateReport {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat?");
-		} catch (MissingProjectException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 			Assert.fail();
 		}
 		

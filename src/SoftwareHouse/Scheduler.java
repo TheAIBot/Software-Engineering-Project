@@ -10,12 +10,8 @@ import java.util.stream.Collectors;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-<<<<<<< HEAD
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-=======
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
->>>>>>> refs/remotes/origin/Jesper
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import sun.font.FileFontStrike;
 import sun.net.www.content.audio.x_aiff;
@@ -43,11 +39,10 @@ public class Scheduler {
 	}
 	
 	public List<Employee> getEmployeesContainingString(String partOfInitials){
-		return employees.entrySet() FileFontStrike og kage
-												 .stream()
-												 .filter(x-> x.getKey().contains(partOfInitials))
-												 .map(x -> x.getValue())
-												 .collect(Collectors.toList());
+		return employees.entrySet().stream()
+								   .filter(x-> x.getKey().contains(partOfInitials))
+								   .map(x -> x.getValue())
+								   .collect(Collectors.toList());
 	}
 	
 	public Employee getEmployeeFromInitials(String initials) throws EmployeeNotFoundException

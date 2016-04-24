@@ -1,3 +1,4 @@
+package Tests;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,8 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.MissingProjectException;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 /**
@@ -28,7 +30,7 @@ public class TestEditActivity {
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
-		
+		TestTools.login(scheduler);
 		// Create employees
 		try {
 			scheduler.addEmployee("AGC");
@@ -46,7 +48,7 @@ public class TestEditActivity {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat");
-		} catch (MissingProjectException e1) {
+		} catch (Exception e1) {
 			Assert.fail();
 		}
 		try {
@@ -80,9 +82,11 @@ public class TestEditActivity {
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
 		} catch (ProjectNotFoundException e) {
-			e.printStackTrace();
+			Assert.fail();
 		} catch (ActivityNotFoundException e) {
-			e.printStackTrace();
+			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		assertNotNull(activity);
@@ -90,7 +94,6 @@ public class TestEditActivity {
 		try {
 			activity.setBudgettedTime(275);
 		} catch (InvalidInformationException e) {
-			e.printStackTrace();
 			Assert.fail();
 		}
 		assertEquals(activity.getBudgettedTime(), 275);
@@ -105,6 +108,8 @@ public class TestEditActivity {
 			e.printStackTrace();
 		} catch (ActivityNotFoundException e) {
 			e.printStackTrace();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		//Try to remove the title of the activity
@@ -113,7 +118,7 @@ public class TestEditActivity {
 		try {
 			activity.setName(null);
 			Assert.fail();
-		} catch (Exception e) {
+		} catch (MissingInformationException e) {
 			assertEquals("Missing title", e.getMessage());
 		}
 	}
@@ -124,9 +129,11 @@ public class TestEditActivity {
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
 		} catch (ProjectNotFoundException e) {
-			e.printStackTrace();
+			Assert.fail();
 		} catch (ActivityNotFoundException e) {
-			e.printStackTrace();
+			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		//Try to change the budgeted time to a negative value 
