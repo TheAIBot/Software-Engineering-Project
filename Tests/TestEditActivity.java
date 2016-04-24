@@ -18,6 +18,9 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author ELL
+ */
 public class TestEditActivity {
 	
 	Scheduler scheduler;
