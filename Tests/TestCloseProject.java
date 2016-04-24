@@ -1,4 +1,3 @@
-package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -17,14 +16,14 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 
-public class CloseProject {
+public class TestCloseProject {
 	private Scheduler scheduler;
 	
 	@Before
 	public void setup()
 	{
 		scheduler = new Scheduler();
-		TestTools.login(scheduler);
+		
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e1) {

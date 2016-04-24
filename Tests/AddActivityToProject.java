@@ -1,4 +1,3 @@
-package Tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -10,13 +9,10 @@ import org.junit.Test;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,28 +25,74 @@ public class AddActivityToProject {
 	public void setup()
 	{
 		scheduler = new Scheduler();
-		TestTools.login(scheduler);
+		try {
+			scheduler.createProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
 		Project project = null;
 		try {
-			project = TestTools.createProject(scheduler, "Navision Stat");
+			project = scheduler.getProject("Navision Stat");
 		} catch (Exception e) {
 			Assert.fail();
 		}
 		assertEquals(project.getOpenActivities().size(), 0);
 		
-		TestTools.addEmployeeToProject(scheduler, "JBS", "Navision Stat");
-		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
-		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
-		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
+		try {
+			scheduler.addEmployee("JBS");
+			scheduler.addEmployee("ELL");
+			scheduler.addEmployee("AGC");
+			scheduler.addEmployee("NR");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		try {
+			project.addEmployee("JBS");
+			project.addEmployee("ELL");
+			project.addEmployee("AGC");
+			project.addEmployee("NR");
+		} catch (EmployeeNotFoundException e1) {
+			Assert.fail();
+		}
 	}
 	
 	@Test
 	public void AddActivitySuccessTest() {	
+		Project project = null;
 		try {
-			TestTools.addActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "NR"});
+			project = scheduler.getProject("Navision Stat");
 		} catch (Exception e) {
 			Assert.fail();
-		}		
+		}
+		
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
+		
+		try {
+			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		assertTrue(project.getOpenActivities().size() == 1);
+		
+		Activity activity = project.getOpenActivities().get(0);
+		assertEquals(activity.getName(), activityName);
+		assertEquals(activity.getDetailText(), activityDetailedDescription);
+		assertEquals(activity.getBudgettedTime(), expectedHours);
+		assertEquals(activity.getTimePeriod().getStartDate(), startDate);
+		assertEquals(activity.getTimePeriod().getEndDate(), endDate);		
 	}
 	
 	@Test
@@ -170,9 +212,29 @@ public class AddActivityToProject {
 	
 	@Test
 	public void AddActivityEmployeeNotFoundTest()
-	{		
+	{
+		Project project = null;
 		try {
-			TestTools.addActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "BOB"});
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("BOB");
+		
+		try {
+			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
 		} catch(EmployeeNotFoundException e) {
 			assertEquals(e.getMessage(), "Employee with initials: BOB does not exist or is not part of this project");
@@ -182,26 +244,14 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
 			Assert.fail();
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
-			Assert.fail();
 		}
 		
 		try {
-			TestTools.forceAddActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "BOB"});
+			project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
 		} catch(EmployeeNotFoundException e) {
 			assertEquals(e.getMessage(), "Employee with initials: BOB does not exist or is not part of this project");
 		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
 			Assert.fail();
 		}
 		
@@ -211,8 +261,12 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("DERP");
+		
 		try {
-			TestTools.addActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "DERP"});
+			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
 		} catch(EmployeeNotFoundException e) {
 			assertEquals(e.getMessage(), "Employee with initials: DERP does not exist or is not part of this project");
@@ -222,26 +276,14 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
 			Assert.fail();
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
-			Assert.fail();
 		}
 		
 		try {
-			TestTools.forceAddActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "DERP"});
+			project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
 		} catch(EmployeeNotFoundException e) {
 			assertEquals(e.getMessage(), "Employee with initials: DERP does not exist or is not part of this project");
 		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
 			Assert.fail();
 		}
 	}
@@ -300,13 +342,13 @@ public class AddActivityToProject {
 		employeeInitials.add("NR");
 		
 		try {
-			TestTools.addActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "NR"});
+			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
 			Assert.fail();
 		}
 		
 		try {
-			TestTools.addActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "NR"});
+			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			Assert.fail();
@@ -316,27 +358,15 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
 			assertEquals(e.getMessage(), "An activity with that name already exists");
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
-			Assert.fail();
 		}
 		
 		try {
-			TestTools.forceAddActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "NR"});
+			project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
 			assertEquals(e.getMessage(), "An activity with that name already exists");
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
-			Assert.fail();
 		}
 	}
 }

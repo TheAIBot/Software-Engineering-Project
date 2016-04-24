@@ -1,10 +1,13 @@
-package Tests;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,13 +17,12 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
-public class CloseActivity {
+public class DeleteActivity {
 
 	@Test
-	public void closeActivitySuccessTest()
+	public void deleteActivitySuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
-		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {
@@ -73,21 +75,20 @@ public class CloseActivity {
 		}
 		
 		assertEquals(project.getOpenActivities().size(), 1);
-		assertEquals(project.getClosedActivities().size(), 0);
+		assertEquals(project.getDeletedActivities().size(), 0);
 		try {
-			project.closeActivity(activityName);
+			project.deleteActivity(activityName);
 		} catch (ActivityNotFoundException e) {
 			Assert.fail();
 		}
 		assertEquals(project.getOpenActivities().size(), 0);
-		assertEquals(project.getClosedActivities().size(), 1);
+		assertEquals(project.getDeletedActivities().size(), 1);
 	}
 
 	@Test
-	public void closeActivityMissingActivitytest()
+	public void deleteActivityMissingActivitytest()
 	{
 		Scheduler scheduler = new Scheduler();
-		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {
@@ -101,7 +102,7 @@ public class CloseActivity {
 			Assert.fail();
 		}
 		try {
-			project.closeActivity("Does not exist");
+			project.deleteActivity("Does not exist");
 			Assert.fail();
 		} catch (ActivityNotFoundException e) {
 		}

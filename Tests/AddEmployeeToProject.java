@@ -1,4 +1,3 @@
-package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -16,6 +15,7 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.MissingProjectException;
 
 public class AddEmployeeToProject {
 
@@ -23,7 +23,6 @@ public class AddEmployeeToProject {
 	public void AddEmployeeSuccessTest()
 	{
 		Scheduler scheduler = new Scheduler();
-		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Derp");
 		} catch (Exception e) {
@@ -63,7 +62,6 @@ public class AddEmployeeToProject {
 	public void AddEmployeeIncorrectInitialsTest()
 	{
 		Scheduler scheduler = new Scheduler();
-		TestTools.login(scheduler);
 		try {
 			scheduler.createProject("Derp");
 		} catch (Exception e) {
