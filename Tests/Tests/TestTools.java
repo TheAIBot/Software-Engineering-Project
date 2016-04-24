@@ -161,7 +161,6 @@ public class TestTools {
 		try {
 			employee = scheduler.getEmployeeFromInitials(employeeName);
 		} catch (EmployeeNotFoundException e) {
-			Assert.fail();
 		}
 		if (employee == null) {
 			try {
@@ -201,5 +200,17 @@ public class TestTools {
 		assertEquals(projectName, project.getName());
 		
 		return project;
+	}
+
+	public static Employee login(Scheduler scheduler)
+	{
+		Employee employee = null;
+		try {
+			employee = TestTools.addEmployee(scheduler, "LLLL");
+			scheduler.login("LLLL");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		return employee;
 	}
 }

@@ -29,6 +29,7 @@ public class AddActivityToProject {
 	public void setup()
 	{
 		scheduler = new Scheduler();
+		TestTools.login(scheduler);
 		Project project = null;
 		try {
 			project = TestTools.createProject(scheduler, "Navision Stat");
