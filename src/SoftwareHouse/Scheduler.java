@@ -12,6 +12,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.MissingProjectException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
+import sun.font.FileFontStrike;
 import sun.net.www.content.audio.x_aiff;
 
 public class Scheduler {
@@ -32,7 +33,7 @@ public class Scheduler {
 	}
 	
 	public List<Employee> getEmployeesContainingString(String partOfInitials){
-		return employees.entrySet()
+		return employees.entrySet() FileFontStrike og kage
 												 .stream()
 												 .filter(x-> x.getKey().contains(partOfInitials))
 												 .map(x -> x.getValue())
