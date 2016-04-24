@@ -3,7 +3,8 @@ package SoftwareHouse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
@@ -103,5 +104,9 @@ public class Activity {
 		} else {
 			throw new EmployeeNotFoundException("Employee does not exists or is not part of this project");
 		}
+	}
+
+	public String getProjectName() {
+		return inProject.getName();
 	}
 }
