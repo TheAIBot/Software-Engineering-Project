@@ -14,12 +14,12 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class Activity {
 	
-	private String name;
-	private String detailText;
-	private List<Employee> assignedEmployees = new ArrayList<Employee>();
-	private TimePeriod timePeriod;
-	private int budgettedTime;
-	private final Project inProject;
+	protected String name;
+	protected String detailText;
+	protected List<Employee> assignedEmployees = new ArrayList<Employee>();
+	protected TimePeriod timePeriod;
+	protected int budgettedTime;
+	protected final Project inProject;
 	
 	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) {
 		this.name = name;

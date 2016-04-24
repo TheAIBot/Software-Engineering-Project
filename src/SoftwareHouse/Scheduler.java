@@ -23,6 +23,8 @@ public class Scheduler {
 	private boolean anyoneLoggedIn = false;
 	private Employee loggedInEmployee;
 	private TimeVault timeVault = new TimeVault(this);
+	
+	private Project absenceProject = new Project(this, "absenceProject", true);
 
 	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
@@ -32,7 +34,7 @@ public class Scheduler {
 			if (Tools.containsProject(projects, projectName.trim())) {
 				throw new DuplicateNameException("A project with that title already exists");
 			}
-			projects.add(new Project(this, projectName));
+			projects.add(new Project(this, projectName, false));
 		} else {
 			throw new NotLoggedInException();
 		}

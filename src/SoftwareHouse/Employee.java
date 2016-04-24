@@ -14,7 +14,8 @@ public class Employee {
 	private Scheduler scheduler;
 	public static final int MAX_ACTIVITIES = 20;
 	private List<Project> projects = new ArrayList<Project>();
-	private List<Activity>activities = new ArrayList<Activity>(MAX_ACTIVITIES); 
+	private List<Activity>activities = new ArrayList<Activity>(MAX_ACTIVITIES);
+	private List<Activity> absenceActivities = new ArrayList<Activity>();
 	
 	public Employee(Scheduler scheduler, String initials)
 	{
@@ -56,5 +57,13 @@ public class Employee {
 	
 	public List<Activity> getActivities() {
 		return activities;
+	}
+	
+	public List<Activity> getAbsenceActivities() {
+		return absenceActivities;
+	}
+
+	public void addAbsenceActivity(Activity activity) {
+		absenceActivities.add(activity);
 	}
 }
