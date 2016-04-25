@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import SoftwareHouse.Employee;
+import SoftwareHouse.Project;
 import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
@@ -16,41 +17,42 @@ import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 public class TestRegisterAbsenceTime {
 
-	private Scheduler scheduler = null;
+	private Scheduler scheduler;
+	private String apn;
 
 	@Before
-	public void setup()
-	{
+	public void setup() {
 		scheduler = new Scheduler();
 		TestTools.login(scheduler);
+		apn = scheduler.getAbsenceProject().getName();
 		try {
-			TestTools.addEmployee(scheduler, "JSB");
-			TestTools.createProject(scheduler, "Derp");
-			TestTools.addEmployeeToProject(scheduler, "JSB", "Derp");
-			TestTools.addActivity(scheduler, "Derp", "add fish", new String[] { "JSB" });
+			TestTools.addEmployee(scheduler, "BM");
+			TestTools.addEmployeeToProject(scheduler, "BM", apn);
+			TestTools.addActivity(scheduler, apn, "Holiday", new String[] { "BM" });
 		} catch (Exception e) {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
-	public void RegisterTimeSuccessTest() throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException
-	{
+	public void RegisterTimeSuccessTest()
+			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException {
 		Employee employee = null;
 		try {
-			employee = scheduler.getEmployeeFromInitials("JSB");
-			employee.registerTime("Derp", "add fish", "did stuff", 3);
+			employee = scheduler.getEmployeeFromInitials("BM");
+			employee.registerTime(apn, "Holiday", "did stuff", 3);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Assert.fail();
 		}
-		RegisteredTime registeredTime = scheduler.getTimeVault().getEmployeeTime("JSB").get(0);
+		RegisteredTime registeredTime = scheduler.getTimeVault().getEmployeeTime("BM").get(0);
 		assertEquals(registeredTime.getMessage(), "did stuff");
 		assertTrue(registeredTime.getEmployee() == employee);
 		assertEquals(registeredTime.getTime(), 3);
-		assertEquals(1, scheduler.getTimeVault().getEmployeeTime("JSB").size());
-		assertEquals(1, scheduler.getTimeVault().getProjectTime("Derp").size());
-		assertEquals(1, scheduler.getTimeVault().getActivityTime("Derp", "add fish").size());
-		assertTrue(registeredTime == scheduler.getTimeVault().getProjectTime("Derp").get(0));
-		assertTrue(registeredTime == scheduler.getTimeVault().getActivityTime("Derp", "add fish").get(0));
+		assertEquals(1, scheduler.getTimeVault().getEmployeeTime("BM").size());
+		assertEquals(1, scheduler.getTimeVault().getProjectTime(apn).size());
+		assertEquals(1, scheduler.getTimeVault().getActivityTime(apn, "Holiday").size());
+		assertTrue(registeredTime == scheduler.getTimeVault().getProjectTime(apn).get(0));
+		assertTrue(registeredTime == scheduler.getTimeVault().getActivityTime(apn, "Holiday").get(0));
 	}
 }

@@ -1,4 +1,5 @@
 package Tests;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,9 +24,8 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 public class RegisterOffTime {
 
 	@Test
-	public void RegisterOffTimeSuccessTest()
-	{
+	public void RegisterOffTimeSuccessTest() {
 		Scheduler scheduler = new Scheduler();
-		
+
 	}
 }

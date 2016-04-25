@@ -25,6 +25,10 @@ public class Scheduler {
 	private TimeVault timeVault = new TimeVault(this);
 	
 	private Project absenceProject = new Project(this, "absenceProject", true);
+	
+	public Scheduler() {
+		projects.add(absenceProject);
+	}
 
 	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
@@ -132,5 +136,10 @@ public class Scheduler {
 	{
 		return timeVault;
 	}
+	
+	public Project getAbsenceProject() {
+		return absenceProject;
+	}
+	
 	
 }
