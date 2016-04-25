@@ -32,7 +32,7 @@ public class TestTools {
 	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException
 	{
 		scheduler.addEmployee(name);
-		Employee employee = employee = scheduler.getEmployeeFromInitials(name);
+		Employee employee = scheduler.getEmployeeFromInitials(name);
 		assertEquals(employee.getInitials(), name);
 		return employee;
 	}
