@@ -1,5 +1,8 @@
 package SoftwareHouse;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,22 +18,27 @@ import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 
 public class Project {
 	private Scheduler scheduler;
 	private String name;
+	private boolean isOpen = true;
+	private final String REPORTS_PATH = "res/reports/";
+	private final String FILE_EXTENTION = ".txt";
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
 	private List<Activity> deletedActivities = new ArrayList<Activity>();
 	
 	private List<Employee> employees = new ArrayList<Employee>();
+	private boolean useAbsenceActivity;
 	
-	
-	public Project(Scheduler scheduler, String projectName)
+	public Project(Scheduler scheduler, String projectName, boolean useAbsenceAcitivity)
 	{
 		this.scheduler = scheduler;
 		this.name = projectName;
+		this.useAbsenceActivity = useAbsenceActivity;
 	}
 
 	/**
@@ -111,7 +119,14 @@ public class Project {
 				throw new EmployeeNotFoundException("Employee with initials: " + initials + " does not exist or is not part of this project");
 			}
 		}
-		openActivities.add(new Activity(title, detailText, activityEmployees, startTime, endTime, budgettedTime, this));	
+		Activity activity;
+		if (useAbsenceActivity) {
+			activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgettedTime, this);	
+		} else {
+			activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgettedTime, this);
+		}
+		openActivities.add(activity);
+		
 	}
 
 	public void addEmployee(String initials) throws EmployeeNotFoundException {
@@ -145,5 +160,74 @@ public class Project {
 		Activity activity = Tools.getActivityFromName(openActivities, activityName);
 		openActivities.remove(activity);
 		closedActivities.add(activity);
+	}
+
+	
+	public void close() throws ProjectAlreadyClosedException {
+		if (isOpen) {
+			isOpen = false;
+			
+			openActivities.stream().forEach(x -> closedActivities.add(x));
+			openActivities.clear();
+			
+		} else {
+			throw new ProjectAlreadyClosedException("The project \"" + name + "\" is already closed");
+		}
+	}
+
+	/**
+	 * @return the isOpen
+	 */
+	public boolean isOpen() {
+		return isOpen;
+	}
+	
+	public Activity getOpenActivityFromName(String activityName) throws ActivityNotFoundException{
+		try {
+			//There can only be one activity with a given name, for a given project.
+			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); 		
+		} catch (Exception e) {
+			throw new ActivityNotFoundException();
+		}
+	}
+
+	/**
+	 * @param isOpen the isOpen to set
+	 */
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+
+	public void generateReport() {
+		PrintWriter writer = null;
+		String fileName = getFilePath();
+		try {
+			writer = new PrintWriter(fileName, "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		for (Activity activity : openActivities) {
+			writer.println("Activity name: " + activity.getName());
+			writer.println("Bugeted time: " + activity.getBudgettedTime());
+			writer.println("Detailed text: " + activity.getDetailText());
+			String str = "Employee initials: ";
+			for (Employee employee : activity.getAssignedEmployees()) {
+				str += employee.getInitials() + " ";
+			}
+			writer.println(str);
+			writer.println("\n");
+		}
+		
+		writer.close();
+	}
+
+	public String getFilePath() {
+		String fileName = name.replaceAll("\\s", "_");
+		fileName = fileName.replaceAll("[^\\w.-]", "");
+		fileName += FILE_EXTENTION;
+		return REPORTS_PATH + fileName;
 	}
 }
