@@ -26,6 +26,7 @@ public class Project {
 	private boolean isOpen = true;
 	private final String REPORTS_PATH = "res/reports/";
 	private final String FILE_EXTENTION = ".txt";
+	public int budgettedTime = 0;
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
@@ -221,5 +222,23 @@ public class Project {
 		fileName = fileName.replaceAll("[^\\w.-]", "");
 		fileName += FILE_EXTENTION;
 		return REPORTS_PATH + fileName;
+	}
+
+	/**
+	 * @return the budgettedTime
+	 */
+	public int getBudgettedTime() {
+		return budgettedTime;
+	}
+
+	/**
+	 * @param budgettedTime the budgettedTime to set
+	 * @throws InvalidInformationException 
+	 */
+	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
+		if (budgettedTime < 0) {
+			throw new InvalidInformationException("Budgetted time can't be less than 0");
+		}
+		this.budgettedTime = budgettedTime;
 	}
 }

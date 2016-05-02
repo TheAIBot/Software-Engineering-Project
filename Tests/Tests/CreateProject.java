@@ -17,6 +17,9 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class CreateProject {
 
+	//add test where we add bugetted time and verify it
+	//add test where we add detailed text to project and verify it
+	
 	@Test
 	public void createProjectSuccessTest()
 	{
