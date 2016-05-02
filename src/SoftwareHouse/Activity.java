@@ -58,7 +58,10 @@ public class Activity {
 	/**
 	 * @param detailText the detailText to set
 	 */
-	public void setDetailText(String detailText) {
+	public void setDetailText(String detailText) throws MissingInformationException {
+		if (Tools.isNullOrEmpty(detailText)) {
+			throw new MissingInformationException("Missing detailed text");
+		}
 		this.detailText = detailText;
 	}
 

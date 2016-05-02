@@ -51,6 +51,9 @@ public class Employee {
 	public void registerTime(String projectName, String activityName, String message, int time)
 			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException,
 			InvalidInformationException {
+		if (Tools.isNullOrEmpty(message)) {
+			throw new InvalidInformationException("Invalid text");
+		}
 		scheduler.getTimeVault().addTime(projectName, activityName, initials, new RegisteredTime(this, message, time));
 	}
 
