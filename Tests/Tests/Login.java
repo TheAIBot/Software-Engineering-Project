@@ -108,7 +108,7 @@ public class Login {
 			Assert.fail();
 		} catch(AlreadyLoggedInException e){
 			Assert.fail();
-		}catch (EmployeeNotFoundException e) {
+		} catch (EmployeeNotFoundException e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
 			assertFalse(scheduler.isAnyoneLoggedIn());
 			assertEquals(scheduler.getLoggedInEmployee().getInitials(), "AM");
