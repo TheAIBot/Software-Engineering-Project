@@ -12,7 +12,7 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
-
+//Test-kommentar
 public class Login {
 	Scheduler scheduler;
 	
