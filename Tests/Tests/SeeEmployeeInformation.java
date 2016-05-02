@@ -54,13 +54,14 @@ public class SeeEmployeeInformation {
 			TestTools.addEmployeeToProject(scheduler,"ELL",project1Name);
 			TestTools.addEmployeeToProject(scheduler,"AGC",project1Name);
 			TestTools.addEmployeeToProject(scheduler,"NR",project1Name);
-			TestTools.addActivity(scheduler, project1Name, activity1Name, new String[]{user1Initials});
+			TestTools.forceAddActivity(scheduler, project1Name, activity1Name, new String[]{user1Initials});
 		} catch (Exception e) {
 			Assert.fail();
 		}
 		assertEquals(project.getOpenActivities().size(), 1);	
 	} 	
 	
+	@Test
 	public void ProperEmployeeSelectionOneEmployeeTest(){
 		//Represents an user, filtering the list of possible users to see information about.
 		List<Employee> employeesFound = scheduler.getEmployeesContainingString(user1Initials); 
@@ -72,7 +73,7 @@ public class SeeEmployeeInformation {
 		Employee hopefullyArndt = employeesFound.stream().filter(x -> x.getInitials().equals(user1Initials)).findFirst().get();	
 		assertTrue(hopefullyArndt.getInitials() == user1Initials);
 	}
-	
+	@Test
 	public void ProperEmployeeSelectionMultipleEmployeesTest(){
 		List<Employee> employeesFound = scheduler.getEmployeesContainingString("A");
 		assertTrue(employeesFound.size() == 2);
@@ -86,11 +87,10 @@ public class SeeEmployeeInformation {
 	
 	@Test
 	public void SeeEmployeeInformationSuccesfullTestOneProjectOneActivityTest() {
-		Employee Arndt =   scheduler.getEmployeesContainingString(user1Initials)
-																				 .stream()
-																				 .filter(x -> x.getInitials().equals(user1Initials))
-																				 .findFirst()
-																				 .get();		
+		Employee Arndt =   scheduler.getEmployeesContainingString(user1Initials).stream()
+																				.filter(x -> x.getInitials().equals(user1Initials))
+																				.findFirst()
+																				.get();		
 		//Checking if the project and activities information is correct - it does not take into account... /TODO
 		List<Project> employeesProjects =  Arndt.getProjects();
 		assertTrue(employeesProjects.size() == 1);
@@ -130,7 +130,7 @@ public class SeeEmployeeInformation {
 		List<Activity> employeesActivities = Arndt.getActivities();
 		assertTrue(employeesActivities.size() == 2);
 		assertTrue(employeesActivities.stream().allMatch(x -> (x.getName() == activity1Name && x.getProjectName() == project1Name) ||
-																																							(x.getName() == activity2Name && x.getProjectName() == project2Name)));
+						                      				  (x.getName() == activity2Name && x.getProjectName() == project2Name)));
 		//History employeesHistory = hopefullyArndt.getHistory(); 
 		//It is already checked that the history object works, so no need to check it again.			/TODO history tests	
 	}

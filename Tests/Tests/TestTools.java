@@ -21,6 +21,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
@@ -37,7 +38,7 @@ public class TestTools {
 		return employee;
 	}
 	
-	public static Activity addActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
+	public static Activity addActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException
 	{		
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
@@ -70,7 +71,8 @@ public class TestTools {
 															 MissingInformationException, 
 															 InvalidInformationException, 
 															 EmployeeNotFoundException, 
-															 DuplicateNameException
+															 DuplicateNameException, 
+															 EmployeeMaxActivitiesReachedException
 	{
 		Project project = null;
 		try {
@@ -98,6 +100,9 @@ public class TestTools {
 		
 		return activity;
 	}
+	
+	
+	
 	
 	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException
 	{
@@ -135,7 +140,7 @@ public class TestTools {
 		}
 		
 		List<String> employeeInitials = new ArrayList<String>();
-		for (String employeeInitial : toAddEmployeeInitials) {
+		for (String employeeInitial : toAddEmployeeInitials) { 
 			employeeInitials.add(employeeInitial);
 		}
 		
