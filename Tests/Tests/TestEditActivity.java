@@ -81,11 +81,7 @@ public class TestEditActivity {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
+		} catch (Exception e) {
 			Assert.fail();
 		}
 		
@@ -93,7 +89,7 @@ public class TestEditActivity {
 		assertEquals(activity.getBudgettedTime(), 150);
 		try {
 			activity.setBudgettedTime(275);
-		} catch (InvalidInformationException e) {
+		} catch (Exception e) {
 			Assert.fail();
 		}
 		assertEquals(activity.getBudgettedTime(), 275);
@@ -104,11 +100,7 @@ public class TestEditActivity {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
-		} catch (ProjectNotFoundException e) {
-			e.printStackTrace();
-		} catch (ActivityNotFoundException e) {
-			e.printStackTrace();
-		} catch (NotLoggedInException e) {
+		} catch (Exception e) {
 			Assert.fail();
 		}
 		
@@ -128,11 +120,7 @@ public class TestEditActivity {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
+		} catch (Exception e) {
 			Assert.fail();
 		}
 		

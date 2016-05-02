@@ -131,4 +131,9 @@ public class Scheduler {
 		return timeVault;
 	}
 	
+	public List<Employee> getEmployees()
+	{
+		return employees.values().stream().collect(Collectors.toList());
+	}
+	
 }
