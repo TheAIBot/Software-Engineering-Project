@@ -15,6 +15,9 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author ELL
+ */
 public class TestRegisterAbsenceTime {
 
 	private Scheduler scheduler;
