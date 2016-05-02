@@ -1,6 +1,5 @@
 package SoftwareHouse;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,20 +7,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
+import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
-import sun.font.FileFontStrike;
-import sun.net.www.content.audio.x_aiff;
 
 public class Scheduler {
 
 	private List<Project> projects = new ArrayList<Project>();
 	private Map<String, Employee> employees = new HashMap<String, Employee>();
 	private boolean anyoneLoggedIn = false;
-	private Employee loggedInEmployee;
+	private Employee loggedInEmployee = null;
 	private TimeVault timeVault = new TimeVault(this);
 
 	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException {
@@ -112,11 +110,16 @@ public class Scheduler {
 		return anyoneLoggedIn;
 	}
 
-	public void login(String initials) throws EmployeeNotFoundException {
+	public void login(String initials) throws EmployeeNotFoundException, AlreadyLoggedInException {
 		if (employees.containsKey(initials)) {
-			Employee employee = employees.get(initials);
-			loggedInEmployee = employee;
-			anyoneLoggedIn = true;
+			if (loggedInEmployee.getInitials().equals(initials)) {
+				throw new AlreadyLoggedInException(initials + " is aready logged in");
+			} else{
+				Employee employee = employees.get(initials);
+				loggedInEmployee = employee;
+				anyoneLoggedIn = true;
+			}
+			
 		} else {
 			throw new EmployeeNotFoundException("No employee with those initials exists");
 		}

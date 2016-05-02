@@ -32,14 +32,13 @@ public class TestTools {
 	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException
 	{
 		scheduler.addEmployee(name);
-		Employee employee = employee = scheduler.getEmployeeFromInitials(name);
+		Employee employee = scheduler.getEmployeeFromInitials(name);
 		assertEquals(employee.getInitials(), name);
 		return employee;
 	}
 	
 	public static Activity addActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
-	{
-		
+	{		
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
 		Calendar startDate = new GregorianCalendar();
@@ -64,13 +63,14 @@ public class TestTools {
 									   int expectedHours,
 									   Calendar startDate,
 									   Calendar endDate,
-									   String[] toAddEmployeeInitials) throws ProjectNotFoundException, 
-																			  ActivityNotFoundException, 
-																			  NotLoggedInException, 
-																			  MissingInformationException, 
-																			  InvalidInformationException, 
-																			  EmployeeNotFoundException, 
-																			  DuplicateNameException
+									   String[] toAddEmployeeInitials) 
+									   throws ProjectNotFoundException, 
+															 ActivityNotFoundException, 
+															 NotLoggedInException, 
+															 MissingInformationException, 
+															 InvalidInformationException, 
+															 EmployeeNotFoundException, 
+															 DuplicateNameException
 	{
 		Project project = null;
 		try {
