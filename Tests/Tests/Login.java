@@ -110,7 +110,7 @@ public class Login {
 			Assert.fail();
 		}catch (EmployeeNotFoundException e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
-			assertFalse(scheduler.isAnyoneLoggedIn());
+			assertTrue(scheduler.isAnyoneLoggedIn());
 			assertEquals(scheduler.getLoggedInEmployee().getInitials(), "AM");
 		} 		
 	}
@@ -119,6 +119,7 @@ public class Login {
 	public void loginLoggedInSameUser()
 	{		
 		try {
+			addLeLa();
 			scheduler.login("LeLa");
 		} catch (Exception e) {
 			Assert.fail();

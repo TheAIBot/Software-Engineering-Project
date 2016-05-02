@@ -12,7 +12,7 @@ import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 public class Employee {
 	private final String initials;
 	private Scheduler scheduler;
-	public static final int MAX_ACTIVITIES = 20;
+	private static final int MAX_ACTIVITIES = 20;
 	private List<Project> projects = new ArrayList<Project>();
 	private List<Activity>activities = new ArrayList<Activity>(MAX_ACTIVITIES); 
 	
@@ -32,6 +32,11 @@ public class Employee {
 	public void addProject(Project project)
 	{
 		projects.add(project);
+	}
+	
+	public boolean canContainMoreActivities()
+	{
+		return !(activities.size() == MAX_ACTIVITIES);
 	}
 	
 	public void addActivity(Activity activity) throws EmployeeMaxActivitiesReachedException
@@ -56,5 +61,9 @@ public class Employee {
 	
 	public List<Activity> getActivities() {
 		return activities;
+	}
+	
+	public int getNumberOfActivities(){
+		return activities.size();
 	}
 }

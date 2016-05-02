@@ -109,11 +109,15 @@ public class Scheduler {
 	public boolean isAnyoneLoggedIn() {
 		return anyoneLoggedIn;
 	}
+	
+	public boolean doesEmployeeExist(String initials){
+		return employees.containsKey(initials);
+	}
 
 	public void login(String initials) throws EmployeeNotFoundException, AlreadyLoggedInException {
-		if (employees.containsKey(initials)) {
-			if (loggedInEmployee.getInitials().equals(initials)) {
-				throw new AlreadyLoggedInException(initials + " is aready logged in");
+		if (doesEmployeeExist(initials)) {
+			if (loggedInEmployee != null && loggedInEmployee.getInitials().equals(initials)) {
+				throw new AlreadyLoggedInException(initials + " is already logged in");
 			} else{
 				Employee employee = employees.get(initials);
 				loggedInEmployee = employee;
