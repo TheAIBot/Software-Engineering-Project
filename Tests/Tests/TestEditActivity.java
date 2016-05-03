@@ -1,4 +1,5 @@
 package Tests;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +25,14 @@ import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
  * @author ELL
  */
 public class TestEditActivity {
-	
+
 	Scheduler scheduler;
-	
+
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
 		TestTools.login(scheduler);
+
 		// Create employees
 		try {
 			scheduler.addEmployee("AGC");
@@ -38,7 +40,7 @@ public class TestEditActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		
+
 		// Create project
 		try {
 			scheduler.createProject("Navision Stat");
@@ -48,7 +50,7 @@ public class TestEditActivity {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat");
-		} catch (Exception e1) {
+		} catch (Exception e) {
 			Assert.fail();
 		}
 		try {
@@ -57,7 +59,7 @@ public class TestEditActivity {
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
 		}
-		
+
 		// Create activity
 		String activityName = "Brugerinterface";
 		String activityDetailedDescription = "Udvikling af brugerinterface";
@@ -70,53 +72,46 @@ public class TestEditActivity {
 		employeeInitials.add("AGC");
 		employeeInitials.add("ELL");
 		try {
-			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			project.addAcitivity(activityName, activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
 			Assert.fail();
 		}
 	}
 
 	@Test
-	public void testEditActivitySucces() {
+	public void testEditActivityNameSucces() {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
+		} catch (Exception e) {
 			Assert.fail();
 		}
-		
-		assertNotNull(activity);
-		assertEquals(activity.getBudgettedTime(), 150);
-		try {
-			activity.setBudgettedTime(275);
-		} catch (InvalidInformationException e) {
-			Assert.fail();
-		}
-		assertEquals(activity.getBudgettedTime(), 275);
-	}
-	
-	@Test
-	public void testEditActivityRemoveInformation() {
-		Activity activity = null;
-		try {
-			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
-		} catch (ProjectNotFoundException e) {
-			e.printStackTrace();
-		} catch (ActivityNotFoundException e) {
-			e.printStackTrace();
-		} catch (NotLoggedInException e) {
-			Assert.fail();
-		}
-		
-		//Try to remove the title of the activity
+
+		// Change name of acitivity "Brugerinterface" to "Test"
 		assertNotNull(activity);
 		assertEquals(activity.getName(), "Brugerinterface");
 		try {
-			activity.setName(null);
+			activity.setName("Test");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		assertEquals(activity.getName(), "Test");
+	}
+
+	@Test
+	public void testEditActivityRemoveName() {
+		Activity activity = null;
+		try {
+			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+
+		// Try to remove the title of the activity
+		assertNotNull(activity);
+		assertEquals(activity.getName(), "Brugerinterface");
+		try {
+			activity.setName("");
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals("Missing title", e.getMessage());
@@ -124,21 +119,18 @@ public class TestEditActivity {
 	}
 	
 	@Test
-	public void testEditActivityInvalidInformation() {
+	public void testEditActivityInvalidBudegtedTime() {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
-		} catch (ProjectNotFoundException e) {
-			Assert.fail();
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		} catch (NotLoggedInException e) {
+		} catch (Exception e) {
 			Assert.fail();
 		}
-		
-		//Try to change the budgeted time to a negative value 
+
+		// Try to change the budgeted time to a negative value
 		assertNotNull(activity);
 		assertEquals(activity.getName(), "Brugerinterface");
+		assertEquals(150, activity.getBudgettedTime());
 		try {
 			activity.setBudgettedTime(-1);
 			Assert.fail();
@@ -146,6 +138,26 @@ public class TestEditActivity {
 			assertEquals("Budgetted time can't be less than 0", e.getMessage());
 		}
 	}
-	
-	
+
+	@Test
+	public void testEditActivityRemoveDetailedText() {
+		Activity activity = null;
+		try {
+			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+
+		// Try to remove the detailed text of the activity
+		assertNotNull(activity);
+		assertEquals(activity.getName(), "Brugerinterface");
+		try {
+			activity.setDetailText("");
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			assertEquals("Missing detailed text", e.getMessage());
+		}
+	}
+
+
 }

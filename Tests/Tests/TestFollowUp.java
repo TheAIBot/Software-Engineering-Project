@@ -20,6 +20,9 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author ELL
+ */
 public class TestFollowUp {
 
 	Scheduler scheduler;
