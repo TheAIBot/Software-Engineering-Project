@@ -47,8 +47,19 @@ public class AddActivityToProject {
 	@Test
 	public void AddActivitySuccessTest() {	
 		try {
-			TestTools.addActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "NR"});
-		} catch (Exception e) {
+			String projectName = "Navision Stat";
+			String activityTitle = "Udvikling af brugerinterface";
+			String activityDescription = "Oprettelse af brugerinterface for programmet";
+			int numHours = 200;
+			Calendar startDate = new GregorianCalendar();
+			startDate.set(2016, 3, 16);
+			Calendar endDate = new GregorianCalendar();
+			endDate.set(2016,4,18);
+			String[] employees = {"JBS", "ELL", "AGC", "NR"};
+			
+			TestTools.addActivity(scheduler, projectName, activityTitle, activityDescription, numHours, startDate, endDate, employees);
+		} 
+		catch (Exception e) {
 			Assert.fail();
 		}		
 	}
@@ -165,7 +176,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
 			Assert.fail();
-		}	
+		}
+		
 	}
 	
 	@Test

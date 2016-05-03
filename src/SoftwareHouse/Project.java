@@ -100,7 +100,7 @@ public class Project {
 			throw new InvalidInformationException("End date has to start after start date");
 		} else if (budgettedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
-		}
+		} 
 		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgettedTime);
 	}
 	
