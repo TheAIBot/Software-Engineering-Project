@@ -40,7 +40,7 @@ public class Scheduler {
 	
 	public List<Employee> getEmployeesContainingString(String partOfInitials){
 		return employees.entrySet().stream()
-								   .filter(x-> x.getKey().contains(partOfInitials))
+								   .filter(x-> x.getKey().contains(partOfInitials.toUpperCase()))
 								   .map(x -> x.getValue())
 								   .collect(Collectors.toList());
 	}
