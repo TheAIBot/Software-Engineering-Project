@@ -179,11 +179,7 @@ public class TestTools {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		try {
-			project.addEmployee(employeeName);
-		} catch (EmployeeNotFoundException e) {
-			Assert.fail();
-		}
+		Assert.assertTrue(project.addEmployee(employeeName));
 		//TODO add asserts here to check that the employee was added
 		return employee;
 	}

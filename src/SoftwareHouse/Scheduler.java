@@ -10,6 +10,7 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
@@ -22,7 +23,7 @@ public class Scheduler {
 	private Employee loggedInEmployee = null;
 	private TimeVault timeVault = new TimeVault(this);
 
-	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException {
+	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidProjectInitilizationInput {
 		if (isAnyoneLoggedIn()) {
 			if (Tools.isNullOrEmpty(projectName)) {
 				throw new MissingInformationException("Missing project name");
@@ -30,7 +31,23 @@ public class Scheduler {
 			if (Tools.containsProject(projects, projectName.trim())) {
 				throw new DuplicateNameException("A project with that title already exists");
 			}
-			projects.add(new Project(this, projectName));
+			projects.add(new Project(this, projectName, "","",null,0,null,null));
+		} else {
+			throw new NotLoggedInException();
+		}
+	}
+	
+	public void createProject(String projectName, String companyName, String detailedText, 
+		    List<Employee> employeesToAdd, int budgettedTime, String initialsProjectManager, TimePeriod timePeriod)
+				 throws InvalidProjectInitilizationInput, NotLoggedInException{
+		if (isAnyoneLoggedIn()) {
+			if (Project.isValidProjectInformation(this, projectName, companyName, detailedText, employeesToAdd, 
+					                                   budgettedTime, initialsProjectManager, timePeriod)) {
+				projects.add(new Project(this, projectName,  companyName,  detailedText, 
+					    employeesToAdd, budgettedTime, initialsProjectManager,  timePeriod));
+			} else {
+				throw new InvalidProjectInitilizationInput("The information given will not make a valid project");
+			}
 		} else {
 			throw new NotLoggedInException();
 		}
@@ -64,6 +81,18 @@ public class Scheduler {
 		}
 	}
 
+	/** Return whether or not all the given employees exist. If the list is null, it returns true. 
+	 * @param employees The employees
+	 * @return True if all exists, else false.
+	 */
+	public boolean doAllEmployeesExist(List<Employee> employees) {
+		if (employees != null) {
+			return (employees.stream().allMatch(x -> this.doesEmployeeExist(x.getInitials())));			
+		} else {
+			return true;
+		}
+	}
+	
 	public Project getProject(String projectName) throws ProjectNotFoundException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
 			if (Tools.containsProject(projects, projectName)) {
@@ -111,6 +140,7 @@ public class Scheduler {
 	}
 	
 	public boolean doesEmployeeExist(String initials){
+		if (employees == null) return false; 
 		return employees.containsKey(initials);
 	}
 

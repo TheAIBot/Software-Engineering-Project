@@ -12,6 +12,10 @@ public class TimePeriod {
 		this.startDate = startDate;
 		this.setEndDate(endDate);
 	}
+	
+	public boolean isValidTimePeriod(){
+		return (endDate != null && startDate != null && endDate.after(startDate));
+	}
 
 	/**
 	 * @return the startDate
