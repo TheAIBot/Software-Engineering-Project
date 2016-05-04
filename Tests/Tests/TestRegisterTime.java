@@ -81,6 +81,9 @@ public class TestRegisterTime {
 		}
 	}
 	
+	/**
+	 * Time is invalid if it is negative
+	 */
 	@Test
 	public void testRegisterTimeInvalidTime() {
 		Employee employee = null;
@@ -99,6 +102,9 @@ public class TestRegisterTime {
 		}
 	}
 	
+	/**
+	 * Text is invalid if it is empty
+	 */
 	@Test
 	public void testRegisterTimeInvalidText() {
 		Employee employee = null;
@@ -116,6 +122,7 @@ public class TestRegisterTime {
 			assertEquals("Invalid text", e.getMessage());
 		}
 	}
+
 
 //	@Test
 //	public void RegisterTimeMissingOrInvalidInformationTest() {

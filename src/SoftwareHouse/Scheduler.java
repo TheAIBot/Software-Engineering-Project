@@ -86,7 +86,7 @@ public class Scheduler {
 		}
 	}
 
-	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException,IllegalCharException {
+	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException {
 		if (Tools.isNullOrEmpty(initials)) {
 			throw new MissingInformationException("Missing employee initials");
 		}
