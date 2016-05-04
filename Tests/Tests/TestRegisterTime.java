@@ -59,6 +59,8 @@ public class TestRegisterTime {
 		} catch (Exception e) {
 			Assert.fail();
 		}
+		
+		// Test that all local fields are correct
 		RegisteredTime registeredTime = scheduler.getTimeVault().getEmployeeTime("AAAA").get(0);
 		assertEquals(registeredTime.getMessage(), "Gridbag layout færdigt sat op og justeret");
 		assertTrue(registeredTime.getEmployee() == employee);
@@ -122,8 +124,8 @@ public class TestRegisterTime {
 			assertEquals("Invalid text", e.getMessage());
 		}
 	}
-
-
+	
+	
 //	@Test
 //	public void RegisterTimeMissingOrInvalidInformationTest() {
 //		Employee employee = null;

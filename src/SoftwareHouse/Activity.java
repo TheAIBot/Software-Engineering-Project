@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.experimental.theories.Theories;
 
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -41,9 +42,12 @@ public class Activity {
 	 * @param title the title to set
 	 * @throws MissingInformationException 
 	 */
-	public void setName(String name) throws MissingInformationException {
+	public void setName(String name) throws MissingInformationException, DuplicateNameException {
 		if (Tools.isNullOrEmpty(name)) {
 			throw new MissingInformationException("Missing title");
+		}
+		if (Tools.containsActivity(inProject.getOpenActivities(), name)) {
+			throw new DuplicateNameException("An activity with the specified name already exists");
 		}
 		this.name = name;
 	}
