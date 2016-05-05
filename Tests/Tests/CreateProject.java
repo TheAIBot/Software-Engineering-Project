@@ -61,6 +61,11 @@ public class CreateProject {
 		}
 	}
 
+<<<<<<< HEAD
+	//add test where we add bugetted time and verify it
+	//add test where we add detailed text to project and verify it
+	
+=======
 	private void loginIfNotLoggedIn(){
 		if (!scheduler.isAnyoneLoggedIn()) {
 			try {
@@ -103,6 +108,7 @@ public class CreateProject {
 		return true;
 	}
 		
+>>>>>>> refs/remotes/origin/Dev
 	@Test
 	public void accessProjectTest(){
 		TestTools.login(scheduler);

@@ -77,7 +77,7 @@ public class Scheduler {
 	
 	public List<Employee> getEmployeesContainingString(String partOfInitials){
 		return employees.entrySet().stream()
-								   .filter(x-> x.getKey().contains(partOfInitials))
+								   .filter(x-> x.getKey().contains(partOfInitials.toUpperCase()))
 								   .map(x -> x.getValue())
 								   .collect(Collectors.toList());
 	}
@@ -130,19 +130,9 @@ public class Scheduler {
 	}
 
 	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException {
-		if (Tools.isNullOrEmpty(initials)) {
-			throw new MissingInformationException("Missing employee initials");
+		if (tryIsValidEmployeeInitials(initials)) {
+			employees.put(initials, new Employee(this, initials));
 		}
-		if (employees.containsKey(initials)) {
-			throw new DuplicateNameException("An employee with those initials already exist");
-		}
-		if (initials.length() > 4) {
-			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
-		}
-		if(initials.matches("\\p{L}")){
-			throw new IllegalCharException("Only letters are allowed for initials");
-		}
-		employees.put(initials, new Employee(this, initials));
 	}
 
 	public Activity getActivity(String projectName, String activityName) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException {
@@ -175,16 +165,11 @@ public class Scheduler {
 		return employees.containsKey(initials);
 	}
 
-	public void login(String initials) throws EmployeeNotFoundException, AlreadyLoggedInException {
+	public void login(String initials) throws EmployeeNotFoundException {
 		if (doesEmployeeExist(initials)) {
-			if (loggedInEmployee != null && loggedInEmployee.getInitials().equals(initials)) {
-				throw new AlreadyLoggedInException(initials + " is already logged in");
-			} else{
-				Employee employee = employees.get(initials);
-				loggedInEmployee = employee;
-				anyoneLoggedIn = true;
-			}
-			
+			Employee employee = employees.get(initials);
+			loggedInEmployee = employee;
+			anyoneLoggedIn = true;
 		} else {
 			throw new EmployeeNotFoundException("No employee with those initials exists");
 		}
@@ -199,9 +184,24 @@ public class Scheduler {
 		return timeVault;
 	}
 	
+	public boolean tryIsValidEmployeeInitials(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
+	{
+		if (Tools.isNullOrEmpty(initials)) {
+			throw new MissingInformationException("Missing employee initials");
+		}
+		if (employees.containsKey(initials)) {
+			throw new DuplicateNameException("An employee with those initials already exist");
+		}
+		if (initials.length() > 4) {
+			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
+		}
+		if(!initials.matches("\\p{L}+")){
+			throw new IllegalCharException("Only letters are allowed for initials");
+		}
+		return true;
+	}
+	
 	public Project getAbsenceProject() {
 		return absenceProject;
 	}
-	
-	
 }
