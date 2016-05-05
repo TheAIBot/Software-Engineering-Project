@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import GUI.Tools;
+import GUI.Components.JBorderTextField;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -28,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Dimension;
 import java.awt.Component;
+import javax.swing.UIManager;
 
 public class CreateProjectDialog extends JDialog {
 
@@ -36,7 +38,11 @@ public class CreateProjectDialog extends JDialog {
 	private JScrollPane assignedEmployeesScrollBar;
 	private final Scheduler scheduler;
 	private final List<Employee> assignedEmployees = new ArrayList<Employee>();
-	private JLabel errorLabel;
+	private JBorderTextField startDateTextField;
+	private JBorderTextField endDateTextField;
+	private JBorderTextField projectManagerTextField;
+	private JBorderTextField costumersNameTextField;
+	private JBorderTextField projectNameTextField;
 
 	/**
 	 * Create the dialog.
@@ -45,7 +51,7 @@ public class CreateProjectDialog extends JDialog {
 		this.scheduler = scheduler;
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 375, 617);
+		setBounds(100, 100, 722, 355);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
@@ -55,7 +61,7 @@ public class CreateProjectDialog extends JDialog {
 			contentPanel.add(lblNavn);
 		}
 		{
-			JTextField projectNameTextField = new JTextField();
+			projectNameTextField = new JBorderTextField();
 			projectNameTextField.setBounds(140, 8, 209, 20);
 			contentPanel.add(projectNameTextField);
 			projectNameTextField.setColumns(10);
@@ -67,27 +73,28 @@ public class CreateProjectDialog extends JDialog {
 		}
 		{
 			JLabel lblDetaljeretBeskrivelse = new JLabel("Detaljeret beskrivelse:");
-			lblDetaljeretBeskrivelse.setBounds(10, 61, 131, 14);
+			lblDetaljeretBeskrivelse.setBounds(10, 136, 131, 14);
 			contentPanel.add(lblDetaljeretBeskrivelse);
 		}
 		{
 			JTextArea detailedTextTextArea = new JTextArea();
-			detailedTextTextArea.setBounds(10, 86, 339, 108);
+			detailedTextTextArea.setBorder(UIManager.getBorder("TextField.border"));
+			detailedTextTextArea.setBounds(10, 161, 339, 108);
 			contentPanel.add(detailedTextTextArea);
 		}
 		{
 			allEmployeesScrollBar = new JScrollPane();
-			allEmployeesScrollBar.setBounds(10, 205, 110, 306);
+			allEmployeesScrollBar.setBounds(359, 8, 110, 261);
 			contentPanel.add(allEmployeesScrollBar);
 		}
 		{
 			assignedEmployeesScrollBar = new JScrollPane();
-			assignedEmployeesScrollBar.setBounds(239, 205, 110, 306);
+			assignedEmployeesScrollBar.setBounds(588, 8, 110, 261);
 			contentPanel.add(assignedEmployeesScrollBar);
 		}
 		{
 			JButton assignEmployeeButton = new JButton("Tilf\u00F8j");
-			assignEmployeeButton.setBounds(130, 343, 99, 23);
+			assignEmployeeButton.setBounds(479, 111, 99, 23);
 			contentPanel.add(assignEmployeeButton);
 			assignEmployeeButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -98,16 +105,14 @@ public class CreateProjectDialog extends JDialog {
 							Employee employee = scheduler.getEmployeeFromInitials(emplyeeInitials);
 							assignedEmployees.add(employee);
 							loadInformation();
-						} catch (EmployeeNotFoundException e1) {
-							errorLabel.setText(e1.getMessage());
-						}
+						} catch (Exception e1) { }
 					}
 				}
 			});
 		}
 		{
 			JButton unassignEmployeeButton = new JButton("Fjern");
-			unassignEmployeeButton.setBounds(130, 377, 99, 23);
+			unassignEmployeeButton.setBounds(479, 145, 99, 23);
 			contentPanel.add(unassignEmployeeButton);
 			unassignEmployeeButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -118,24 +123,49 @@ public class CreateProjectDialog extends JDialog {
 							Employee employee = scheduler.getEmployeeFromInitials(emplyeeInitials);
 							assignedEmployees.remove(employee);
 							loadInformation();
-						} catch (EmployeeNotFoundException e1) {
-							errorLabel.setText(e1.getMessage());
-						}
+						} catch (EmployeeNotFoundException e1) { }
 					}
 				}
 			});
 		}
 		{
-			JTextField CostumersNameTextField = new JTextField();
-			CostumersNameTextField.setBounds(140, 33, 209, 20);
-			contentPanel.add(CostumersNameTextField);
-			CostumersNameTextField.setColumns(10);
+			costumersNameTextField = new JBorderTextField();
+			costumersNameTextField.setBounds(140, 33, 209, 20);
+			contentPanel.add(costumersNameTextField);
+			costumersNameTextField.setColumns(10);
 		}
 		{
-			errorLabel = new JLabel("");
-			errorLabel.setBounds(10, 522, 339, 14);
-			contentPanel.add(errorLabel);
-			errorLabel.setPreferredSize(new Dimension(180, 14));
+			JLabel lblStartDato = new JLabel("Start dato:");
+			lblStartDato.setBounds(10, 61, 65, 14);
+			contentPanel.add(lblStartDato);
+		}
+		{
+			JLabel lblSlutDato = new JLabel("Slut dato:");
+			lblSlutDato.setBounds(10, 86, 65, 14);
+			contentPanel.add(lblSlutDato);
+		}
+		{
+			JLabel lblProjektManager = new JLabel("Projekt manager:");
+			lblProjektManager.setBounds(10, 111, 110, 14);
+			contentPanel.add(lblProjektManager);
+		}
+		{
+			startDateTextField = new JBorderTextField();
+			startDateTextField.setBounds(140, 58, 209, 20);
+			contentPanel.add(startDateTextField);
+			startDateTextField.setColumns(10);
+		}
+		{
+			endDateTextField = new JBorderTextField();
+			endDateTextField.setBounds(140, 83, 209, 20);
+			contentPanel.add(endDateTextField);
+			endDateTextField.setColumns(10);
+		}
+		{
+			projectManagerTextField = new JBorderTextField();
+			projectManagerTextField.setBounds(140, 108, 209, 20);
+			contentPanel.add(projectManagerTextField);
+			projectManagerTextField.setColumns(10);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -150,9 +180,7 @@ public class CreateProjectDialog extends JDialog {
 						//TODO add code here to create project. is waiting for Lombre to finish his part
 						try {
 							
-						} catch (Exception e2) {
-							errorLabel.setText(e2.getMessage());
-						}
+						} catch (Exception e2) { }
 					}
 				});
 			}

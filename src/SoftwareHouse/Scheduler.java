@@ -162,16 +162,11 @@ public class Scheduler {
 		return employees.containsKey(initials);
 	}
 
-	public void login(String initials) throws EmployeeNotFoundException, AlreadyLoggedInException {
+	public void login(String initials) throws EmployeeNotFoundException {
 		if (doesEmployeeExist(initials)) {
-			if (loggedInEmployee != null && loggedInEmployee.getInitials().equals(initials)) {
-				throw new AlreadyLoggedInException(initials + " is already logged in");
-			} else{
-				Employee employee = employees.get(initials);
-				loggedInEmployee = employee;
-				anyoneLoggedIn = true;
-			}
-			
+			Employee employee = employees.get(initials);
+			loggedInEmployee = employee;
+			anyoneLoggedIn = true;
 		} else {
 			throw new EmployeeNotFoundException("No employee with those initials exists");
 		}

@@ -32,11 +32,8 @@ public class Project {
 	private boolean isOpen = true;
 	private final String REPORTS_PATH = "res/reports/";
 	private final String FILE_EXTENTION = ".txt";
-<<<<<<< HEAD
 	public int budgettedTime = 0;
-=======
 	private boolean useAbsenceActivity = false;
->>>>>>> refs/remotes/origin/Dev
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
@@ -505,7 +502,6 @@ public class Project {
 		return REPORTS_PATH + fileName;
 	}
 
-<<<<<<< HEAD
 	/**
 	 * @return the budgettedTime
 	 */
@@ -522,7 +518,7 @@ public class Project {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}
 		this.budgettedTime = budgettedTime;
-=======
+	}
 	/** Gets the TimePeriod associated with this project.
 	 * @return
 	 */
@@ -543,6 +539,5 @@ public class Project {
 
 	public String getCompanyName() {
 		return companyName;
->>>>>>> refs/remotes/origin/Dev
 	}
 }
