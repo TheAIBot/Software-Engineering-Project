@@ -14,12 +14,7 @@ import java.util.List;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 /**
  * @author ELL
@@ -53,10 +48,7 @@ public class TestEditActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		try {
-			project.addEmployee("AGC");
-			project.addEmployee("ELL");
-		} catch (EmployeeNotFoundException e) {
+		if(!(project.addEmployee("ELL") &&	project.addEmployee("AGC"))){
 			Assert.fail();
 		}
 
@@ -78,6 +70,9 @@ public class TestEditActivity {
 		}
 	}
 
+	/**
+	 * Change name of acitivity "Brugerinterface" to "Test"
+	 */
 	@Test
 	public void testEditActivityNameSucces() {
 		Activity activity = null;
@@ -87,7 +82,6 @@ public class TestEditActivity {
 			Assert.fail();
 		}
 
-		// Change name of acitivity "Brugerinterface" to "Test"
 		assertNotNull(activity);
 		assertEquals(activity.getName(), "Brugerinterface");
 		try {
@@ -98,6 +92,9 @@ public class TestEditActivity {
 		assertEquals(activity.getName(), "Test");
 	}
 
+	/**
+	 * Try to remove the title of the activity
+	 */
 	@Test
 	public void testEditActivityRemoveName() {
 		Activity activity = null;
@@ -107,17 +104,19 @@ public class TestEditActivity {
 			Assert.fail();
 		}
 
-		// Try to remove the title of the activity
 		assertNotNull(activity);
 		assertEquals(activity.getName(), "Brugerinterface");
 		try {
 			activity.setName("");
 			Assert.fail();
-		} catch (MissingInformationException e) {
+		} catch (Exception e) {
 			assertEquals("Missing title", e.getMessage());
 		}
 	}
 	
+	/**
+	 * Try to change the budgeted time to a negative value
+	 */
 	@Test
 	public void testEditActivityInvalidBudegtedTime() {
 		Activity activity = null;
@@ -127,7 +126,6 @@ public class TestEditActivity {
 			Assert.fail();
 		}
 
-		// Try to change the budgeted time to a negative value
 		assertNotNull(activity);
 		assertEquals(activity.getName(), "Brugerinterface");
 		assertEquals(150, activity.getBudgettedTime());
@@ -139,6 +137,9 @@ public class TestEditActivity {
 		}
 	}
 
+	/**
+	 * Try to remove the detailed text of the activity
+	 */
 	@Test
 	public void testEditActivityRemoveDetailedText() {
 		Activity activity = null;
@@ -148,7 +149,6 @@ public class TestEditActivity {
 			Assert.fail();
 		}
 
-		// Try to remove the detailed text of the activity
 		assertNotNull(activity);
 		assertEquals(activity.getName(), "Brugerinterface");
 		try {
@@ -156,6 +156,60 @@ public class TestEditActivity {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals("Missing detailed text", e.getMessage());
+		}
+	}
+	
+	/**
+	 * Change name of acitivity "Brugerinterface" to "Rendering", which is already taken 
+	 */
+	@Test
+	public void testEditActivityNameFailure() {
+		// Create activity "Rendering"
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		String activityName = "Rendering";
+		String activityDetailedDescription = "Udvikling af renderingsystem";
+		int expectedHours = 125;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("AGC");
+		employeeInitials.add("ELL");
+		try {
+			project.addAcitivity(activityName, activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		Activity activityRendering = null;
+		try {
+			activityRendering = scheduler.getActivity("Navision Stat", "Rendering");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		assertNotNull(activityRendering);
+		assertEquals(activityRendering.getName(), "Rendering");
+		
+		Activity activityBrugerinterface = null;
+		try {
+			activityBrugerinterface = scheduler.getActivity("Navision Stat", "Brugerinterface");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		assertNotNull(activityBrugerinterface);
+		assertEquals(activityBrugerinterface.getName(), "Brugerinterface");
+		
+		try {
+			activityBrugerinterface.setName("Rendering");
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("An activity with the specified name already exists", e.getMessage());
+			assertEquals("Brugerinterface", activityBrugerinterface.getName());
 		}
 	}
 

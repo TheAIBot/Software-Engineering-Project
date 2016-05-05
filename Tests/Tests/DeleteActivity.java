@@ -1,14 +1,10 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +12,6 @@ import org.junit.Test;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class DeleteActivity {
 
@@ -55,12 +50,7 @@ public class DeleteActivity {
 			Assert.fail();
 		}
 		
-		try {
-			project.addEmployee("JBS");
-			project.addEmployee("ELL");
-			project.addEmployee("AGC");
-			project.addEmployee("NR");
-		} catch (EmployeeNotFoundException e1) {
+		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 			Assert.fail();
 		}
 		

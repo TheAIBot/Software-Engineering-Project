@@ -1,6 +1,5 @@
 package SoftwareHouse;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +11,9 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 
+/**
+ * Helping class to handle time manipulation operations
+ */
 public class TimeVault {
 	
 	private Scheduler scheduler;

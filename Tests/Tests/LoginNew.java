@@ -1,5 +1,4 @@
 package Tests;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -12,9 +11,8 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
-//Test-kommentar
-public class Login {
-	Scheduler scheduler;
+public class LoginNew {
+Scheduler scheduler;
 	
 	@Before
 	public void setup(){
@@ -118,8 +116,8 @@ public class Login {
 	@Test
 	public void loginLoggedInSameUser()
 	{		
+		addLeLa();
 		try {
-			addLeLa();
 			scheduler.login("LeLa");
 		} catch (Exception e) {
 			Assert.fail();

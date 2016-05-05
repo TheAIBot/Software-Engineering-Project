@@ -9,6 +9,11 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * The basic employee at the company
+ * Can peform basic tasks like register time (work period), register absence time
+ * Contains functionality for subscribing to an activity or project 
+ */
 public class Employee {
 	private final String initials;
 	private Scheduler scheduler;
@@ -22,15 +27,26 @@ public class Employee {
 		this.initials = initials;
 	}
 
-	/**
-	 * @return the initials
-	 */
 	public String getInitials() {
 		return initials;
 	}
 
-	public void addProject(Project project) {
-		projects.add(project);
+	public boolean isAlreadyPartOfActivity(Activity activity){
+		return activities.stream().anyMatch(x -> (x.getName().equals(activity.getName()) && x.getProjectName().equals(activity.getProjectName())));
+	}
+	
+	public boolean isAlreadyPartOfProject(Project project){
+		return projects.stream().anyMatch(x -> (x.getName().equals(project.getName()))); //TODO Loebenummer sammenligning.
+	}
+	
+	public boolean addProject(Project project)
+	{
+		return projects.add(project);
+	}
+	
+	public boolean canContainMoreActivities()
+	{
+		return !(activities.size() == MAX_ACTIVITIES);
 	}
 
 	public void addActivity(Activity activity) throws EmployeeMaxActivitiesReachedException {
@@ -48,6 +64,17 @@ public class Employee {
 		return projects;
 	}
 
+	/**
+	 * Register work og absence
+	 * @param projectName
+	 * @param activityName
+	 * @param message
+	 * @param time n.o. hours
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 * @throws ActivityNotFoundException
+	 * @throws InvalidInformationException
+	 */
 	public void registerTime(String projectName, String activityName, String message, int time)
 			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException,
 			InvalidInformationException {
@@ -59,6 +86,19 @@ public class Employee {
 
 	public List<Activity> getActivities() {
 		return activities;
+	}
+	
+	public int getNumberOfActivities(){
+		return activities.size();
+	}
+
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		else if(obj.getClass() == String.class){
+			return ((String) obj).equals(this.initials);
+		} else {
+			return ((Employee) obj).getInitials().equals(this.initials);
+		}		
 	}
 
 	public List<Activity> getAbsenceActivities() {
