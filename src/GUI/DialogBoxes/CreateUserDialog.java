@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import GUI.Components.JTextBox;
+import GUI.Components.JBorderTextField;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 public class CreateUserDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private final JTextBox initialsTextField;
+	private final JBorderTextField initialsTextField;
 	private final Scheduler scheduler;
 	private JLabel createEmployeeErrorLabel;
 
@@ -48,7 +48,7 @@ public class CreateUserDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		initialsTextField = new JTextBox();
+		initialsTextField = new JBorderTextField();
 		initialsTextField.setBounds(66, 8, 86, 20);
 		contentPanel.add(initialsTextField);
 		initialsTextField.setColumns(10);

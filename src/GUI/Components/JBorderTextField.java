@@ -6,7 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-public class JTextBox extends JTextField {
+public class JBorderTextField extends JTextField {
 
 	private final Border defaultBorder = getBorder();
 	
