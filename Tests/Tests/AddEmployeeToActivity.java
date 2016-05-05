@@ -1,9 +1,6 @@
 package Tests;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
+import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -23,10 +20,16 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class AddEmployeeToActivity {
 	Scheduler scheduler = null;
-	
+
+	// TODO Needs to check i user also has the list of activities
+
+	/**
+	 * Setup the test environment by initialising the schduler, login, creating
+	 * a sample project and staff it with employees. Further, add an activity to
+	 * the project
+	 */
 	@Before
-	public void Setup()
-	{
+	public void Setup() {
 		scheduler = new Scheduler();
 		TestTools.login(scheduler);
 		try {
@@ -34,7 +37,7 @@ public class AddEmployeeToActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		
+
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat");
@@ -42,7 +45,7 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		}
 		assertEquals(project.getOpenActivities().size(), 0);
-		
+
 		try {
 			scheduler.addEmployee("JBS");
 			scheduler.addEmployee("ELL");
@@ -51,16 +54,11 @@ public class AddEmployeeToActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		
-		try {
-			project.addEmployee("JBS");
-			project.addEmployee("ELL");
-			project.addEmployee("AGC");
-			project.addEmployee("NR");
-		} catch (EmployeeNotFoundException e1) {
+
+		if (!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") && project.addEmployee("NR"))) {
 			Assert.fail();
 		}
-		
+
 		String activityName = "Udvikling af brugerinterface";
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
@@ -72,24 +70,23 @@ public class AddEmployeeToActivity {
 		employeeInitials.add("JBS");
 		employeeInitials.add("ELL");
 		employeeInitials.add("AGC");
-		
+
 		try {
-			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			project.addAcitivity(activityName, activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
-	public void AddEmployeeToActivitySuccessTest()
-	{		
+	public void AddEmployeeToActivitySuccessTest() {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Udvikling af brugerinterface");
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		
+
 		assertEquals(activity.getAssignedEmployees().size(), 3);
 		try {
 			activity.addEmployee("NR");
@@ -100,21 +97,20 @@ public class AddEmployeeToActivity {
 	}
 
 	@Test
-	public void AddEmployeeToActivityEmployeeNotAssignedToProjectTest()
-	{
+	public void AddEmployeeToActivityEmployeeNotAssignedToProjectTest() {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Udvikling af brugerinterface");
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		
+
 		try {
 			scheduler.addEmployee("LSB");
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		
+
 		assertEquals(activity.getAssignedEmployees().size(), 3);
 		try {
 			activity.addEmployee("LSB");
@@ -129,16 +125,15 @@ public class AddEmployeeToActivity {
 	}
 
 	@Test
-	public void AddEmployeeToActivityEmployeeNotFoundTest()
-	{
-		
+	public void AddEmployeeToActivityEmployeeNotFoundTest() {
+
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Udvikling af brugerinterface");
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		
+
 		assertEquals(activity.getAssignedEmployees().size(), 3);
 		try {
 			activity.addEmployee("LSB");
@@ -151,14 +146,13 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
-	public void AddEmployeeToActivityEmployeeAssignedTooManyActivitiesTest()
-	{
-		for (int i = 0; i < Employee.MAX_ACTIVITIES + 1; i++) {
+	public void AddEmployeeToActivityEmployeeAssignedTooManyActivitiesTest() {
+		for (int i = 1; i < Employee.MAX_ACTIVITIES + 1; i++) {
 			addActivity(String.valueOf(i));
 		}
-		for (int i = 0; i < Employee.MAX_ACTIVITIES; i++) {
+		for (int i = 1; i < Employee.MAX_ACTIVITIES; i++) {
 			Activity activity = null;
 			try {
 				activity = scheduler.getActivity("Navision Stat", String.valueOf(i));
@@ -168,7 +162,7 @@ public class AddEmployeeToActivity {
 			try {
 				activity.addEmployee("JBS");
 			} catch (Exception e) {
-				Assert.fail();
+				Assert.fail(e.getMessage());
 			}
 		}
 		Activity activity = null;
@@ -187,11 +181,10 @@ public class AddEmployeeToActivity {
 		} catch (EmployeeAlreadyAssignedException e) {
 			Assert.fail();
 		}
-		
+
 	}
-	
-	private void addActivity(String activityName)
-	{
+
+	private void addActivity(String activityName) {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat");
@@ -205,24 +198,23 @@ public class AddEmployeeToActivity {
 		Calendar endDate = new GregorianCalendar();
 		endDate.set(2016, 4, 18);
 		List<String> employeeInitials = new ArrayList<String>();
-		
+
 		try {
-			project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			project.forceAddAcitivity(activityName, activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
 			Assert.fail();
 		}
 	}
 
 	@Test
-	public void AddEmployeeToSameActivityTwiceTest()
-	{
+	public void AddEmployeeToSameActivityTwiceTest() {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Udvikling af brugerinterface");
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		
+
 		try {
 			activity.addEmployee("NR");
 		} catch (EmployeeAlreadyAssignedException e) {

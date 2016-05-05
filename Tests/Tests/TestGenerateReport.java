@@ -1,8 +1,5 @@
 package Tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -15,21 +12,20 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 /**
  * @author ELL
+ * Test the generation of a report
  */
 public class TestGenerateReport {
 
 	Scheduler scheduler;
 	
+	/**
+	 * Setup the test environment
+	 */
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
@@ -46,7 +42,7 @@ public class TestGenerateReport {
 		
 		// Create project
 		try {
-			scheduler.createProject("Navision Stat?");
+			scheduler.createProject("Navision Stat?"); // The ?-sign is used on purpose to test file naming
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -56,12 +52,8 @@ public class TestGenerateReport {
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		try {
-			project.addEmployee("AGC");
-			project.addEmployee("ELL");
-			project.addEmployee("NR");
-			project.addEmployee("JBS");
-		} catch (EmployeeNotFoundException e) {
+		
+		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 			Assert.fail();
 		}
 		
@@ -99,7 +91,7 @@ public class TestGenerateReport {
 	}
 
 	@Test
-	public void testEditActivitySucces() {
+	public void testGenerateReportSucces() {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat?");

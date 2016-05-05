@@ -3,7 +3,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import SoftwareHouse.Employee;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -179,7 +178,7 @@ public class AddNewEmployee {
 		}
 		
 		try {
-			scheduler.addEmployee("æøå");
+			scheduler.addEmployee("ï¿½ï¿½ï¿½");
 		} catch (MissingInformationException e) {
 			Assert.fail();
 		} catch (DuplicateNameException e) {

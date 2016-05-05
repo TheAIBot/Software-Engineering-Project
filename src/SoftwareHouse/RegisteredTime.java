@@ -2,6 +2,9 @@ package SoftwareHouse;
 
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 
+/**
+ * Each instance of the class represents a piece of work or absence period
+ */
 public class RegisteredTime {
 	private Employee employee;
 	private String message;
@@ -18,23 +21,14 @@ public class RegisteredTime {
 		this.time = time;
 	}
 
-	/**
-	 * @return the employee
-	 */
 	public Employee getEmployee() {
 		return employee;
 	}
 
-	/**
-	 * @return the message
-	 */
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * @return the time
-	 */
 	public int getTime() {
 		return time;
 	}
