@@ -90,6 +90,7 @@ public class AddActivityToProject {
 		employeeInitials.add("AGC");
 		employeeInitials.add("NR");
 		
+		//No title given
 		try {
 			project.addAcitivity(null,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
@@ -105,6 +106,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//No detailed text given
 		try {
 			project.addAcitivity(activityName,	null, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
@@ -120,6 +122,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//No employees given
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
 			Assert.fail();
@@ -135,6 +138,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//No start date given for the time period
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, null, endDate, expectedHours);
 			Assert.fail();
@@ -150,6 +154,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//No end date given for the time period
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, null, expectedHours);
 			Assert.fail();
@@ -165,6 +170,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//Test for when the end date is before start date for the time period.
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, endDate, startDate, expectedHours);
 			Assert.fail();
@@ -180,6 +186,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//test for when the budgetted time is less than zero
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, -1);
 			Assert.fail();
@@ -199,7 +206,8 @@ public class AddActivityToProject {
 	
 	@Test
 	public void AddActivityEmployeeNotFoundTest()
-	{		
+	{	
+		//test for when given a non-exisitng employee for addActivity method
 		try {
 			TestTools.addActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "BOB"});
 			Assert.fail();
@@ -221,6 +229,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//test for when given a non-exisitng employee for the forceAddActivity method
 		try {
 			TestTools.forceAddActivity(scheduler, "Navision Stat", "Udvikling af brugerinterface", new String[] {"JBS", "ELL", "AGC", "BOB"});
 			Assert.fail();
@@ -238,6 +247,7 @@ public class AddActivityToProject {
 			Assert.fail();
 		}
 		
+		//Test for adding an exisiting empoyee who is not part of the corresponding project. 
 		try {
 			scheduler.addEmployee("DERP");
 		} catch (Exception e) {

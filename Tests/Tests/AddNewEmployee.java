@@ -178,7 +178,7 @@ public class AddNewEmployee {
 		}
 		
 		try {
-			scheduler.addEmployee("ï¿½ï¿½ï¿½");
+			scheduler.addEmployee("¿½ï¿");
 		} catch (MissingInformationException e) {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
@@ -186,7 +186,7 @@ public class AddNewEmployee {
 		} catch (TooManyCharsException e) {
 			Assert.fail();
 		} catch (IllegalCharException e) {
-			Assert.fail();
+			assertEquals(e.getMessage(),"Only letters are allowed for initials");
 		}
 	}
 }
