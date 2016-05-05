@@ -3,6 +3,9 @@ package SoftwareHouse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Helping class to handle general static operations used through out every other class
+ */
 public class Tools {
 
 	public static boolean isNullOrEmpty(String string)
