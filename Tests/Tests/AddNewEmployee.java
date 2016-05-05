@@ -3,6 +3,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -184,7 +186,7 @@ public class AddNewEmployee {
 		} catch (DuplicateNameException e) {
 			Assert.fail();
 		} catch (TooManyCharsException e) {
-			Assert.fail();
+			//TODO verify with funtasterisks that this is the expected result 
 		} catch (IllegalCharException e) {
 			Assert.fail();
 		}

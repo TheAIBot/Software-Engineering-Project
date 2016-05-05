@@ -357,7 +357,7 @@ public class Project {
 		List<Employee> employeesMaxCapacityReached = new ArrayList<Employee>();
 		for (String initials : employeeInitials) {
 			Employee currentEmpoyee = scheduler.getEmployeeFromInitials(initials);
-			if ((currentEmpoyee).canContainMoreActivities()){
+			if (!currentEmpoyee.canContainMoreActivities()){
 				employeesMaxCapacityReached.add(currentEmpoyee);				
 			}			
 		}		
