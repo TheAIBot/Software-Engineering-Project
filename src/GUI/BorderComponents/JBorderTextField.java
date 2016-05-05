@@ -1,4 +1,4 @@
-package GUI.Components;
+package GUI.BorderComponents;
 
 import java.awt.Color;
 
@@ -6,7 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-public class JBorderTextField extends JTextField {
+public class JBorderTextField extends JTextField implements ColoredBorder {
 
 	private final Border defaultBorder = getBorder();
 	

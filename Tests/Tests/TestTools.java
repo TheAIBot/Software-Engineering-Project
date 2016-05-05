@@ -179,10 +179,10 @@ public class TestTools {
 		return employee;
 	}
 
-	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidProjectInitilizationInput
+	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException
 	{
 		int currentNumberOfProjects = scheduler.getProjects().size();
-		scheduler.createProject(projectName, "","",null,0,"",null);
+		scheduler.createProject(projectName);
 		
 		Project project = null;
 		try {
