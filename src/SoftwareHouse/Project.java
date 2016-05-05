@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Observable;
 
 import org.junit.validator.PublicClassValidator;
 
@@ -495,6 +496,11 @@ public class Project {
 		}
 		
 		writer.close();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return (obj == null || !(obj instanceof Project))? false: ((Project) obj).getName().equals(this.name);
 	}
 
 	public String getFilePath() {

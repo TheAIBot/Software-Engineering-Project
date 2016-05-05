@@ -31,8 +31,6 @@ public class Tools {
 		   		 		.anyMatch(x -> x.getInitials().equals(initials));
 	}
 	
-	
-	
 	public static Project getProjectFromName(List<Project> projects, String projectName)
 	{
 		return projects.stream()
@@ -56,7 +54,5 @@ public class Tools {
 				   		.collect(Collectors.toList())
 				   		.get(0);
 	}
-	
-	
 	
 }
