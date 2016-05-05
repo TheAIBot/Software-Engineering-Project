@@ -25,6 +25,9 @@ public class AddActivityToProject {
 	
 	private Scheduler scheduler = null;
 	
+	/**
+	 * Setup the test environment by initialising the schduler, login, creating a sample project and staff it with employees 
+	 */
 	@Before
 	public void setup()
 	{
