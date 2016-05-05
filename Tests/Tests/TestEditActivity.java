@@ -93,11 +93,7 @@ public class TestEditActivity {
 		assertNotNull(activity);
 		assertEquals(activity.getName(), "Brugerinterface");
 		try {
-<<<<<<< HEAD
-			activity.setBudgettedTime(275);
-=======
 			activity.setName("Test");
->>>>>>> refs/remotes/origin/Dev
 		} catch (Exception e) {
 			Assert.fail();
 		}

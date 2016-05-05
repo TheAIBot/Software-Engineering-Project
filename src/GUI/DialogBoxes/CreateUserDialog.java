@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import GUI.Components.JTextBox;
 import SoftwareHouse.Scheduler;
@@ -30,6 +32,7 @@ public class CreateUserDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private final JTextBox initialsTextField;
 	private final Scheduler scheduler;
+	private JLabel createEmployeeErrorLabel;
 
 	/**
 	 * Create the dialog.
@@ -49,12 +52,23 @@ public class CreateUserDialog extends JDialog {
 		initialsTextField.setBounds(66, 8, 86, 20);
 		contentPanel.add(initialsTextField);
 		initialsTextField.setColumns(10);
+		initialsTextField.getDocument().addDocumentListener(new DocumentListener() {
+			  public void changedUpdate(DocumentEvent e){
+				 checkInitials();
+			  }
+			  public void removeUpdate(DocumentEvent e){
+				  checkInitials();
+			  }
+			  public void insertUpdate(DocumentEvent e){
+				  checkInitials();
+			  }
+		});
 		
 		JLabel lblInitialer = new JLabel("Initialer:");
 		lblInitialer.setBounds(10, 11, 46, 14);
 		contentPanel.add(lblInitialer);
 		
-		JLabel createEmployeeErrorLabel = new JLabel("");
+		createEmployeeErrorLabel = new JLabel("");
 		createEmployeeErrorLabel.setHorizontalTextPosition(SwingConstants.LEFT);
 		createEmployeeErrorLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		createEmployeeErrorLabel.setForeground(Color.RED);
@@ -92,5 +106,23 @@ public class CreateUserDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	public void checkInitials()
+	{
+		String errorText = "";
+		try {
+			String text = initialsTextField.getText();
+			if (text.length() != 0) {
+				scheduler.tryIsValidEmployeeInitials(text);
+				initialsTextField.makeBorderGreen();
+			} else {
+				initialsTextField.makeBorderDefaultColor();
+			}
+		} catch (Exception e2) {
+			errorText = e2.getMessage();
+			initialsTextField.makeBorderRed();
+		}
+		createEmployeeErrorLabel.setText(errorText);
 	}
 }

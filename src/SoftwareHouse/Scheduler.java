@@ -87,19 +87,9 @@ public class Scheduler {
 	}
 
 	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException {
-		if (Tools.isNullOrEmpty(initials)) {
-			throw new MissingInformationException("Missing employee initials");
+		if (tryIsValidEmployeeInitials(initials)) {
+			employees.put(initials, new Employee(this, initials));
 		}
-		if (employees.containsKey(initials)) {
-			throw new DuplicateNameException("An employee with those initials already exist");
-		}
-		if (initials.length() > 4) {
-			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
-		}
-		if(initials.matches("\\p{L}")){
-			throw new IllegalCharException("Only letters are allowed for initials");
-		}
-		employees.put(initials, new Employee(this, initials));
 	}
 
 	public Activity getActivity(String projectName, String activityName) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException {
@@ -145,28 +135,24 @@ public class Scheduler {
 		return timeVault;
 	}
 	
-<<<<<<< HEAD
-	public List<Employee> getEmployees()
+	public boolean tryIsValidEmployeeInitials(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
 	{
-		return employees.values().stream().collect(Collectors.toList());
+		if (Tools.isNullOrEmpty(initials)) {
+			throw new MissingInformationException("Missing employee initials");
+		}
+		if (employees.containsKey(initials)) {
+			throw new DuplicateNameException("An employee with those initials already exist");
+		}
+		if (initials.length() > 4) {
+			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
+		}
+		if(!initials.matches("\\p{L}+")){
+			throw new IllegalCharException("Only letters are allowed for initials");
+		}
+		return true;
 	}
 	
-	public boolean isValidEmployeeInitials(String initials)
-	{
-		if (Tools.isNullOrEmpty(initials) ||
-			employees.containsKey(initials) ||
-			initials.length() > 4 ||
-			initials.matches("\\p{L}")) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-=======
 	public Project getAbsenceProject() {
 		return absenceProject;
 	}
-	
-	
->>>>>>> refs/remotes/origin/Dev
 }
