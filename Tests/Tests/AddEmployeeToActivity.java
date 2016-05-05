@@ -1,9 +1,5 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -23,6 +19,8 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class AddEmployeeToActivity {
 	Scheduler scheduler = null;
+	
+	//TODO Needs to check i user also has the list of activities
 	
 	@Before
 	public void Setup()
@@ -52,12 +50,7 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		}
 		
-		try {
-			project.addEmployee("JBS");
-			project.addEmployee("ELL");
-			project.addEmployee("AGC");
-			project.addEmployee("NR");
-		} catch (EmployeeNotFoundException e1) {
+		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 			Assert.fail();
 		}
 		

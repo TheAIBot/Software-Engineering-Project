@@ -12,7 +12,6 @@ import org.junit.Test;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class DeleteActivity {
 
@@ -51,12 +50,7 @@ public class DeleteActivity {
 			Assert.fail();
 		}
 		
-		try {
-			project.addEmployee("JBS");
-			project.addEmployee("ELL");
-			project.addEmployee("AGC");
-			project.addEmployee("NR");
-		} catch (EmployeeNotFoundException e1) {
+		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 			Assert.fail();
 		}
 		

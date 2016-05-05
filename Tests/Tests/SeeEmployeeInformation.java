@@ -1,6 +1,5 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -8,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
@@ -20,11 +17,6 @@ import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.DuplicateNameException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import sun.net.www.content.audio.x_aiff;
 
 public class SeeEmployeeInformation {
 	private Scheduler scheduler = null;
@@ -56,7 +48,7 @@ public class SeeEmployeeInformation {
 			TestTools.addEmployeeToProject(scheduler,"NR",project1Name);
 			TestTools.forceAddActivity(scheduler, project1Name, activity1Name, new String[]{user1Initials});
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 		assertEquals(project.getOpenActivities().size(), 1);	
 	} 	
@@ -115,9 +107,9 @@ public class SeeEmployeeInformation {
 			scheduler.createProject(project2Name);
 			scheduler.getProject(project2Name).forceAddAcitivity(activity2Name, "'Tis the second one", new ArrayList<String>(), startDate, endDate, 1);
 			scheduler.getProject(project2Name).addEmployee(user1Initials);
-			scheduler.getProject(project2Name).getOpenActivities().get(0).addEmployee(user1Initials);
+			scheduler.getProject(project2Name).getActivity(activity2Name).addEmployee(user1Initials);
 		} catch (Exception e) {
-			fail();
+			fail(e.getMessage());
 		} 				
 		Employee Arndt = (Employee) scheduler.getEmployeesContainingString(user1Initials)
 				 .stream()

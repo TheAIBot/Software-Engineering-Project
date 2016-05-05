@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.junit.validator.PublicClassValidator;
+
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
@@ -30,13 +32,13 @@ public class Project {
 	private boolean isOpen = true;
 	private final String REPORTS_PATH = "res/reports/";
 	private final String FILE_EXTENTION = ".txt";
+	private boolean useAbsenceActivity = false;
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
 	private List<Activity> deletedActivities = new ArrayList<Activity>();
 	
 	private List<Employee> employees = new ArrayList<Employee>();
-		
 	/** Creates a new project from the given parameters. Throws an InvalidProjectInitilizationInput if the input is not valid, 
 	 *  which's message contains what is wrong. Must be logged in to create a new project.
 	 * @param scheduler The scheduler to attach the project. Must not be null.
@@ -52,7 +54,7 @@ public class Project {
 	 *                   The time period need to be legal, ie. the end date must not be before the start date.
 	 * @throws InvalidProjectInitilizationInput If invalid input is given. Contains message describing what is wrong.
 	 * @throws NotLoggedInException To create a project, one needs to be logged in.
-	 */
+	 */	
 	public Project(Scheduler scheduler, String projectName, String companyName, String detailedText, 
 			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
 					 throws InvalidProjectInitilizationInput, NotLoggedInException
@@ -72,6 +74,11 @@ public class Project {
 		}
 		this.timePeriod = timePeriod;	
 		if (employeesToAdd != null) employeesToAdd.stream().forEach(x -> this.addEmployee(x.getInitials()));
+	}
+	
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException{
+		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
+		this.useAbsenceActivity = isAbsenceProject;
 	}
 	
 	/** Returns true/false depending on if the project informations i "complete" - ie. if everything possible is described.
@@ -251,6 +258,15 @@ public class Project {
 		return deletedActivities;
 	}
 	
+	public Activity getActivity(String name) throws ActivityNotFoundException{
+		try{
+			return openActivities.stream().filter(x -> x.getName().equals(name)).findAny().get();
+		} catch(Exception e){
+			throw new ActivityNotFoundException();
+		}
+		
+	}
+	
 	/** Returns a MissingInformationTable object, containing information on what might be, 
 	 *  or is, missing, for adding the activity to the project.
 	 * @param title Activity name.
@@ -308,7 +324,7 @@ public class Project {
 		} else if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		} else if (!allEmployeesCanWorkOnMoreActivities(employeeInitials)){
-			
+			//TODO Check here(*)
 		}
 		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgetedTime);
 	}
@@ -366,8 +382,13 @@ public class Project {
 		if (employeesPastMaxActivity.size() != 0) {
 			throw new EmployeeMaxActivitiesReachedException(employeesPastMaxActivity, "The employees: ", " cannot work on more activities");
 		}
-		Activity activityToAdd = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
-		openActivities.add(activityToAdd);	
+		Activity activity;
+		if (useAbsenceActivity) {
+			activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
+		} else {
+			activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
+		}
+		openActivities.add(activity);
 	}
 
 	/** Adds employee to the project. Returns true if possible, but if an employee with those initials do not exist,
@@ -401,8 +422,7 @@ public class Project {
 		}
 		Activity activity = Tools.getActivityFromName(openActivities, activityName);
 		openActivities.remove(activity);
-		deletedActivities.add(activity);
-		
+		deletedActivities.add(activity);		
 	}
 
 	public void closeActivity(String activityName) throws ActivityNotFoundException {

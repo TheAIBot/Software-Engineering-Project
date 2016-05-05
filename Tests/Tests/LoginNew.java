@@ -108,7 +108,7 @@ Scheduler scheduler;
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
-			assertFalse(scheduler.isAnyoneLoggedIn());
+			assertTrue(scheduler.isAnyoneLoggedIn());
 			assertEquals(scheduler.getLoggedInEmployee().getInitials(), "AM");
 		} 		
 	}
@@ -116,6 +116,7 @@ Scheduler scheduler;
 	@Test
 	public void loginLoggedInSameUser()
 	{		
+		addLeLa();
 		try {
 			scheduler.login("LeLa");
 		} catch (Exception e) {

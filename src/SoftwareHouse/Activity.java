@@ -4,27 +4,30 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.junit.experimental.theories.Theories;
-
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import sun.net.www.content.audio.x_aiff;
 
 public class Activity {
 	
-	private String name;
-	private String detailText;
-	private List<Employee> assignedEmployees = new ArrayList<Employee>();
-	private TimePeriod timePeriod;
-	private int budgettedTime;
-	private final Project inProject;
+	protected String name;
+	protected String detailText;
+	protected List<Employee> assignedEmployees = new ArrayList<Employee>();
+	protected TimePeriod timePeriod;
+	protected int budgettedTime;
+	protected final Project inProject;
 	
-	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) {
+	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
 		this.name = name;
 		this.detailText = detailText;
 		this.assignedEmployees.addAll(employees);
+		for (Employee employee : employees) {
+			employee.addActivity(this);
+		}
 		this.setTimePeriod(new TimePeriod(startDate, endDate));
 		this.budgettedTime = budgettedTime;
 		this.inProject = inProject;
@@ -41,9 +44,12 @@ public class Activity {
 	 * @param title the title to set
 	 * @throws MissingInformationException 
 	 */
-	public void setName(String name) throws MissingInformationException {
+	public void setName(String name) throws MissingInformationException, DuplicateNameException {
 		if (Tools.isNullOrEmpty(name)) {
 			throw new MissingInformationException("Missing title");
+		}
+		if (Tools.containsActivity(inProject.getOpenActivities(), name)) {
+			throw new DuplicateNameException("An activity with the specified name already exists");
 		}
 		this.name = name;
 	}
@@ -58,7 +64,10 @@ public class Activity {
 	/**
 	 * @param detailText the detailText to set
 	 */
-	public void setDetailText(String detailText) {
+	public void setDetailText(String detailText) throws MissingInformationException {
+		if (Tools.isNullOrEmpty(detailText)) {
+			throw new MissingInformationException("Missing detailed text");
+		}
 		this.detailText = detailText;
 	}
 

@@ -1,20 +1,12 @@
 package Tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Test;
-
-import com.sun.swing.internal.plaf.metal.resources.metal;
-
 import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
@@ -23,14 +15,17 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
+import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
+import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class TestTools {
 	
-	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException
+	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
 	{
 		scheduler.addEmployee(name);
 		Employee employee = scheduler.getEmployeeFromInitials(name);
@@ -104,7 +99,7 @@ public class TestTools {
 	
 	
 	
-	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException
+	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException
 	{
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
@@ -130,7 +125,7 @@ public class TestTools {
 			   								int expectedHours,
 			   								Calendar startDate,
 			   								Calendar endDate,
-			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException
+			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException
 	{
 		Project project = null;
 		try {
@@ -177,17 +172,17 @@ public class TestTools {
 		try {
 			project = scheduler.getProject(projectName);
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getClass() + e.getMessage());
 		}
 		Assert.assertTrue(project.addEmployee(employeeName));
 		//TODO add asserts here to check that the employee was added
 		return employee;
 	}
 
-	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException
+	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidProjectInitilizationInput
 	{
 		int currentNumberOfProjects = scheduler.getProjects().size();
-		scheduler.createProject(projectName);
+		scheduler.createProject(projectName, "","",null,0,"",null);
 		
 		Project project = null;
 		try {

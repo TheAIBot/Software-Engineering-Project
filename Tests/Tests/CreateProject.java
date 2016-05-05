@@ -2,10 +2,7 @@ package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,20 +11,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.org.apache.xpath.internal.functions.FuncExtFunctionAvailable;
-
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.TimePeriod;
-import SoftwareHouse.Tools;
 import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
-import sun.net.www.content.audio.x_aiff;
+import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class CreateProject {	
@@ -62,7 +56,7 @@ public class CreateProject {
 			employeeListWithEmployees = new ArrayList<>();
 			employeeListWithEmployees.add(scheduler.getEmployeeFromInitials("JSB"));
 			employeeListWithEmployees.add(scheduler.getEmployeeFromInitials("AGC"));
-		} catch (MissingInformationException | DuplicateNameException | EmployeeNotFoundException e) {
+		} catch (MissingInformationException | DuplicateNameException | EmployeeNotFoundException | TooManyCharsException | IllegalCharException e) {
 			Assert.fail();
 		}
 	}

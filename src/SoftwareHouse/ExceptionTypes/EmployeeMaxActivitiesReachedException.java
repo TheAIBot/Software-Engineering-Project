@@ -6,6 +6,11 @@ import SoftwareHouse.Employee;
 
 public class EmployeeMaxActivitiesReachedException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -551911119515728293L;
+
 	public EmployeeMaxActivitiesReachedException(String message)
 	{
 		super(message);
