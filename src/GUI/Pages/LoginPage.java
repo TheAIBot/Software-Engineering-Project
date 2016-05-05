@@ -24,6 +24,7 @@ import GUI.GUIController;
 import GUI.Tools;
 import GUI.Panels.LoginPanel;
 import GUI.DialogBoxes.CreateUserDialog;
+import GUI.Listeners.TextChangedListener;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -37,16 +38,11 @@ public class LoginPage extends SuperPage<LoginPanel> {
 	@Override
 	public LoginPanel createPage(GUIController controller) {
 		LoginPanel loginPanel = new LoginPanel();
-		loginPanel.getEmployeeSearchTextField().getDocument().addDocumentListener(new DocumentListener() {
-			  public void changedUpdate(DocumentEvent e){
-				  loadInformation();
-			  }
-			  public void removeUpdate(DocumentEvent e){
-				  loadInformation();
-			  }
-			  public void insertUpdate(DocumentEvent e){
-				  loadInformation();
-			  }
+		loginPanel.getEmployeeSearchTextField().getDocument().addDocumentListener(new TextChangedListener() {
+			@Override
+			public void textChanged() {
+				loadInformation();
+			}
 		});
 		loginPanel.getLoginButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -61,36 +61,14 @@ public class CreateProject {
 		}
 	}
 
-<<<<<<< HEAD
-	//add test where we add bugetted time and verify it
-	//add test where we add detailed text to project and verify it
-	
-=======
 	private void loginIfNotLoggedIn(){
 		if (!scheduler.isAnyoneLoggedIn()) {
 			try {
 				scheduler.login(PROJECT_MANAGER_INITIALS);
 			} catch (EmployeeNotFoundException e) {
 				Assert.fail();
-			} catch (AlreadyLoggedInException e) {
-				Assert.fail();
 			}
 		}
-	}
-	
-	private boolean testSuccesOnProjectCreationIsCompleteProjectInformation(String projectName, String companyName, String detailedText, 
-			List<Employee> employeesToAdd, int budgettedTime, String initialsProjectManager, TimePeriod timePeriod){
-		loginIfNotLoggedIn();
-		try {
-			if (!Project.isCompleteProjectInformation(scheduler, projectName, companyName, detailedText, 
-																													  employeesToAdd, budgettedTime, initialsProjectManager, timePeriod)) {
-				return false;
-			}
-		} catch (NotLoggedInException e1) {
-			Assert.fail(); //Should not happen.
-			return false;
-		}
-		return true;
 	}
 	
 	private boolean testSuccesOnProjectCreation(String projectName, String companyName, String detailedText, 
@@ -99,16 +77,12 @@ public class CreateProject {
 		try {
 			scheduler.createProject(projectName, companyName, detailedText, 
                     employeesToAdd, budgettedTime, initialsProjectManager, timePeriod);
-		} catch (InvalidProjectInitilizationInput e) {
+		} catch (Exception e) {
 			return false;
-		} catch (NotLoggedInException e) {
-			Assert.fail(); //Should not happen.
-			return false; 
 		}
 		return true;
 	}
 		
->>>>>>> refs/remotes/origin/Dev
 	@Test
 	public void accessProjectTest(){
 		TestTools.login(scheduler);
@@ -164,10 +138,6 @@ public class CreateProject {
 	{
 		loginIfNotLoggedIn();
 		try {
-			if (!Project.isCompleteProjectInformation(scheduler, PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD)) {
-				Assert.fail();
-			}
 			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																			employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
 		} catch (Exception e1) {
@@ -192,43 +162,23 @@ public class CreateProject {
 	public void createProjectMissingNameNotNullNameTest(){
 		loginIfNotLoggedIn();
 		try {
-			if (Project.isCompleteProjectInformation(scheduler, "", COMPANY_NAME, DETAILED_TEXT, 
-																													  employeeListWithEmployees, 42, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD) ||
-					 Project.isValidProjectInformation(scheduler, "", COMPANY_NAME, DETAILED_TEXT, 
-			                                 employeeListWithEmployees, 42, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD)) {
-				Assert.fail();
-			}
-			try {
-				scheduler.createProject("", COMPANY_NAME, DETAILED_TEXT, 
-						employeeListWithEmployees, 42, "JSB", VALID_TIME_PERIOD);
-				Assert.fail();
-			} catch (InvalidProjectInitilizationInput e) {
-				//Succes!
-			}
-		} catch (NotLoggedInException e) {
+			scheduler.createProject("", COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, 42, "JSB", VALID_TIME_PERIOD);
 			Assert.fail();
-		} 			
+		} catch (Exception e) {
+			//Succes!
+		}		
 	}
 	
 	@Test
 	public void createProjectNameIsNullNameTest(){
 		TestTools.login(scheduler);
 		try {
-			if (Project.isCompleteProjectInformation(scheduler, null, COMPANY_NAME, DETAILED_TEXT, 
-																													  employeeListWithEmployees, 42, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD) ||
-					 Project.isValidProjectInformation(scheduler, null, COMPANY_NAME, DETAILED_TEXT, 
-			                                 employeeListWithEmployees, 42, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD)) {
-				Assert.fail();
-			}
-			try {
-				scheduler.createProject(null, COMPANY_NAME, DETAILED_TEXT, 
-						employeeListWithEmployees, 42, "JSB", VALID_TIME_PERIOD);
-				Assert.fail();
-			} catch (InvalidProjectInitilizationInput e) {
-				//Succes!
-			}
-		} catch (NotLoggedInException e) {
+			scheduler.createProject(null, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, 42, "JSB", VALID_TIME_PERIOD);
 			Assert.fail();
+		} catch (Exception e) {
+			//Succes!
 		} 			
 	}
 	
@@ -237,34 +187,23 @@ public class CreateProject {
 	{
 		loginIfNotLoggedIn();
 		try {
-			if (!Project.isCompleteProjectInformation(scheduler, PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-																													  employeeListWithEmployees, 42, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD)) {
-				Assert.fail();
-			}
 			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																			employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
 		} catch (Exception e1) {
 			Assert.fail();
 		}
 		try {
-			if (!Project.isCompleteProjectInformation(scheduler, PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-					  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD)) {
-				scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 						employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
 				Assert.fail();
-			}
 			Assert.fail();
-		} catch (InvalidProjectInitilizationInput e) {
+		} catch (Exception e) {
 			//Succes!
-		} catch (NotLoggedInException e) {
-			Assert.fail();
 		}
 	}
 	
 	@Test
 	public void createProjectNegativeBudgetedTime(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				  employeeListWithEmployees, -BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  employeeListWithEmployees, -BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
@@ -272,8 +211,6 @@ public class CreateProject {
 	@Test
 	public void createProjectImpossibleTimePeriod(){
 		TimePeriod impossibleTimePeriod = new TimePeriod(new GregorianCalendar(2013, 4, 1), new GregorianCalendar(2012, 3, 20));
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, impossibleTimePeriod));
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, impossibleTimePeriod));
 	}
@@ -281,96 +218,72 @@ public class CreateProject {
 	@Test
 	public void createProjectNonExistentEmployees(){
 		employeeListWithEmployees.add(new Employee(scheduler, "LeLa"));
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 		
 	@Test
 	public void createProjectNoDetailedDescription(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, "", 
-				  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, "", 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectDetailedDescriptionIsNull(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, null, 
-				  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, null, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectNoCompanyName(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, "", DETAILED_TEXT, 
-				  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, "", DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectCompanyNameIsNull(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, null, DETAILED_TEXT, 
-				  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, null, DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectNoBudgetedTime(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				  employeeListWithEmployees, 0, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  employeeListWithEmployees, 0, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectNoEmployees(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				  EMPLOYEE_LIST_EMPTY, BUDGETED_TIME, "", VALID_TIME_PERIOD)); //There can be no project manager, in this case, as there are no people employees to chose from.
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  EMPLOYEE_LIST_EMPTY, BUDGETED_TIME, "", VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectEmployeesIsNull(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				  null, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				null, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectTimePeriodIsNull(){ 
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, null));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, null));
 	}
 	
 	@Test
 	public void createProjectNoManagerInitials(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				employeeListWithEmployees, BUDGETED_TIME, "", VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, "", VALID_TIME_PERIOD));
 	}
 	
 	@Test
 	public void createProjectManagerInitialsIsNull(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				employeeListWithEmployees, BUDGETED_TIME, null, VALID_TIME_PERIOD));
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, null, VALID_TIME_PERIOD));
 	}
 		
 	@Test
 	public void createProjectNonexistentManagerInitials(){
-		assertFalse(testSuccesOnProjectCreationIsCompleteProjectInformation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, //True? TODO
 				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
 	}

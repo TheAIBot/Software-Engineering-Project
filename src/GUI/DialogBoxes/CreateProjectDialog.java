@@ -4,9 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,12 +21,23 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
 
 import GUI.Tools;
-import GUI.Components.JBorderTextField;
+import GUI.BorderComponents.JBorderComboBox;
+import GUI.BorderComponents.JBorderTextField;
+import GUI.Listeners.TextChangedListener;
+import GUI.Pages.ProjectPage;
 import SoftwareHouse.Employee;
+import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.TimePeriod;
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
+import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -30,19 +48,24 @@ import javax.swing.JTable;
 import java.awt.Dimension;
 import java.awt.Component;
 import javax.swing.UIManager;
+import javax.swing.JComboBox;
+import java.awt.Color;
 
 public class CreateProjectDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JScrollPane allEmployeesScrollBar;
-	private JScrollPane assignedEmployeesScrollBar;
+	private final JScrollPane allEmployeesScrollBar;
+	private final JScrollPane assignedEmployeesScrollBar;
 	private final Scheduler scheduler;
 	private final List<Employee> assignedEmployees = new ArrayList<Employee>();
-	private JBorderTextField startDateTextField;
-	private JBorderTextField endDateTextField;
-	private JBorderTextField projectManagerTextField;
-	private JBorderTextField costumersNameTextField;
-	private JBorderTextField projectNameTextField;
+	private final JBorderTextField startDateTextField;
+	private final JBorderTextField endDateTextField;
+	private final JBorderTextField projectManagerTextField;
+	private final JTextField costumersNameTextField;
+	private final JTextArea detailedTextTextArea;
+	private JBorderTextField projectNameComboBox;
+	private JBorderTextField BudgettedTimeTextField;
+	private JLabel errorLabel;
 
 	/**
 	 * Create the dialog.
@@ -51,7 +74,7 @@ public class CreateProjectDialog extends JDialog {
 		this.scheduler = scheduler;
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 722, 355);
+		setBounds(100, 100, 722, 400);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
@@ -61,40 +84,34 @@ public class CreateProjectDialog extends JDialog {
 			contentPanel.add(lblNavn);
 		}
 		{
-			projectNameTextField = new JBorderTextField();
-			projectNameTextField.setBounds(140, 8, 209, 20);
-			contentPanel.add(projectNameTextField);
-			projectNameTextField.setColumns(10);
-		}
-		{
 			JLabel lblKundeNavn = new JLabel("Kunde navn:");
 			lblKundeNavn.setBounds(10, 36, 84, 14);
 			contentPanel.add(lblKundeNavn);
 		}
 		{
 			JLabel lblDetaljeretBeskrivelse = new JLabel("Detaljeret beskrivelse:");
-			lblDetaljeretBeskrivelse.setBounds(10, 136, 131, 14);
+			lblDetaljeretBeskrivelse.setBounds(10, 159, 131, 14);
 			contentPanel.add(lblDetaljeretBeskrivelse);
 		}
 		{
-			JTextArea detailedTextTextArea = new JTextArea();
+			detailedTextTextArea = new JTextArea();
 			detailedTextTextArea.setBorder(UIManager.getBorder("TextField.border"));
-			detailedTextTextArea.setBounds(10, 161, 339, 108);
+			detailedTextTextArea.setBounds(10, 184, 339, 108);
 			contentPanel.add(detailedTextTextArea);
 		}
 		{
 			allEmployeesScrollBar = new JScrollPane();
-			allEmployeesScrollBar.setBounds(359, 8, 110, 261);
+			allEmployeesScrollBar.setBounds(359, 8, 110, 284);
 			contentPanel.add(allEmployeesScrollBar);
 		}
 		{
 			assignedEmployeesScrollBar = new JScrollPane();
-			assignedEmployeesScrollBar.setBounds(588, 8, 110, 261);
+			assignedEmployeesScrollBar.setBounds(588, 8, 110, 284);
 			contentPanel.add(assignedEmployeesScrollBar);
 		}
 		{
 			JButton assignEmployeeButton = new JButton("Tilf\u00F8j");
-			assignEmployeeButton.setBounds(479, 111, 99, 23);
+			assignEmployeeButton.setBounds(479, 130, 99, 23);
 			contentPanel.add(assignEmployeeButton);
 			assignEmployeeButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -112,7 +129,7 @@ public class CreateProjectDialog extends JDialog {
 		}
 		{
 			JButton unassignEmployeeButton = new JButton("Fjern");
-			unassignEmployeeButton.setBounds(479, 145, 99, 23);
+			unassignEmployeeButton.setBounds(479, 164, 99, 23);
 			contentPanel.add(unassignEmployeeButton);
 			unassignEmployeeButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -146,7 +163,7 @@ public class CreateProjectDialog extends JDialog {
 		}
 		{
 			JLabel lblProjektManager = new JLabel("Projekt manager:");
-			lblProjektManager.setBounds(10, 111, 110, 14);
+			lblProjektManager.setBounds(10, 134, 110, 14);
 			contentPanel.add(lblProjektManager);
 		}
 		{
@@ -154,19 +171,63 @@ public class CreateProjectDialog extends JDialog {
 			startDateTextField.setBounds(140, 58, 209, 20);
 			contentPanel.add(startDateTextField);
 			startDateTextField.setColumns(10);
+			startDateTextField.getDocument().addDocumentListener(new TextChangedListener() {
+				@Override
+				public void textChanged() {
+					Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
+				}
+			});
 		}
 		{
 			endDateTextField = new JBorderTextField();
 			endDateTextField.setBounds(140, 83, 209, 20);
 			contentPanel.add(endDateTextField);
 			endDateTextField.setColumns(10);
+			endDateTextField.getDocument().addDocumentListener(new TextChangedListener() {
+				@Override
+				public void textChanged() {
+					Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+				}
+			});
 		}
 		{
 			projectManagerTextField = new JBorderTextField();
-			projectManagerTextField.setBounds(140, 108, 209, 20);
+			projectManagerTextField.setBounds(140, 133, 209, 20);
 			contentPanel.add(projectManagerTextField);
 			projectManagerTextField.setColumns(10);
+			projectManagerTextField.getDocument().addDocumentListener(new TextChangedListener() {
+				@Override
+				public void textChanged() {
+					Tools.changeBorder(projectManagerTextField, x -> scheduler.getEmployeeFromInitials(x));
+				}
+			});
 		}
+		
+		projectNameComboBox = new JBorderTextField();
+		projectNameComboBox.setEditable(true);
+		projectNameComboBox.setBounds(140, 8, 209, 20);
+		contentPanel.add(projectNameComboBox);
+		
+		JLabel lblBudgetteretTid = new JLabel("Budgetteret tid:");
+		lblBudgetteretTid.setBounds(10, 111, 110, 14);
+		contentPanel.add(lblBudgetteretTid);
+		
+		BudgettedTimeTextField = new JBorderTextField();
+		BudgettedTimeTextField.setBounds(140, 108, 209, 20);
+		contentPanel.add(BudgettedTimeTextField);
+		BudgettedTimeTextField.setColumns(10);
+		{
+			errorLabel = new JLabel("");
+			errorLabel.setForeground(Color.RED);
+			errorLabel.setBounds(10, 303, 688, 14);
+			contentPanel.add(errorLabel);
+		}
+		BudgettedTimeTextField.getDocument().addDocumentListener(new TextChangedListener() {
+			@Override
+			public void textChanged() {
+				Tools.changeBorder(BudgettedTimeTextField, x -> Integer.parseUnsignedInt(x));
+			}
+		});
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -177,19 +238,47 @@ public class CreateProjectDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						//TODO add code here to create project. is waiting for Lombre to finish his part
 						try {
-							
-						} catch (Exception e2) { }
+							tryCreateProject();
+							CreateProjectDialog.this.dispatchEvent(new WindowEvent(CreateProjectDialog.this, WindowEvent.WINDOW_CLOSING));
+						} catch (Exception e2) {	
+							errorLabel.setText(e2.getMessage());
+						}
 					}
 				});
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
+				JButton cancelButton = new JButton("Annuller oprettelse");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	private void tryCreateProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
+	{
+		String projectName = projectNameComboBox.getText();
+		String costumerName = costumersNameTextField.getText();
+		TimePeriod timePeriod = null;
+		if (startDateTextField.getText().trim().length() != 0 &&
+			endDateTextField.getText().trim().length() != 0) {
+			GregorianCalendar startDate = Tools.getCalendarFromString(startDateTextField.getText());
+			GregorianCalendar endDate = Tools.getCalendarFromString(endDateTextField.getText());
+			timePeriod = new TimePeriod(startDate, endDate);
+		}
+		int budgettedTime = 0;
+		if (BudgettedTimeTextField.getText().trim().length() != 0) {
+			budgettedTime = Integer.parseUnsignedInt(BudgettedTimeTextField.getText());
+		}
+
+		String projectManagerInitials = projectManagerTextField.getText();
+		String detailedDescription = detailedTextTextArea.getText();
+		
+		scheduler.createProject(projectName, costumerName, detailedDescription, assignedEmployees, budgettedTime, projectManagerInitials, timePeriod);
 	}
 	
 	public void loadInformation()
