@@ -148,10 +148,10 @@ public class AddEmployeeToActivity {
 	@Test
 	public void AddEmployeeToActivityEmployeeAssignedTooManyActivitiesTest()
 	{
-		for (int i = 0; i < Employee.MAX_ACTIVITIES + 1; i++) {
+		for (int i = 1; i < Employee.MAX_ACTIVITIES + 1; i++) {
 			addActivity(String.valueOf(i));
 		}
-		for (int i = 0; i < Employee.MAX_ACTIVITIES; i++) {
+		for (int i = 1; i < Employee.MAX_ACTIVITIES; i++) {
 			Activity activity = null;
 			try {
 				activity = scheduler.getActivity("Navision Stat", String.valueOf(i));
@@ -161,7 +161,7 @@ public class AddEmployeeToActivity {
 			try {
 				activity.addEmployee("JBS");
 			} catch (Exception e) {
-				Assert.fail();
+				Assert.fail(e.getMessage());
 			}
 		}
 		Activity activity = null;
