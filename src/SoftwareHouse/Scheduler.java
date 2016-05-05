@@ -136,4 +136,15 @@ public class Scheduler {
 		return employees.values().stream().collect(Collectors.toList());
 	}
 	
+	public boolean isValidEmployeeInitials(String initials)
+	{
+		if (Tools.isNullOrEmpty(initials) ||
+			employees.containsKey(initials) ||
+			initials.length() > 4 ||
+			initials.matches("\\p{L}")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
