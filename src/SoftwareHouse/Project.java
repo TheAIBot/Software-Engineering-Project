@@ -21,6 +21,9 @@ import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import sun.net.www.content.audio.x_aiff;
 
+/**
+ * @author Jesper
+ */
 public class Project {
 	private static int loebenummerPart = 0;
 	private Scheduler scheduler;
@@ -539,5 +542,9 @@ public class Project {
 
 	public String getCompanyName() {
 		return companyName;
+	}
+	
+	public int getLoebenummerPart() {
+		return loebenummerPart;
 	}
 }

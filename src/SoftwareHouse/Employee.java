@@ -9,6 +9,11 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * The basic employee at the company
+ * Can peform basic tasks like register time (work period), register absence time
+ * Contains functionality for subscribing to an activity or project 
+ */
 public class Employee {
 	private final String initials;
 	private Scheduler scheduler;
@@ -22,9 +27,6 @@ public class Employee {
 		this.initials = initials;
 	}
 
-	/**
-	 * @return the initials
-	 */
 	public String getInitials() {
 		return initials;
 	}
@@ -62,6 +64,17 @@ public class Employee {
 		return projects;
 	}
 
+	/**
+	 * Register work og absence
+	 * @param projectName
+	 * @param activityName
+	 * @param message
+	 * @param time n.o. hours
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 * @throws ActivityNotFoundException
+	 * @throws InvalidInformationException
+	 */
 	public void registerTime(String projectName, String activityName, String message, int time)
 			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException,
 			InvalidInformationException {

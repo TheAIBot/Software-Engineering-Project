@@ -20,6 +20,9 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
+/**
+ * The main part of the application layer
+ */
 public class Scheduler {
 
 	private List<Project> projects = new ArrayList<Project>();

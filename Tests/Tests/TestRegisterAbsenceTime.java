@@ -22,6 +22,9 @@ public class TestRegisterAbsenceTime {
 	private Scheduler scheduler;
 	private String apn;
 
+	/**
+	 * Setup the test environment by initialising the scheduler, logging in, staffing and adding an activity 
+	 */
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
@@ -47,6 +50,8 @@ public class TestRegisterAbsenceTime {
 			e.printStackTrace();
 			Assert.fail();
 		}
+		
+		// Verify that the registered time has the correct attributes
 		RegisteredTime registeredTime = scheduler.getTimeVault().getEmployeeTime("BM").get(0);
 		assertEquals(registeredTime.getMessage(), "did stuff");
 		assertTrue(registeredTime.getEmployee() == employee);

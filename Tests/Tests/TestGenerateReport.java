@@ -17,11 +17,15 @@ import SoftwareHouse.Scheduler;
 
 /**
  * @author ELL
+ * Test the generation of a report
  */
 public class TestGenerateReport {
 
 	Scheduler scheduler;
 	
+	/**
+	 * Setup the test environment
+	 */
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
@@ -38,7 +42,7 @@ public class TestGenerateReport {
 		
 		// Create project
 		try {
-			scheduler.createProject("Navision Stat?");
+			scheduler.createProject("Navision Stat?"); // The ?-sign is used on purpose to test file naming
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -87,7 +91,7 @@ public class TestGenerateReport {
 	}
 
 	@Test
-	public void testEditActivitySucces() {
+	public void testGenerateReportSucces() {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat?");

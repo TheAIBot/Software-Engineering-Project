@@ -7,6 +7,9 @@ import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
+/**
+ * Activity subclass used for recording absence like holiday or absence because of sickness
+ */
 public class AbsenceActivity extends Activity {
 
 	public AbsenceActivity(String name, String detailText, List<Employee> employees, Calendar startDate,
