@@ -1,11 +1,5 @@
 package Tests;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
+import static org.junit.Assert.*;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,9 +7,6 @@ import org.junit.Test;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.DuplicateNameException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class AddEmployeeToProject {
 
@@ -76,11 +67,6 @@ public class AddEmployeeToProject {
 			Assert.fail();
 		}
 
-		try {
-			project.addEmployee("LSB");
-			Assert.fail();
-		} catch (EmployeeNotFoundException e) {
-			assertEquals(e.getMessage(), "No employee with those initials exists");
-		}
+		assertFalse(project.addEmployee("LSB"));
 	}
 }

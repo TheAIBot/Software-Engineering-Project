@@ -29,8 +29,22 @@ public class Employee {
 		return initials;
 	}
 
-	public void addProject(Project project) {
-		projects.add(project);
+	public boolean isAlreadyPartOfActivity(Activity activity){
+		return activities.stream().anyMatch(x -> (x.getName().equals(activity.getName()) && x.getProjectName().equals(activity.getProjectName())));
+	}
+	
+	public boolean isAlreadyPartOfProject(Project project){
+		return projects.stream().anyMatch(x -> (x.getName().equals(project.getName()))); //TODO Loebenummer sammenligning.
+	}
+	
+	public boolean addProject(Project project)
+	{
+		return projects.add(project);
+	}
+	
+	public boolean canContainMoreActivities()
+	{
+		return !(activities.size() == MAX_ACTIVITIES);
 	}
 
 	public void addActivity(Activity activity) throws EmployeeMaxActivitiesReachedException {
@@ -59,6 +73,19 @@ public class Employee {
 
 	public List<Activity> getActivities() {
 		return activities;
+	}
+	
+	public int getNumberOfActivities(){
+		return activities.size();
+	}
+
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		else if(obj.getClass() == String.class){
+			return ((String) obj).equals(this.initials);
+		} else {
+			return ((Employee) obj).getInitials().equals(this.initials);
+		}		
 	}
 
 	public List<Activity> getAbsenceActivities() {

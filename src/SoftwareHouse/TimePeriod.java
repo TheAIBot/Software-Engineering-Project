@@ -1,5 +1,4 @@
 package SoftwareHouse;
-import java.sql.Date;
 import java.util.Calendar;
 
 
@@ -11,6 +10,10 @@ public class TimePeriod {
 	public TimePeriod(Calendar startDate, Calendar endDate) {
 		this.startDate = startDate;
 		this.setEndDate(endDate);
+	}
+	
+	public boolean isValidTimePeriod(){
+		return (endDate != null && startDate != null && endDate.after(startDate));
 	}
 
 	/**

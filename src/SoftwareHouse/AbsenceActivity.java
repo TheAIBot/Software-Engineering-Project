@@ -10,7 +10,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 public class AbsenceActivity extends Activity {
 
 	public AbsenceActivity(String name, String detailText, List<Employee> employees, Calendar startDate,
-			Calendar endDate, int budgettedTime, Project inProject) {
+			Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
 		super(name, detailText, employees, startDate, endDate, budgettedTime, inProject);
 	}
 	

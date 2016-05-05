@@ -1,8 +1,5 @@
 package Tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -15,13 +12,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 /**
  * @author ELL
@@ -56,12 +48,8 @@ public class TestGenerateReport {
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		try {
-			project.addEmployee("AGC");
-			project.addEmployee("ELL");
-			project.addEmployee("NR");
-			project.addEmployee("JBS");
-		} catch (EmployeeNotFoundException e) {
+		
+		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 			Assert.fail();
 		}
 		

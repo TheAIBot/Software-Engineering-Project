@@ -1,6 +1,5 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,88 +17,72 @@ import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.DuplicateNameException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import sun.net.www.content.audio.x_aiff;
 
 public class SeeEmployeeInformation {
 	private Scheduler scheduler = null;
 	private String project1Name = "15-puzzle-spil";
+	private String project2Name = "Navision stat";
 	private String activity1Name = "brugergrænseflade";
+	private String activity2Name = "TheSecondActivity";
+	private String activity3Name = "TheThirdActivity";
+	private String activity4Name = "TheFourthActivity";
 	private String user1Initials = "AM";
 	
 	@Before
 	public void setup()
 	{
 		scheduler = new Scheduler();
+
 		TestTools.login(scheduler);
-		try {
-			scheduler.createProject("15-puzzle-spil");			
-		} catch (Exception e) {
-			Assert.fail();
-		}		
 		Project project = null;
 		try {
-			project = scheduler.getProject("15-puzzle-spil");
-			Calendar startDate = new GregorianCalendar();
-			startDate.set(2016, 3, 16);
-			Calendar endDate = new GregorianCalendar();
-			endDate.set(2016, 4, 18);
-			project.forceAddAcitivity("brugergrænseflade", "It is the brugergrænseflade that will pierce through the heavens!"
-					, new ArrayList<String>(), startDate, endDate, 200);
+			project = TestTools.createProject(scheduler, project1Name);
 		} catch (Exception e) {
 			Assert.fail();
-		}
-		assertEquals(project.getOpenActivities().size(), 1);		
+		}	
 		try {
-			scheduler.addEmployee("JBS");
-			scheduler.addEmployee("ELL");
-			scheduler.addEmployee("AGC");
-			scheduler.addEmployee("NR");
-			scheduler.addEmployee("AM");
-			
-			project.addEmployee("JBS");
-			project.addEmployee("ELL");
-			project.addEmployee("AGC");
-			project.addEmployee("NR");
-			project.addEmployee("AM");
-			
-			project.getOpenActivities().get(0).addEmployee("AM");
+			TestTools.addEmployeeToProject(scheduler,user1Initials,project1Name);
+			TestTools.addEmployeeToProject(scheduler,"JSB",project1Name);
+			TestTools.addEmployeeToProject(scheduler,"ELL",project1Name);
+			TestTools.addEmployeeToProject(scheduler,"AGC",project1Name);
+			TestTools.addEmployeeToProject(scheduler,"NR",project1Name);
+			TestTools.forceAddActivity(scheduler, project1Name, activity1Name, new String[]{user1Initials});
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
+		assertEquals(project.getOpenActivities().size(), 1);	
 	} 	
 	
+	@Test
 	public void ProperEmployeeSelectionOneEmployeeTest(){
-		List<Employee> employeesFound = scheduler.getEmployeesContainingString(user1Initials); //Represents an user, filtering the list of possible users to see information about.
+		//Represents an user, filtering the list of possible users to see information about.
+		List<Employee> employeesFound = scheduler.getEmployeesContainingString(user1Initials); 
 		assertTrue(employeesFound.size() == 1);
 		assertTrue(employeesFound.stream().anyMatch(x -> x.getInitials() == user1Initials));
 		assertTrue(employeesFound.stream().allMatch(x -> x.getInitials().contains(user1Initials)));
 		//Every employee has an unique string of initials associated with them.
-		Employee[] hopefullyOnlyArndt = (Employee[]) employeesFound.stream().filter(x -> x.getInitials().equals(user1Initials)).toArray();	//Represents an user selecting the name, amongst the filtered list of users.
-		assertTrue(hopefullyOnlyArndt.length == 1);
-		assertTrue(hopefullyOnlyArndt[0].getInitials() == user1Initials);
+		//Represents an user selecting the name, amongst the filtered list of users.
+		Employee hopefullyArndt = employeesFound.stream().filter(x -> x.getInitials().equals(user1Initials)).findFirst().get();	
+		assertTrue(hopefullyArndt.getInitials() == user1Initials);
 	}
-	
+	@Test
 	public void ProperEmployeeSelectionMultipleEmployeesTest(){
 		List<Employee> employeesFound = scheduler.getEmployeesContainingString("A");
 		assertTrue(employeesFound.size() == 2);
 		assertTrue(employeesFound.stream().anyMatch(x -> x.getInitials() == user1Initials));
-		assertTrue(employeesFound.stream().allMatch(x -> x.getInitials().contains("A"))); //TODO Burde lave det sådan så at man tjekker om personerne er præcist dem man forventede, men gider ikke.
+		//TODO Burde lave det sådan saa at man tjekker om personerne er praecist dem man forventede, men gider ikke.
+		assertTrue(employeesFound.stream().allMatch(x -> x.getInitials().contains("A"))); 
 		//Every employee has an unique string of initials associated with them.
-		Employee[] hopefullyOnlyArndt = (Employee[]) employeesFound.stream().filter(x -> x.getInitials().equals(user1Initials)).toArray();		
-		assertTrue(hopefullyOnlyArndt.length == 1);
-		assertTrue(hopefullyOnlyArndt[0].getInitials() == user1Initials);
+		Employee hopefullyArndt = employeesFound.stream().filter(x -> x.getInitials().equals(user1Initials)).findAny().get();		
+		assertTrue(hopefullyArndt.getInitials() == user1Initials);
 	}
 	
 	@Test
 	public void SeeEmployeeInformationSuccesfullTestOneProjectOneActivityTest() {
-		Employee Arndt = (Employee) scheduler.getEmployeesContainingString(user1Initials)
-																				 .stream()
-																				 .filter(x -> x.getInitials().equals(user1Initials))
-																				 .toArray()[0];		
+		Employee Arndt =   scheduler.getEmployeesContainingString(user1Initials).stream()
+																				.filter(x -> x.getInitials().equals(user1Initials))
+																				.findFirst()
+																				.get();		
 		//Checking if the project and activities information is correct - it does not take into account... /TODO
 		List<Project> employeesProjects =  Arndt.getProjects();
 		assertTrue(employeesProjects.size() == 1);
@@ -124,9 +107,13 @@ public class SeeEmployeeInformation {
 			scheduler.createProject(project2Name);
 			scheduler.getProject(project2Name).forceAddAcitivity(activity2Name, "'Tis the second one", new ArrayList<String>(), startDate, endDate, 1);
 			scheduler.getProject(project2Name).addEmployee(user1Initials);
-			scheduler.getProject(project2Name).getOpenActivities().get(0).addEmployee(user1Initials);
+			scheduler.getProject(project2Name).getActivity(activity2Name).addEmployee(user1Initials);
 		} catch (Exception e) {
+<<<<<<< HEAD
 			Assert.fail();
+=======
+			fail(e.getMessage());
+>>>>>>> refs/remotes/origin/Dev
 		} 				
 		Employee Arndt = (Employee) scheduler.getEmployeesContainingString(user1Initials)
 				 .stream()
@@ -139,9 +126,28 @@ public class SeeEmployeeInformation {
 		List<Activity> employeesActivities = Arndt.getActivities();
 		assertTrue(employeesActivities.size() == 2);
 		assertTrue(employeesActivities.stream().allMatch(x -> (x.getName() == activity1Name && x.getProjectName() == project1Name) ||
-																																							(x.getName() == activity2Name && x.getProjectName() == project2Name)));
+						                      				  (x.getName() == activity2Name && x.getProjectName() == project2Name)));
 		//History employeesHistory = hopefullyArndt.getHistory(); 
 		//It is already checked that the history object works, so no need to check it again.			/TODO history tests	
+	}
+	
+	public static boolean meg(List<String> projects, List<String> activities, Employee employee, String employeeInitials){
+		List<Project> employeesProjects =  employee.getProjects();
+		assertTrue(employeesProjects.size() == projects.size());
+		//There is only one project with a specific name, so this makes sure that all the projects are the ones expected. 
+		//This is also made sure by assuring that all the names are distinct.
+		assertEquals(employeesProjects.size(),
+				(((List<String>) employeesProjects.stream()
+															.map(x -> x.getName()).collect(Collectors.toList()))
+															.stream().distinct().toArray()));
+		assertTrue(employeesProjects.stream().allMatch(x -> projects.stream().anyMatch(y -> y.equals(x.getName()))));
+		List<Activity> employeesActivities = employee.getActivities();
+		assertTrue(employeesActivities.size() == activities.size());
+		//It is known that in this case are all the activities distinct, why a distinction should return the same result.
+		
+		
+		//assertTrue(employeesActivities.stream().allMatch(x -> activities.stream().anyMatch(y -> y.equals(x.getName())));
+		return false;
 	}
 	
 	@Test
@@ -175,10 +181,6 @@ public class SeeEmployeeInformation {
 
 	@Test
 	public void SeeEmployeeInformationMultipleProjectsMultipleAcitivitiesTest() {		
-		String project2Name = "Navision stat";
-		String activity2Name = "TheSecondActivity";
-		String activity3Name = "TheThirdAcitvity";
-		String activity4Name = "TheFourthAcitvity";
 		try {			
 			Calendar startDate = new GregorianCalendar();
 			startDate.set(2015, 4, 16);

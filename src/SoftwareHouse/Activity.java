@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.junit.experimental.theories.Theories;
-
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import sun.net.www.content.audio.x_aiff;
 
 public class Activity {
 	
@@ -22,10 +21,13 @@ public class Activity {
 	protected int budgettedTime;
 	protected final Project inProject;
 	
-	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) {
+	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
 		this.name = name;
 		this.detailText = detailText;
 		this.assignedEmployees.addAll(employees);
+		for (Employee employee : employees) {
+			employee.addActivity(this);
+		}
 		this.setTimePeriod(new TimePeriod(startDate, endDate));
 		this.budgettedTime = budgettedTime;
 		this.inProject = inProject;

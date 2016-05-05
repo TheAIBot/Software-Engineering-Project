@@ -12,8 +12,8 @@ public class Tools {
 	
 	public static boolean containsProject(List<Project> projects, String projectName)
 	{
-		return projects.stream()
-					   .anyMatch(x -> x.getName().equals(projectName));
+		return (projects.stream()
+					   .anyMatch(x -> x.getName().equals(projectName)));
 	}
 	
 	public static boolean containsActivity(List<Activity> activities, String activityName)
@@ -53,4 +53,7 @@ public class Tools {
 				   		.collect(Collectors.toList())
 				   		.get(0);
 	}
+	
+	
+	
 }

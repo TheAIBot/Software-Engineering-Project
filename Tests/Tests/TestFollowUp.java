@@ -1,7 +1,4 @@
 package Tests;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -11,14 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 /**
  * @author ELL
@@ -51,10 +42,7 @@ public class TestFollowUp {
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		try {
-			project.addEmployee("AGC");
-			project.addEmployee("ELL");
-		} catch (EmployeeNotFoundException e) {
+		if(!project.addEmployee("ELL") &&	project.addEmployee("AGC")){
 			Assert.fail();
 		}
 		
@@ -72,7 +60,7 @@ public class TestFollowUp {
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 	}
 

@@ -1,30 +1,15 @@
 package Tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import SoftwareHouse.Employee;
-import SoftwareHouse.Project;
 import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.TimeVault;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.DuplicateNameException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
@@ -55,14 +40,14 @@ public class TestRegisterTime {
 		Employee employee = null;
 		try {
 			employee = scheduler.getEmployeeFromInitials("AAAA");
-			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout færdigt sat op og justeret", 5);
+			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout fï¿½rdigt sat op og justeret", 5);
 		} catch (Exception e) {
 			Assert.fail();
 		}
 		
 		// Test that all local fields are correct
 		RegisteredTime registeredTime = scheduler.getTimeVault().getEmployeeTime("AAAA").get(0);
-		assertEquals(registeredTime.getMessage(), "Gridbag layout færdigt sat op og justeret");
+		assertEquals(registeredTime.getMessage(), "Gridbag layout fï¿½rdigt sat op og justeret");
 		assertTrue(registeredTime.getEmployee() == employee);
 		assertEquals(registeredTime.getTime(), 5);
 		assertEquals(1, scheduler.getTimeVault().getEmployeeTime("AAAA").size());
@@ -77,7 +62,7 @@ public class TestRegisterTime {
 		Employee employee = null;
 		try {
 			employee = scheduler.getEmployeeFromInitials("AAAA");
-			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout færdigt sat op og justeret", 3);
+			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout fï¿½rdigt sat op og justeret", 3);
 			Assert.fail();
 		} catch (Exception e) {
 		}
@@ -97,7 +82,7 @@ public class TestRegisterTime {
 		}
 		
 		try {
-			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout færdigt sat op og justeret", -42);
+			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout fï¿½rdigt sat op og justeret", -42);
 			Assert.fail();
 		} catch (Exception e) {
 			assertEquals("Used time can't be less than 0", e.getMessage());

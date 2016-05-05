@@ -12,7 +12,6 @@ import org.junit.Test;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class CloseActivity {
 
@@ -51,14 +50,11 @@ public class CloseActivity {
 			Assert.fail();
 		}
 		
-		try {
-			project.addEmployee("JBS");
-			project.addEmployee("ELL");
-			project.addEmployee("AGC");
-			project.addEmployee("NR");
-		} catch (EmployeeNotFoundException e1) {
+		
+		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 			Assert.fail();
 		}
+		
 		
 		List<String> employeeInitials = new ArrayList<String>();
 		employeeInitials.add("JBS");

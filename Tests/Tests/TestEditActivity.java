@@ -14,12 +14,7 @@ import java.util.List;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 /**
  * @author ELL
@@ -53,10 +48,7 @@ public class TestEditActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		try {
-			project.addEmployee("AGC");
-			project.addEmployee("ELL");
-		} catch (EmployeeNotFoundException e) {
+		if(!(project.addEmployee("ELL") &&	project.addEmployee("AGC"))){
 			Assert.fail();
 		}
 

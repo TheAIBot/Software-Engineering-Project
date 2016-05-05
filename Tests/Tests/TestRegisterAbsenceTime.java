@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import SoftwareHouse.Employee;
-import SoftwareHouse.Project;
 import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
@@ -33,7 +32,7 @@ public class TestRegisterAbsenceTime {
 			TestTools.addEmployeeToProject(scheduler, "BM", apn);
 			TestTools.addActivity(scheduler, apn, "Holiday", new String[] { "BM" });
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 	}
 
