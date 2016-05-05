@@ -22,17 +22,19 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
+import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class TestTools {
 	
-	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException
+	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
 	{
 		scheduler.addEmployee(name);
-		Employee employee = employee = scheduler.getEmployeeFromInitials(name);
+		Employee employee = scheduler.getEmployeeFromInitials(name);
 		assertEquals(employee.getInitials(), name);
 		return employee;
 	}

@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
+import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import sun.font.FileFontStrike;
 import sun.net.www.content.audio.x_aiff;
 
@@ -23,6 +25,12 @@ public class Scheduler {
 	private boolean anyoneLoggedIn = false;
 	private Employee loggedInEmployee;
 	private TimeVault timeVault = new TimeVault(this);
+	
+	private Project absenceProject = new Project(this, "absenceProject", true);
+	
+	public Scheduler() {
+		projects.add(absenceProject);
+	}
 
 	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
@@ -32,7 +40,7 @@ public class Scheduler {
 			if (Tools.containsProject(projects, projectName.trim())) {
 				throw new DuplicateNameException("A project with that title already exists");
 			}
-			projects.add(new Project(this, projectName));
+			projects.add(new Project(this, projectName, false));
 		} else {
 			throw new NotLoggedInException();
 		}
@@ -78,13 +86,19 @@ public class Scheduler {
 		}
 	}
 
-	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException {
+	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException {
 		if (Tools.isNullOrEmpty(initials)) {
 			throw new MissingInformationException("Missing employee initials");
 		}
 		if (employees.containsKey(initials)) {
 			throw new DuplicateNameException("An employee with those initials already exist");
-		}	
+		}
+		if (initials.length() > 4) {
+			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
+		}
+		if(initials.matches("\\p{L}")){
+			throw new IllegalCharException("Only letters are allowed for initials");
+		}
 		employees.put(initials, new Employee(this, initials));
 	}
 
@@ -131,6 +145,7 @@ public class Scheduler {
 		return timeVault;
 	}
 	
+<<<<<<< HEAD
 	public List<Employee> getEmployees()
 	{
 		return employees.values().stream().collect(Collectors.toList());
@@ -147,4 +162,11 @@ public class Scheduler {
 			return true;
 		}
 	}
+=======
+	public Project getAbsenceProject() {
+		return absenceProject;
+	}
+	
+	
+>>>>>>> refs/remotes/origin/Dev
 }

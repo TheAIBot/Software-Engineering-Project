@@ -33,12 +33,13 @@ public class Project {
 	private List<Activity> deletedActivities = new ArrayList<Activity>();
 	
 	private List<Employee> employees = new ArrayList<Employee>();
+	private boolean useAbsenceActivity;
 	
-	
-	public Project(Scheduler scheduler, String projectName)
+	public Project(Scheduler scheduler, String projectName, boolean useAbsenceAcitivity)
 	{
 		this.scheduler = scheduler;
 		this.name = projectName;
+		this.useAbsenceActivity = useAbsenceActivity;
 	}
 
 	/**
@@ -100,7 +101,7 @@ public class Project {
 			throw new InvalidInformationException("End date has to start after start date");
 		} else if (budgettedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
-		}
+		} 
 		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgettedTime);
 	}
 	
@@ -119,7 +120,14 @@ public class Project {
 				throw new EmployeeNotFoundException("Employee with initials: " + initials + " does not exist or is not part of this project");
 			}
 		}
-		openActivities.add(new Activity(title, detailText, activityEmployees, startTime, endTime, budgettedTime, this));	
+		Activity activity;
+		if (useAbsenceActivity) {
+			activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgettedTime, this);	
+		} else {
+			activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgettedTime, this);
+		}
+		openActivities.add(activity);
+		
 	}
 
 	public void addEmployee(String initials) throws EmployeeNotFoundException {

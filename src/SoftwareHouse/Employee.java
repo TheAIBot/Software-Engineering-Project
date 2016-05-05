@@ -14,10 +14,10 @@ public class Employee {
 	private Scheduler scheduler;
 	public static final int MAX_ACTIVITIES = 20;
 	private List<Project> projects = new ArrayList<Project>();
-	private List<Activity>activities = new ArrayList<Activity>(MAX_ACTIVITIES); 
-	
-	public Employee(Scheduler scheduler, String initials)
-	{
+	private List<Activity> activities = new ArrayList<Activity>(MAX_ACTIVITIES);
+	private List<Activity> absenceActivities = new ArrayList<Activity>();
+
+	public Employee(Scheduler scheduler, String initials) {
 		this.scheduler = scheduler;
 		this.initials = initials;
 	}
@@ -29,15 +29,14 @@ public class Employee {
 		return initials;
 	}
 
-	public void addProject(Project project)
-	{
+	public void addProject(Project project) {
 		projects.add(project);
 	}
-	
-	public void addActivity(Activity activity) throws EmployeeMaxActivitiesReachedException
-	{
+
+	public void addActivity(Activity activity) throws EmployeeMaxActivitiesReachedException {
 		if (activities.size() == MAX_ACTIVITIES) {
-			throw new EmployeeMaxActivitiesReachedException(initials + " has reached the max of " + MAX_ACTIVITIES + " activities");
+			throw new EmployeeMaxActivitiesReachedException(
+					initials + " has reached the max of " + MAX_ACTIVITIES + " activities");
 		}
 		activities.add(activity);
 	}
@@ -49,12 +48,24 @@ public class Employee {
 		return projects;
 	}
 
-	public void registerTime(String projectName, String activityName, String message, int time) throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException, InvalidInformationException 
-	{
+	public void registerTime(String projectName, String activityName, String message, int time)
+			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException,
+			InvalidInformationException {
+		if (Tools.isNullOrEmpty(message)) {
+			throw new InvalidInformationException("Invalid text");
+		}
 		scheduler.getTimeVault().addTime(projectName, activityName, initials, new RegisteredTime(this, message, time));
 	}
-	
+
 	public List<Activity> getActivities() {
 		return activities;
+	}
+
+	public List<Activity> getAbsenceActivities() {
+		return absenceActivities;
+	}
+
+	public void addAbsenceActivity(Activity activity) {
+		absenceActivities.add(activity);
 	}
 }
