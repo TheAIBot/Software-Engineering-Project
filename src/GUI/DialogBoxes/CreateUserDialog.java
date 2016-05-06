@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,7 +16,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import GUI.Components.JBorderTextField;
+import GUI.Tools;
+import GUI.BorderComponents.JBorderTextField;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -32,7 +34,7 @@ public class CreateUserDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private final JBorderTextField initialsTextField;
 	private final Scheduler scheduler;
-	private JLabel createEmployeeErrorLabel;
+	private final JLabel createEmployeeErrorLabel;
 
 	/**
 	 * Create the dialog.
@@ -42,7 +44,7 @@ public class CreateUserDialog extends JDialog {
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
-		setBounds(100, 100, 328, 142);
+		setBounds(100, 100, 382, 142);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -72,7 +74,7 @@ public class CreateUserDialog extends JDialog {
 		createEmployeeErrorLabel.setHorizontalTextPosition(SwingConstants.LEFT);
 		createEmployeeErrorLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		createEmployeeErrorLabel.setForeground(Color.RED);
-		createEmployeeErrorLabel.setBounds(10, 36, 292, 14);
+		createEmployeeErrorLabel.setBounds(10, 36, 346, 14);
 		contentPanel.add(createEmployeeErrorLabel);
 		{
 			JPanel buttonPane = new JPanel();
@@ -86,8 +88,7 @@ public class CreateUserDialog extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						try {
 							scheduler.addEmployee(initialsTextField.getText());
-							CreateUserDialog.this.dispatchEvent(new WindowEvent(
-									CreateUserDialog.this, WindowEvent.WINDOW_CLOSING));
+							CreateUserDialog.this.dispatchEvent(new WindowEvent(CreateUserDialog.this, WindowEvent.WINDOW_CLOSING));
 						} catch (Exception e1) {
 							createEmployeeErrorLabel.setText(e1.getMessage());
 						}
@@ -110,19 +111,7 @@ public class CreateUserDialog extends JDialog {
 	
 	public void checkInitials()
 	{
-		String errorText = "";
-		try {
-			String text = initialsTextField.getText();
-			if (text.length() != 0) {
-				scheduler.tryIsValidEmployeeInitials(text);
-				initialsTextField.makeBorderGreen();
-			} else {
-				initialsTextField.makeBorderDefaultColor();
-			}
-		} catch (Exception e2) {
-			errorText = e2.getMessage();
-			initialsTextField.makeBorderRed();
-		}
+		String errorText = Tools.changeBorder(initialsTextField, x -> scheduler.tryIsValidEmployeeInitials(x));
 		createEmployeeErrorLabel.setText(errorText);
 	}
 }

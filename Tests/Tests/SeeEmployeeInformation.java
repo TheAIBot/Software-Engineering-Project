@@ -109,11 +109,7 @@ public class SeeEmployeeInformation {
 			scheduler.getProject(project2Name).addEmployee(user1Initials);
 			scheduler.getProject(project2Name).getActivity(activity2Name).addEmployee(user1Initials);
 		} catch (Exception e) {
-<<<<<<< HEAD
 			Assert.fail();
-=======
-			fail(e.getMessage());
->>>>>>> refs/remotes/origin/Dev
 		} 				
 		Employee Arndt = (Employee) scheduler.getEmployeesContainingString(user1Initials)
 				 .stream()

@@ -41,8 +41,6 @@ public class Login {
 	private void loginAM(){ //TODO (*) Fails are not registrated outside the method.
 		try {
 			scheduler.login("AM");
-		} catch(AlreadyLoggedInException e){
-			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
 		}
@@ -56,8 +54,6 @@ public class Login {
 		assertFalse(scheduler.isAnyoneLoggedIn());		
 		try {
 			scheduler.login("LeLa");
-		} catch(AlreadyLoggedInException e){
-			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
 		}
@@ -71,8 +67,6 @@ public class Login {
 		assertFalse(scheduler.isAnyoneLoggedIn());		
 		try {
 			scheduler.login("LeLa");
-			Assert.fail();
-		} catch(AlreadyLoggedInException e){
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
@@ -89,8 +83,6 @@ public class Login {
 		assertTrue(scheduler.isAnyoneLoggedIn());		
 		try {
 			scheduler.login("LeLa");
-		} catch(AlreadyLoggedInException e){
-			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
 		}
@@ -106,38 +98,10 @@ public class Login {
 		try {
 			scheduler.login("LeLa");
 			Assert.fail();
-		} catch(AlreadyLoggedInException e){
-			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
 			assertTrue(scheduler.isAnyoneLoggedIn());
 			assertEquals(scheduler.getLoggedInEmployee().getInitials(), "AM");
 		} 		
-	}
-	
-	@Test
-	public void loginLoggedInSameUser()
-	{		
-		try {
-			addLeLa();
-			scheduler.login("LeLa");
-		} catch (Exception e) {
-			Assert.fail();
-		}
-		assertTrue(scheduler.isAnyoneLoggedIn());
-		assertEquals(scheduler.getLoggedInEmployee().getInitials(), "LeLa");
-		try {
-			scheduler.login("LeLa");
-			Assert.fail();
-		} catch(AlreadyLoggedInException e) {
-			assertEquals("LeLa is already logged in", e.getMessage());
-			assertTrue(scheduler.isAnyoneLoggedIn());
-			assertEquals(scheduler.getLoggedInEmployee().getInitials(), "LeLa");			
-		}		catch (Exception e) {
-			Assert.fail();
-		} 		
-	}
-	
-	
-	
+	}	
 }
