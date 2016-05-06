@@ -92,13 +92,12 @@ public class Employee {
 		return activities.size();
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
-		else if(obj.getClass() == String.class){
-			return ((String) obj).equals(this.initials);
-		} else {
-			return ((Employee) obj).getInitials().equals(this.initials);
-		}		
+		else if (obj instanceof String) return ((String) obj).equals(this.initials);
+		else if (obj instanceof Employee) return ((Employee) obj).getInitials().equals(this.initials);
+		else return false;
 	}
 
 	public List<Activity> getAbsenceActivities() {

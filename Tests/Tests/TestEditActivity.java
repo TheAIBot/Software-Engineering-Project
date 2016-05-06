@@ -27,7 +27,7 @@ public class TestEditActivity {
 	public void setup() {
 		scheduler = new Scheduler();
 		TestTools.login(scheduler);
-
+		
 		// Create employees
 		try {
 			scheduler.addEmployee("AGC");
@@ -35,7 +35,6 @@ public class TestEditActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-
 		// Create project
 		try {
 			scheduler.createProject("Navision Stat");

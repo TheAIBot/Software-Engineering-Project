@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Observable;
 
 import org.junit.validator.PublicClassValidator;
 
@@ -28,13 +29,14 @@ public class Project {
 	private static int loebenummerPart = 0;
 	private Scheduler scheduler;
 	private String name;
-	private String companyName;
+	private String costumerName;
 	private int budgetedTime;
 	private Employee projectManager;
 	private TimePeriod timePeriod;
 	private boolean isOpen = true;
 	private final String REPORTS_PATH = "res/reports/";
 	private final String FILE_EXTENTION = ".txt";
+	public int budgettedTime = 0;
 	private boolean useAbsenceActivity = false;
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
@@ -55,20 +57,19 @@ public class Project {
 	 *                               If not, the project manager needs to be amongst the list of employees given.
 	 * @param timePeriod The time period the project stretches over. Is allowed to be null. 
 	 *                   The time period need to be legal, ie. the end date must not be before the start date.
-	 * @throws InvalidProjectInitilizationInput If invalid input is given. Contains message describing what is wrong.
 	 * @throws NotLoggedInException To create a project, one needs to be logged in.
+	 * @throws EmployeeNotFoundException 
+	 * @throws InvalidInformationException 
+	 * @throws MissingInformationException 
 	 */	
-	public Project(Scheduler scheduler, String projectName, String companyName, String detailedText, 
+	public Project(Scheduler scheduler, String projectName, String costumerName, String detailedText, 
 			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
-					 throws InvalidProjectInitilizationInput, NotLoggedInException
+					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException
 	{
-		if (!isValidProjectInformation(scheduler, projectName, companyName, detailedText, 
-				                            employeesToAdd, budgetedTime, initialsProjectManager, timePeriod)) {
-			throw new InvalidProjectInitilizationInput("You done gooffed"); //TODO Handle this -> write message here or UI (*)
-		}
+		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod);
 		this.scheduler = scheduler;
 		this.name = projectName;
-		this.companyName = companyName;
+		this.costumerName = costumerName;
 		this.budgetedTime = budgetedTime;
 		try {
 			//It might happen that no manager is given, which would result in an error here. No will be assigned in this case.
@@ -79,153 +80,39 @@ public class Project {
 		if (employeesToAdd != null) employeesToAdd.stream().forEach(x -> this.addEmployee(x.getInitials()));
 	}
 	
-	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException{
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException{
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
 	}
 	
-	/** Returns true/false depending on if the project informations i "complete" - ie. if everything possible is described.
-	 *  What this entails, is found down below, at the description of the variables. This does not include the description of what they need to be, to be valid.
-	 *  Should be logged in to test this, or an NotLoggedInException will be thrown.
-	 * @param scheduler The scheduler to attach the project. Must not be null.
-	 * @param projectName The project name. Should be an actual string, not equal to "", or a duplicate of another project.
-	 * @param companyName The name of the company requesting the project. Should be an actual string, not equal to "".
-	 * @param detailedText The detailed description associated with the project. Should be an actual string, not equal to "".
-	 * @param employeesToAdd The employees to add to the project, at the start of it. Should contain some employees.
-	 * @param budgetedTime  The budgeted time for the project. Should be positive.
-	 * @param initialsProjectManager Initials of the project manager. Should be the initials of an employee amongst the given list of employees.
-	 * @param timePeriod The time period the project stretches over. Should be an actual time period, with the start date before the end date.
-	 * @return
-	 * @throws NotLoggedInException It is neccesary to be logged in to test this.
-	 */
-	public static boolean isCompleteProjectInformation(Scheduler scheduler, String projectName, String companyName, String detailedText, 
-			List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod) throws NotLoggedInException{
-		if (!isValidProjectInformation(scheduler, projectName, companyName, detailedText, employeesToAdd, 
-				budgetedTime, initialsProjectManager, timePeriod)) {
-			return false;
-		} else if (!isFilledInCompanyName(companyName) || !isFilledInDetailedText(detailedText) || 
-				        !isFilledInEmployees(employeesToAdd) || !isFilledInBudgetedTime(budgetedTime) ||
-				        !isFilledInProjectManagerName(initialsProjectManager, employeesToAdd) || !isFilledInTimePeriod(timePeriod)) {
-			return false;
-		}
-		return true;
-	}	
-	/** Returns whether or not the company name is filled in - meaning it should not be "" or null.
-	 * @param companyName
-	 * @return
-	 */
-	public static boolean isFilledInCompanyName(String companyName){
-		return !Tools.isNullOrEmpty(companyName);
-	}
-	
-	/** Returns whether or not the detailed description is filled in - meaning it should not be "" or null.
-	 * @param detailedText
-	 * @return
-	 */
-	public static boolean isFilledInDetailedText(String detailedText){
-		return !Tools.isNullOrEmpty(detailedText);
-	}
-	
-	/**  Returns whether or not the employees is filled in - meaning that the list needs to contain some employees.
-	 * @param employeesToAdd
-	 * @return
-	 */
-	public static boolean isFilledInEmployees(List<Employee> employeesToAdd){
-		return (!(employeesToAdd == null) && employeesToAdd.size() > 0);
-	}
-	
-	/** Returns whether or not the budgeted time is filled in - meaning that it should be positive.
-	 * @param budgetedTime
-	 * @return
-	 */
-	public static boolean isFilledInBudgetedTime(int budgetedTime) {
-		return budgetedTime > 0;
-	}
-	
-	/** Returns whether or not the initials for the project manager is filled in (and correctly).
-	 *  It should be the actual initials of an employee, amongst the given list of employees.
-	 * @param initialsProjectManager The initials of the project manager
-	 * @param employees The list of employees which the project manager could be amongst.
-	 * @return
-	 */
-	public static boolean isFilledInProjectManagerName(String initialsProjectManager, List<Employee> employees){
-		return (!Tools.isNullOrEmpty(initialsProjectManager) && 	
-							 employees != null &&			
-							 employees.stream().anyMatch(x -> x.equals(initialsProjectManager)));
-	}	
-	
-	/** Returns whether or not the TimePeiod is filled in (and correctly).
-	 *  The time period should contain an actual end date, after an actual start date.
-	 * @param timePeriod 
-	 * @return
-	 */
-	public static boolean isFilledInTimePeriod(TimePeriod timePeriod) {
-		return (!(timePeriod == null || timePeriod.getStartDate() == null || timePeriod.getEndDate() == null || !timePeriod.isValidTimePeriod()));
-	}
-	
-	/** Returns whether or not the information given, would be a valid project, if it were created. Throws an InvalidProjectInitilizationInput if the input is not valid, 
-	 *  which's message contains what is wrong. Must be logged in to create a new project.
-	 * @param scheduler The scheduler to attach the project. Must not be null.
-	 * @param projectName The project name. Must be unique for the scheduler, not null or "".
-	 * @param companyName The name of the company requesting the project. Is allowed to be "" or null.
-	 * @param detailedText The detailed description associated with the project. Is allowed to be "" or null.
-	 * @param employeesToAdd The employees to add to the project, at the start of it. Is allowed to be empty, or null. All employees must exist.
-	 * 				                They can of course not already be part of the project.
-	 * @param budgetedTime  The budgeted time for the project. Is not allowed to be negative.
-	 * @param initialsProjectManager Initials of the project manager. Is allowed to be empty or null. 
-	 *                               If not, the project manager needs to be amongst the list of employees given.
-	 * @param timePeriod The time period the project stretches over. Is allowed to be null. 
-	 *                   The time period need to be legal, ie. the end date must not be before the start date.
-	 * @throws InvalidProjectInitilizationInput If invalid input is given. Contains message describing what is wrong.
-	 * @throws NotLoggedInException One needs to be logged in, to use this method.
-	 * @return True if it is valid, else false.
-	 */
- 	public static boolean isValidProjectInformation(Scheduler scheduler, String projectName, String companyName, String detailedText, 
-		List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod) throws NotLoggedInException{
-		if (!isValidProjectName(scheduler, projectName) || 
-				 !scheduler.doAllEmployeesExist(employeesToAdd) ||
-			  (!(timePeriod == null) && !timePeriod.isValidTimePeriod()) ||  
-			  !isValidbudgetedTime(budgetedTime) ||
-			  !isValidManager(initialsProjectManager, employeesToAdd)) {
-			return false;
-		}				
-		return true;
-	}
- 	/** Returns whether or not the initials for the project manager is filled in (and correctly).
-	 *  It should be the actual initials of an employee, amongst the given list of employees, or null or "".
-	 * @param initialsProjectManager The mangers initial-
-	 * @param employeesToAdd The list of employees.
-	 * @return
-	 */
- 	public static boolean isValidManager(String initialsProjectManager, List<Employee> employeesToAdd){
- 		//TODO equals method
-		return (employeesToAdd == null || initialsProjectManager == null || initialsProjectManager.equals("") || 
-				 employeesToAdd.stream().anyMatch(x -> x.equals(initialsProjectManager)));
-	}
- 	
- 	/** Returns whether or no the budgeted time is valid. It is, if it is non-negative.
- 	 * @param budgetedTime
- 	 * @return
- 	 */
-	public static boolean isValidbudgetedTime(int budgetedTime){
-		return budgetedTime >= 0;
-	}
-	
- /** Return whether or not the project name is valid. It is, if is not null, empty,
-	 *  and if there exist no projects with this name already.
-	 * @param scheduler
-	 * @param projectName
-	 * @return
-	 */
-	public static boolean isValidProjectName(Scheduler scheduler,String projectName){
-		try {
-			return !(Tools.isNullOrEmpty(projectName) ||
-					      scheduler.getProject(projectName) != null);  //getProject can throw an error, which is why it is placed last.
-		} catch (Exception e) {
-			return true; //It should throw such an error, if it is valid.
+	private void validateinformation(Scheduler scheduler, 
+			String projectName, 
+		   	int budgetedTime, 
+		   	String initialsProjectManager, 
+		   	TimePeriod timePeriod) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException
+	{
+		if (scheduler == null) {
+			throw new InvalidInformationException("Scheduler can't be null");
+		} else if (Tools.isNullOrEmpty(projectName)) {
+			throw new MissingInformationException("Missing project name");
+		} else if (budgetedTime < 0) {
+			throw new InvalidInformationException("Budgetted time can't be negative");
+		} else if (!Tools.isNullOrEmpty(initialsProjectManager)) {
+			scheduler.getEmployeeFromInitials(initialsProjectManager);
+		} else if (timePeriod != null &&
+		timePeriod.getStartDate() == null) {
+			throw new InvalidInformationException("Time periods start date is empty");
+		} else if (timePeriod != null &&
+		timePeriod.getEndDate() == null) {
+			throw new InvalidInformationException("Time periods end date is empty");
+		} else if (timePeriod != null &&
+		timePeriod.getStartDate().after(timePeriod.getEndDate())) {
+			throw new InvalidInformationException("Start date can't be after the end date");
 		}
 	}
 
+	
+	
 	/**
 	 * @return the name
 	 */
@@ -356,7 +243,7 @@ public class Project {
 		List<Employee> employeesMaxCapacityReached = new ArrayList<Employee>();
 		for (String initials : employeeInitials) {
 			Employee currentEmpoyee = scheduler.getEmployeeFromInitials(initials);
-			if ((currentEmpoyee).canContainMoreActivities()){
+			if (!currentEmpoyee.canContainMoreActivities()){
 				employeesMaxCapacityReached.add(currentEmpoyee);				
 			}			
 		}		
@@ -496,6 +383,11 @@ public class Project {
 		
 		writer.close();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return (obj == null || !(obj instanceof Project))? false: ((Project) obj).getName().equals(this.name);
+	}
 
 	public String getFilePath() {
 		String fileName = name.replaceAll("\\s", "_");
@@ -504,6 +396,23 @@ public class Project {
 		return REPORTS_PATH + fileName;
 	}
 
+	/**
+	 * @return the budgettedTime
+	 */
+	public int getBudgettedTime() {
+		return budgettedTime;
+	}
+
+	/**
+	 * @param budgettedTime the budgettedTime to set
+	 * @throws InvalidInformationException 
+	 */
+	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
+		if (budgettedTime < 0) {
+			throw new InvalidInformationException("Budgetted time can't be less than 0");
+		}
+		this.budgettedTime = budgettedTime;
+	}
 	/** Gets the TimePeriod associated with this project.
 	 * @return
 	 */
@@ -523,7 +432,7 @@ public class Project {
 	}
 
 	public String getCompanyName() {
-		return companyName;
+		return costumerName;
 	}
 	
 	public int getLoebenummerPart() {

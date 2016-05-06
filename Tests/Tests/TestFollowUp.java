@@ -42,7 +42,8 @@ public class TestFollowUp {
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		if(!project.addEmployee("ELL") &&	project.addEmployee("AGC")){
+		if(!project.addEmployee("ELL") ||	
+		   !project.addEmployee("AGC")){
 			Assert.fail();
 		}
 		

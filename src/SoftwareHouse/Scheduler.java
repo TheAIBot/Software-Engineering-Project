@@ -14,6 +14,7 @@ import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.IllegalCharException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
@@ -35,41 +36,29 @@ public class Scheduler {
 	public Scheduler() {
 		anyoneLoggedIn = true; //One needs to be logged in to make a project.
 		try {
-			absenceProject = new Project(this, "absenceProject", true);
-		} catch (InvalidProjectInitilizationInput e) {
-			//It is always the same input given, why it should never be wrong.
-		} catch (NotLoggedInException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			absenceProject = new Project(this, "absenceProject", true); //TODO test creation of absence project if it hasn't been done already
+		} catch (Exception e) { }
 		anyoneLoggedIn = false;
 	}
 
-	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidProjectInitilizationInput {
+	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException 
+	{
+		createProject(projectName, "", "", null, 0, "", null);
+	}
+	
+	public void createProject(String projectName, 
+							  String costumerName, 
+							  String detailedText, 
+							  List<Employee> employeesToAdd, 
+							  int budgettedTime, 
+							  String initialsProjectManager, 
+							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
+	{
 		if (isAnyoneLoggedIn()) {
-			if (Tools.isNullOrEmpty(projectName)) {
-				throw new MissingInformationException("Missing project name"); //TODO change
-			}
 			if (Tools.containsProject(projects, projectName.trim())) {
 				throw new DuplicateNameException("A project with that title already exists");
 			}
-			projects.add(new Project(this, projectName, "","",null,0,null,null));
-		} else {
-			throw new NotLoggedInException();
-		}
-	}
-	
-	public void createProject(String projectName, String companyName, String detailedText, 
-		    List<Employee> employeesToAdd, int budgettedTime, String initialsProjectManager, TimePeriod timePeriod)
-				 throws InvalidProjectInitilizationInput, NotLoggedInException{
-		if (isAnyoneLoggedIn()) {
-			if (Project.isValidProjectInformation(this, projectName, companyName, detailedText, employeesToAdd, 
-					                                   budgettedTime, initialsProjectManager, timePeriod)) {
-				projects.add(new Project(this, projectName,  companyName,  detailedText, 
-					    employeesToAdd, budgettedTime, initialsProjectManager,  timePeriod));
-			} else {
-				throw new InvalidProjectInitilizationInput("The information given will not make a valid project");
-			}
+			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
 		} else {
 			throw new NotLoggedInException();
 		}
@@ -77,7 +66,7 @@ public class Scheduler {
 	
 	public List<Employee> getEmployeesContainingString(String partOfInitials){
 		return employees.entrySet().stream()
-								   .filter(x-> x.getKey().contains(partOfInitials))
+								   .filter(x-> x.getKey().contains(partOfInitials.toUpperCase()))
 								   .map(x -> x.getValue())
 								   .collect(Collectors.toList());
 	}
@@ -129,20 +118,22 @@ public class Scheduler {
 		}
 	}
 
-	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException {
-		if (Tools.isNullOrEmpty(initials)) {
-			throw new MissingInformationException("Missing employee initials");
+	public List<Project> getProjectsContainingStringInName(String partOfProjectName) throws NotLoggedInException
+	{
+		if (isAnyoneLoggedIn()) {
+			return projects.stream()
+					   	   .filter(x -> x.getName().contains(partOfProjectName))
+					   	   .collect(Collectors.toList());
+		} else {
+			throw new NotLoggedInException();
 		}
-		if (employees.containsKey(initials)) {
-			throw new DuplicateNameException("An employee with those initials already exist");
+
+	}
+	
+ 	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException {
+		if (tryIsValidEmployeeInitials(initials)) {
+			employees.put(initials, new Employee(this, initials));
 		}
-		if (initials.length() > 4) {
-			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
-		}
-		if(initials.matches("\\p{L}")){
-			throw new IllegalCharException("Only letters are allowed for initials");
-		}
-		employees.put(initials, new Employee(this, initials));
 	}
 
 	public Activity getActivity(String projectName, String activityName) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException {
@@ -175,16 +166,11 @@ public class Scheduler {
 		return employees.containsKey(initials);
 	}
 
-	public void login(String initials) throws EmployeeNotFoundException, AlreadyLoggedInException {
+	public void login(String initials) throws EmployeeNotFoundException {
 		if (doesEmployeeExist(initials)) {
-			if (loggedInEmployee != null && loggedInEmployee.getInitials().equals(initials)) {
-				throw new AlreadyLoggedInException(initials + " is already logged in");
-			} else{
-				Employee employee = employees.get(initials);
-				loggedInEmployee = employee;
-				anyoneLoggedIn = true;
-			}
-			
+			Employee employee = employees.get(initials);
+			loggedInEmployee = employee;
+			anyoneLoggedIn = true;
 		} else {
 			throw new EmployeeNotFoundException("No employee with those initials exists");
 		}
@@ -199,9 +185,24 @@ public class Scheduler {
 		return timeVault;
 	}
 	
+	public boolean tryIsValidEmployeeInitials(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
+	{
+		if (Tools.isNullOrEmpty(initials)) {
+			throw new MissingInformationException("Missing employee initials");
+		}
+		if (employees.containsKey(initials)) {
+			throw new DuplicateNameException("An employee with those initials already exist");
+		}
+		if (initials.length() > 4) {
+			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
+		}
+		if(!initials.matches("\\p{L}+")){
+			throw new IllegalCharException("Only letters are allowed for initials");
+		}
+		return true;
+	}
+	
 	public Project getAbsenceProject() {
 		return absenceProject;
 	}
-	
-	
 }

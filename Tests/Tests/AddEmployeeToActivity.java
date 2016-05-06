@@ -1,6 +1,7 @@
 package Tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -80,13 +81,23 @@ public class AddEmployeeToActivity {
 
 	@Test
 	public void AddEmployeeToActivitySuccessTest() {
+		// Get the activity and employee
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Udvikling af brugerinterface");
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-
+		Employee employee = null;
+		try {
+			employee = scheduler.getEmployeeFromInitials("NR");
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		}
+		
+		// test the number of employees and activities are correct before and after 
+		int numberOfActivies = employee.getNumberOfActivities();
+		assertFalse(employee.isAlreadyPartOfActivity(activity));
 		assertEquals(activity.getAssignedEmployees().size(), 3);
 		try {
 			activity.addEmployee("NR");
@@ -94,6 +105,8 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		}
 		assertEquals(activity.getAssignedEmployees().size(), 4);
+		assertEquals(numberOfActivies + 1,employee.getNumberOfActivities());
+		assertTrue(employee.isAlreadyPartOfActivity(activity));
 	}
 
 	@Test
