@@ -2,6 +2,7 @@ package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -15,14 +16,15 @@ import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.TimePeriod;
-import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.IllegalCharException;
-import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
-import SoftwareHouse.ExceptionTypes.TooManyCharsException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
+import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
 public class CreateProject {	
 	public static Scheduler scheduler;
@@ -159,9 +161,11 @@ public class CreateProject {
 			scheduler.createProject("", COMPANY_NAME, DETAILED_TEXT, 
 					employeeListWithEmployees, 42, "JSB", VALID_TIME_PERIOD);
 			Assert.fail();
+		} catch (MissingInformationException e){
+			assertEquals("Missing project name", "Missing project name");
 		} catch (Exception e) {
-			//Succes!
-		}		
+			Assert.fail(e.getMessage());	
+		}	
 	}
 	
 	@Test
@@ -171,9 +175,11 @@ public class CreateProject {
 			scheduler.createProject(null, COMPANY_NAME, DETAILED_TEXT, 
 					employeeListWithEmployees, 42, "JSB", VALID_TIME_PERIOD);
 			Assert.fail();
+		} catch (MissingInformationException e){
+			assertEquals("Missing project name", e.getMessage());
 		} catch (Exception e) {
-			//Succes!
-		} 			
+			Assert.fail(e.getMessage());	
+		}		
 	}
 	
 	@Test
@@ -190,9 +196,11 @@ public class CreateProject {
 			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 						employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
 			Assert.fail();
+		} catch (DuplicateNameException e){
+			assertEquals("A project with that title already exists", e.getMessage());
 		} catch (Exception e) {
-			//Succes!
-		}
+			Assert.fail(e.getMessage());	
+		}		
 	}
 	
 	@Test
