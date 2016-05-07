@@ -233,4 +233,38 @@ public class AddEmployeeToProject {
 
 		assertFalse(project.addEmployee("LSB"));
 	}
+	
+	
+	/**
+	 * Test case: Employee does not exists in the internal system
+	 */
+	@Test
+	public void AddEmployeeNotExisting() {
+		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
+		try {
+			scheduler.createProject("Battlefield 1");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		Project project = null;
+		try {
+			project = scheduler.getProject("Battlefield 1");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		Employee employeeX = null;
+		try {
+			employeeX = scheduler.getEmployeeFromInitials("XXXX");
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("No employee with those initials exists", e.getMessage());
+		}
+		
+		assertFalse(project.addEmployee("XXXX"));
+		assertEquals(0, project.getEmployees().size());
+
+	}
+	
 }
