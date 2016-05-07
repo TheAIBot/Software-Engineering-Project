@@ -21,7 +21,7 @@ public class CloseActivity {
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
 		try {
-			scheduler.createProject("Navision Stat");
+			TestTools.createProject(scheduler,"Navision Stat");
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -91,7 +91,8 @@ public class CloseActivity {
 		try {
 			scheduler.createProject("Navision Stat");
 		} catch (Exception e) {
-			Assert.fail();
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
 		}
 		
 		Project project = null;
