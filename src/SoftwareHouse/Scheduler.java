@@ -89,7 +89,9 @@ public void createProject(String projectName) throws MissingInformationException
 							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		if (isAnyoneLoggedIn()) {
-			if (Tools.containsProject(projects, projectName.trim())) {
+			if (projectName == null) {
+				throw new MissingInformationException("Missing project name");
+			} else if (Tools.containsProject(projects, projectName.trim())) {
 				throw new DuplicateNameException("A project with that title already exists");
 			} 
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
@@ -273,6 +275,9 @@ public void createProject(String projectName) throws MissingInformationException
 		}
 		if(!initials.matches("\\p{L}+")){
 			throw new IllegalCharException("Only letters are allowed for initials");
+		}
+		if (employees.containsKey(initials)) {
+			throw new DuplicateNameException("An employee with those initial already exist");
 		}
 		return true;
 	}

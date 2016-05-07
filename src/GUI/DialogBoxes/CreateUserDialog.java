@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 
 import GUI.Tools;
 import GUI.BorderComponents.JBorderTextField;
+import GUI.Listeners.TextChangedListener;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
@@ -54,16 +55,12 @@ public class CreateUserDialog extends JDialog {
 		initialsTextField.setBounds(66, 8, 86, 20);
 		contentPanel.add(initialsTextField);
 		initialsTextField.setColumns(10);
-		initialsTextField.getDocument().addDocumentListener(new DocumentListener() {
-			  public void changedUpdate(DocumentEvent e){
-				 checkInitials();
-			  }
-			  public void removeUpdate(DocumentEvent e){
-				  checkInitials();
-			  }
-			  public void insertUpdate(DocumentEvent e){
-				  checkInitials();
-			  }
+		initialsTextField.makeBorderRed();
+		initialsTextField.getDocument().addDocumentListener( new TextChangedListener() {
+			@Override
+			public void textChanged() {
+				checkInitials();
+			}
 		});
 		
 		JLabel lblInitialer = new JLabel("Initialer:");
@@ -111,7 +108,17 @@ public class CreateUserDialog extends JDialog {
 	
 	public void checkInitials()
 	{
-		String errorText = Tools.changeBorder(initialsTextField, x -> scheduler.tryIsValidEmployeeInitials(x));
-		createEmployeeErrorLabel.setText(errorText);
+		if (initialsTextField.getText().trim().length() == 0) {
+			initialsTextField.makeBorderRed();
+		} else {
+			try {
+				scheduler.tryIsValidEmployeeInitials(initialsTextField.getText());
+				initialsTextField.makeBorderGreen();
+				createEmployeeErrorLabel.setText("");
+			} catch (Exception e) {
+				initialsTextField.makeBorderRed();
+				createEmployeeErrorLabel.setText(e.getMessage());
+			}
+		}
 	}
 }
