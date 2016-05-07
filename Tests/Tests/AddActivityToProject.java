@@ -68,7 +68,7 @@ public class AddActivityToProject {
 	}
 	
 	@Test
-	public void AddActivityMissingInformationTest()
+	public void TestMissingTitle()
 	{
 		Project project = null;
 		try {
@@ -90,7 +90,6 @@ public class AddActivityToProject {
 		employeeInitials.add("AGC");
 		employeeInitials.add("NR");
 		
-		//No title given
 		try {
 			project.addAcitivity(null,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
@@ -105,8 +104,31 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void TestMissingDetailedText()
+	{
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
 		
-		//No detailed text given
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
+		
 		try {
 			project.addAcitivity(activityName,	null, employeeInitials, startDate, endDate, expectedHours);
 			Assert.fail();
@@ -121,8 +143,31 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void TestMissingEmployee()
+	{
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
 		
-		//No employees given
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
+		
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
 			Assert.fail();
@@ -137,8 +182,31 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void TestMissingStartDate()
+	{
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
 		
-		//No start date given for the time period
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
+		
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, null, endDate, expectedHours);
 			Assert.fail();
@@ -153,8 +221,31 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void TestMissingEndDate()
+	{
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
 		
-		//No end date given for the time period
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
+		
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, null, expectedHours);
 			Assert.fail();
@@ -169,8 +260,31 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void TestEndDateBeforeStartDate()
+	{
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
 		
-		//Test for when the end date is before start date for the time period.
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
+		
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, endDate, startDate, expectedHours);
 			Assert.fail();
@@ -185,8 +299,31 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
+	}
+
+	@Test
+	public void TestNegativeBudgettedTime()
+	{
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
 		
-		//test for when the budgetted time is less than zero
+		String activityName = "Udvikling af brugerinterface";
+		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
+		int expectedHours = 200;
+		Calendar startDate = new GregorianCalendar();
+		startDate.set(2016, 3, 16);
+		Calendar endDate = new GregorianCalendar();
+		endDate.set(2016, 4, 18);
+		List<String> employeeInitials = new ArrayList<String>();
+		employeeInitials.add("JBS");
+		employeeInitials.add("ELL");
+		employeeInitials.add("AGC");
+		employeeInitials.add("NR");
+		
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, -1);
 			Assert.fail();
@@ -201,7 +338,6 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
-		
 	}
 	
 	@Test
