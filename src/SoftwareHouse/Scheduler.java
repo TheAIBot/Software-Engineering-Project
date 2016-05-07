@@ -130,16 +130,12 @@ public void createProject(String projectName) throws MissingInformationException
 		}
 	}
 
-	/** Return whether or not all the given employees exist. If the list is null, it returns true. 
+	/** Return whether or not all the given employees exist. 
 	 * @param employees The employees
 	 * @return True if all exists, else false.
 	 */
 	public boolean doAllEmployeesExist(List<Employee> employees) {
-		if (employees != null) {
-			return (employees.stream().allMatch(x -> this.doesEmployeeExist(x.getInitials())));			
-		} else {
-			return true;
-		}
+		return (employees.stream().allMatch(x -> this.doesEmployeeExist(x.getInitials())));			
 	}
 	
 	/**
@@ -208,7 +204,7 @@ public void createProject(String projectName) throws MissingInformationException
 				//will add that functionality later
 				if (Tools.containsActivity(project.getOpenActivities(), activityName)) {
 					return Tools.getActivityFromName(project.getOpenActivities(), activityName);
-				//}else if (Tools.containsActivity(absenceProject.getOpenActivities(), activityName)) {
+				//}else if (Tools.containsActivity(absenceProject.getOpenActivities(), activityName)) { //not needed because getProejct() can also return an absence project
 					//return Tools.getActivityFromName(absenceProject.getOpenActivities(), activityName);
 				} else {
 					throw new ActivityNotFoundException();

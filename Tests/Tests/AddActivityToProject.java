@@ -1,6 +1,7 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +51,8 @@ public class AddActivityToProject {
 		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
+		
+		assertTrue(scheduler.doAllEmployeesExist(project.getEmployees()));
 	}
 	
 	@Test
