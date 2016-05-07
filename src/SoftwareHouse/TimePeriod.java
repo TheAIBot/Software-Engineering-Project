@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
+/**
+ * Class representing a period of time utilising the DateFormat class
+ */
 public class TimePeriod {
 	
 	public static final String DATE_FORMAT = "dd MM yyyy";
