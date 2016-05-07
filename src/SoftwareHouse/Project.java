@@ -64,10 +64,11 @@ public class Project {
 	 * @throws EmployeeNotFoundException 
 	 * @throws InvalidInformationException 
 	 * @throws MissingInformationException 
+	 * @throws EmployeeAlreadyAssignedException 
 	 */	
 	public Project(Scheduler scheduler, String projectName, String costumerName, String detailedText, 
 			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
-					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException
+					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
 	{
 		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod);
 		this.scheduler = scheduler;
@@ -81,10 +82,14 @@ public class Project {
 		} catch (EmployeeNotFoundException e) {
 		}
 		this.timePeriod = timePeriod;	
-		if (employeesToAdd != null) employeesToAdd.stream().forEach(x -> this.addEmployee(x.getInitials()));
+		if (employeesToAdd != null) {
+			for (Employee employee : employeesToAdd) {
+				this.addEmployee(employee.getInitials());
+			}
+		}
 	}
 	
-	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException{
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException{
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
 	}
