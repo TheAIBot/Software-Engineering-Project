@@ -402,9 +402,9 @@ public class Project {
 	/**
 	 * @param isOpen the isOpen to set
 	 */
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
-	}
+//	public void setOpen(boolean isOpen) {
+//		this.isOpen = isOpen;
+//	}
 	
 	/**
 	 * @param costumerName the costumerName to set
@@ -416,9 +416,9 @@ public class Project {
 	/**
 	 * @param budgetedTime the budgetedTime to set
 	 */
-	public void setBudgetedTime(int budgetedTime) {
-		this.budgetedTime = budgetedTime;
-	}
+//	public void setBudgetedTime(int budgetedTime) {
+//		this.budgetedTime = budgetedTime;
+//	}
 
 	/**
 	 * @param projectManager the projectManager to set
@@ -469,9 +469,9 @@ public class Project {
 	/**
 	 * @return the budgettedTime
 	 */
-	public int getBudgettedTime() {
-		return budgettedTime;
-	}
+//	public int getBudgettedTime() {
+//		return budgettedTime;
+//	}
 	
 	/**
 	 * @param budgettedTime the budgettedTime to set
@@ -509,8 +509,8 @@ public class Project {
 	/**
 	 * @return the projectNumber
 	 */
-	public int getProjectNumber() {
-		return projectNumber;
-	}
+//	public int getProjectNumber() {
+//		return projectNumber;
+//	}
 
 }
