@@ -346,29 +346,13 @@ public class Project {
 	}
 
 	public void generateReport() {
-		PrintWriter writer = null;
 		String fileName = getFilePath();
-		try {
-			writer = new PrintWriter(fileName, "UTF-8");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		
-		for (Activity activity : openActivities) {
-			writer.println("Activity name: " + activity.getName());
-			writer.println("Bugeted time: " + activity.getBudgettedTime());
-			writer.println("Detailed text: " + activity.getDetailText());
-			String str = "Employee initials: ";
-			for (Employee employee : activity.getAssignedEmployees()) {
-				str += employee.getInitials() + " ";
-			}
-			writer.println(str);
-			writer.println("\n");
-		}
-		
-		writer.close();
+		try (PrintWriter writer = new PrintWriter(fileName, "UTF-8"))
+		{
+			StringBuilder sBuilder = new StringBuilder();
+			openActivities.stream().forEach(x -> sBuilder.append(x.toString()));
+			writer.println(sBuilder.toString());
+		} catch (Exception e) {	}
 	}
 
 	public String getFilePath() {
