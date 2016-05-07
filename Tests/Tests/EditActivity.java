@@ -21,7 +21,7 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 /**
  * @author ELL
  */
-public class TestEditActivity {
+public class EditActivity {
 
 	Scheduler scheduler;
 

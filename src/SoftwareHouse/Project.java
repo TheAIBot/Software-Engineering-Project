@@ -113,9 +113,12 @@ public class Project {
 		serialNumber++;
 	}
 	
-	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded{
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded, EmployeeMaxActivitiesReachedException {
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
+		openActivities.add(new AbsenceActivity("sygdom", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("ferie", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("kursus", "", null, null, null, 0, this));
 	}
 	
 	private void validateinformation(Scheduler scheduler, 
