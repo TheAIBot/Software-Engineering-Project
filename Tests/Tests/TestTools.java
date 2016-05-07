@@ -22,6 +22,7 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
@@ -189,12 +190,12 @@ public class TestTools {
 		return employee;
 	}
 
-	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
+	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		return createProject(scheduler, projectName, LOGIN_EMPLOYEE_INITIALS);
 	}
 	
-	public static Project createProject(Scheduler scheduler,String projectName, String projectManagerInitial) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
+	public static Project createProject(Scheduler scheduler,String projectName, String projectManagerInitial) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		int currentNumberOfProjects = scheduler.getProjects().size();
 		Employee projectmanager = scheduler.getEmployeeFromInitials(projectManagerInitial);

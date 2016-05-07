@@ -323,6 +323,4 @@ public class AddEmployeeToProject {
 		assertEquals(0, project.getEmployees().size());
 
 	}
-	
->>>>>>> 6e194e218aade5b1da3d31a7ac968758549b42bb
 }

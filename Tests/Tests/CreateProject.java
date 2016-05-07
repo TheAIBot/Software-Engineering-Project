@@ -277,7 +277,6 @@ public class CreateProject {
 		
 	@Test
 	public void createProjectNonexistentManagerInitials(){
-<<<<<<< HEAD
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
 	}
@@ -291,9 +290,6 @@ public class CreateProject {
 			Assert.fail(e.getMessage());
 		}
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-=======
-		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT,
->>>>>>> refs/remotes/origin/Niklas
 				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
 	}
 	

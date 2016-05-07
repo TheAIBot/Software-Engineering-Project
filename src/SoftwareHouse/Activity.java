@@ -3,6 +3,7 @@ package SoftwareHouse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
@@ -144,5 +145,29 @@ public class Activity {
 			throw new InvalidInformationException("Assigned employees can't be null");
 		}
 		this.assignedEmployees = assignedEmployees;
+	}
+	
+	public String toString()
+	{
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("Activity name: ");
+		sBuilder.append(name);
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append("Bugeted time: ");
+		sBuilder.append(budgettedTime);
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append("Detailed text: ");
+		sBuilder.append(detailText);
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append("Employee initials: ");
+		final List<String> employeeInitials = assignedEmployees.stream()
+														 	    .map(x -> x.getInitials())
+														 	    .collect(Collectors.toList());
+		sBuilder.append(String.join(", ", employeeInitials));
+		
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append(System.getProperty("line.separator"));
+		
+		return sBuilder.toString();
 	}
 }

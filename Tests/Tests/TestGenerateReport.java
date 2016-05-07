@@ -44,7 +44,7 @@ public class TestGenerateReport {
 		
 		// Create project
 		try {
-			TestTools.createProject(scheduler,"Navision Stat?"); // The ?-sign is used on purpose to test file naming
+			TestTools.createProject(scheduler, "Navision Stat?"); // The ?-sign is used on purpose to test file naming
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -78,7 +78,7 @@ public class TestGenerateReport {
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 		activityName = "Rendering";
 		activityDetailedDescription = "Udikling af Rendering Engine. Herunder shadows, textures, smooth lightning.";
@@ -120,14 +120,13 @@ public class TestGenerateReport {
 		Assert.assertEquals("Activity name: Brugerinterface", scanner.nextLine());
 		Assert.assertEquals("Bugeted time: 150", scanner.nextLine());
 		Assert.assertEquals("Detailed text: Udvikling af brugerinterface", scanner.nextLine());
-		Assert.assertEquals("Employee initials: AGC ELL ", scanner.nextLine());
-		Assert.assertEquals("", scanner.nextLine());
+		Assert.assertEquals("Employee initials: AGC, ELL", scanner.nextLine());
 		Assert.assertEquals("", scanner.nextLine());
 		
 		Assert.assertEquals("Activity name: Rendering", scanner.nextLine());
 		Assert.assertEquals("Bugeted time: 150", scanner.nextLine());
 		Assert.assertEquals("Detailed text: Udikling af Rendering Engine. Herunder shadows, textures, smooth lightning.", scanner.nextLine());
-		Assert.assertEquals("Employee initials: NR JBS ", scanner.nextLine());
+		Assert.assertEquals("Employee initials: NR, JBS", scanner.nextLine());
 		Assert.assertEquals("", scanner.nextLine());
 		Assert.assertEquals("", scanner.nextLine());
 		Assert.assertFalse(scanner.hasNextLine());
