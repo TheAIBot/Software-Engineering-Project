@@ -49,8 +49,8 @@ public class EditProject {
 			START_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012,2,10), new GregorianCalendar(2012,2,11));
 		} catch (InvalidInformationException e) {
 			Assert.fail();
+			throw new NullPointerException("START_TIME_PERIOD is null");
 		}
-		throw new NullPointerException("START_TIME_PERIOD is null");
 
 	}
 	
