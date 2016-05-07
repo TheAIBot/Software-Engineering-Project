@@ -1,7 +1,8 @@
 package Tests;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
@@ -322,4 +324,5 @@ public class AddEmployeeToProject {
 
 	}
 	
+>>>>>>> 6e194e218aade5b1da3d31a7ac968758549b42bb
 }

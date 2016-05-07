@@ -21,6 +21,7 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import sun.net.www.content.audio.x_aiff;
 import sun.nio.cs.ext.TIS_620;
@@ -66,11 +67,15 @@ public class Project {
 	 * @throws InvalidInformationException 
 	 * @throws MissingInformationException 
 	 * @throws EmployeeAlreadyAssignedException 
+	 * @throws ProjectManagerNotPartOfEmployeesAdded 
 	 */	
 	public Project(Scheduler scheduler, String projectName, String costumerName, String detailedText, 
 			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
-					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
+					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
+<<<<<<< HEAD
+		validateinformation(scheduler, projectName,employeesToAdd, budgetedTime, initialsProjectManager, timePeriod);
+=======
 		List<String> employeesInitials = null;
 		if (employeesToAdd != null) {
 			employeesInitials = employeesToAdd.stream()
@@ -79,6 +84,7 @@ public class Project {
 		}
 		
 		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod, employeesInitials);
+>>>>>>> refs/remotes/origin/Niklas
 		this.scheduler = scheduler;
 		this.name = projectName;
 		this.costumerName = costumerName;
@@ -95,19 +101,25 @@ public class Project {
 				this.addEmployee(employee.getInitials());
 			}
 		}
+		
 	}
 	
-	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException{
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded{
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
 	}
 	
 	private void validateinformation(Scheduler scheduler, 
 			String projectName, 
+			List<Employee> employeesToAdd,
 		   	int budgetedTime, 
 		   	String initialsProjectManager, 
+<<<<<<< HEAD
+		   	TimePeriod timePeriod) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException, ProjectManagerNotPartOfEmployeesAdded
+=======
 		   	TimePeriod timePeriod,
 		   	List<String> employees) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException
+>>>>>>> refs/remotes/origin/Niklas
 	{
 		if (scheduler == null) {
 			throw new InvalidInformationException("Scheduler can't be null");
@@ -119,8 +131,15 @@ public class Project {
 					employees != null &&
 					employees.contains(initialsProjectManager)) {
 			scheduler.getEmployeeFromInitials(initialsProjectManager);
+<<<<<<< HEAD
+			if(!isProperProjectManagerToAdd(initialsProjectManager, employeesToAdd)){
+				throw new ProjectManagerNotPartOfEmployeesAdded("The given manager " + initialsProjectManager + " is not a part of the list of employees given." );
+			}
+		} else if (timePeriod != null &&
+=======
 		}
 		if (timePeriod != null &&
+>>>>>>> refs/remotes/origin/Niklas
 		timePeriod.getStartDate() == null) {
 			throw new InvalidInformationException("Time periods start date is empty");
 		} else if (timePeriod != null &&
@@ -129,7 +148,16 @@ public class Project {
 		} else if (timePeriod != null &&
 		timePeriod.getStartDate().after(timePeriod.getEndDate())) {
 			throw new InvalidInformationException("Start date can't be after the end date");
-		}
+		} 
+		
+	}
+	
+	public boolean isProperProjectManagerToAdd(String initialsProjectManager, List<Employee> employeesToAdd){
+		if (!Tools.isNullOrEmpty(initialsProjectManager)) {
+			if (employeesToAdd == null) {
+				return false;
+			} else return employeesToAdd.stream().anyMatch(x -> x.getInitials().equals(initialsProjectManager));
+		} else return true;
 	}
 
 	
