@@ -6,6 +6,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.border.Border;
 
+/**
+ * Used to highlight a text combo box depending on current input
+ */
 public class JBorderComboBox extends JComboBox<String> implements ColoredBorder {
 
 	private final Border defaultBorder = getBorder();

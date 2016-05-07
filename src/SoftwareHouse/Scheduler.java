@@ -1,22 +1,17 @@
 package SoftwareHouse;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
@@ -35,21 +30,51 @@ public class Scheduler {
 	private TimeVault timeVault = new TimeVault(this);	
 	private Project absenceProject;
 	
+	/**
+	 * Creates the absence project used to recording absence activites
+	 */
 	public Scheduler() {
 		anyoneLoggedIn = true; //One needs to be logged in to make a project.
 		try {
 			absenceProject = new Project(this, "absenceProject", true); //TODO test creation of absence project if it hasn't been done already
 		} catch (Exception e) { 
-			//Cann't be reached
+			//Cannot be reached
 		}
 		anyoneLoggedIn = false;
 	}
 
-	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded 
+	/**
+	 * Creates a blank project
+	 * It is valid only to specify the project name, but the other fields will need to be given before the project can be manipulated properly
+	 * @param projectName
+	 * @throws MissingInformationException
+	 * @throws DuplicateNameException
+	 * @throws NotLoggedInException
+	 * @throws InvalidInformationException
+	 * @throws EmployeeNotFoundException
+	 * @throws EmployeeAlreadyAssignedException
+	 */
+public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded 
 	{
 		createProject(projectName, "", "", null, 0, "", null);
 	}
 	
+	/**
+	 * Creates a full project with all information specified
+	 * @param projectName
+	 * @param costumerName
+	 * @param detailedText
+	 * @param employeesToAdd
+	 * @param budgettedTime
+	 * @param initialsProjectManager
+	 * @param timePeriod
+	 * @throws NotLoggedInException
+	 * @throws MissingInformationException
+	 * @throws InvalidInformationException
+	 * @throws EmployeeNotFoundException
+	 * @throws DuplicateNameException
+	 * @throws EmployeeAlreadyAssignedException
+	 */
 	public void createProject(String projectName, 
 							  String costumerName, 
 							  String detailedText, 
@@ -59,7 +84,9 @@ public class Scheduler {
 							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		if (isAnyoneLoggedIn()) {
-			if (Tools.containsProject(projects, projectName.trim())) {
+			if (projectName == null) {
+				throw new MissingInformationException("Missing project name");
+			} else if (Tools.containsProject(projects, projectName.trim())) {
 				throw new DuplicateNameException("A project with that title already exists");
 			} 
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
@@ -75,6 +102,11 @@ public class Scheduler {
 								   .collect(Collectors.toList());
 	}
 	
+	/**
+	 * @param initials
+	 * @return Employee
+	 * @throws EmployeeNotFoundException
+	 */
 	public Employee getEmployeeFromInitials(String initials) throws EmployeeNotFoundException
 	{
 		if (employees.containsKey(initials)) {
@@ -108,6 +140,12 @@ public class Scheduler {
 		}
 	}
 	
+	/**
+	 * @param projectName
+	 * @return Project
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 */
 	public Project getProject(String projectName) throws ProjectNotFoundException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
 			if (Tools.containsProject(projects, projectName)) {
@@ -122,6 +160,11 @@ public class Scheduler {
 		}
 	}
 
+	/**
+	 * @param partOfProjectName
+	 * @return List<Project>
+	 * @throws NotLoggedInException
+	 */
 	public List<Project> getProjectsContainingStringInName(String partOfProjectName) throws NotLoggedInException
 	{
 		if (isAnyoneLoggedIn()) {
@@ -134,12 +177,27 @@ public class Scheduler {
 
 	}
 	
+ 	/**
+ 	 * @param initials
+ 	 * @throws MissingInformationException
+ 	 * @throws DuplicateNameException
+ 	 * @throws TooManyCharsException
+ 	 * @throws IllegalCharException
+ 	 */
  	public void addEmployee(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException {
 		if (tryIsValidEmployeeInitials(initials)) {
 			employees.put(initials, new Employee(this, initials));
 		}
 	}
 
+	/**
+	 * @param projectName
+	 * @param activityName
+	 * @return Activity
+	 * @throws ProjectNotFoundException
+	 * @throws ActivityNotFoundException
+	 * @throws NotLoggedInException
+	 */
 	public Activity getActivity(String projectName, String activityName) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException {
 		if (isAnyoneLoggedIn()) {
 			if (Tools.containsProject(projects, projectName) || Tools.containsProject(java.util.Collections.singletonList(absenceProject), projectName)) {
@@ -189,6 +247,16 @@ public class Scheduler {
 		return timeVault;
 	}
 	
+	/**
+	 * Helping method used in the process of adding employees in the internal system.
+	 * Tests that the initials are valid
+	 * @param initials
+	 * @return true if employee initials are valid, false otherwise
+	 * @throws MissingInformationException
+	 * @throws DuplicateNameException
+	 * @throws TooManyCharsException
+	 * @throws IllegalCharException
+	 */
 	public boolean tryIsValidEmployeeInitials(String initials) throws MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
 	{
 		if (Tools.isNullOrEmpty(initials)) {
@@ -202,6 +270,9 @@ public class Scheduler {
 		}
 		if(!initials.matches("\\p{L}+")){
 			throw new IllegalCharException("Only letters are allowed for initials");
+		}
+		if (employees.containsKey(initials)) {
+			throw new DuplicateNameException("An employee with those initial already exist");
 		}
 		return true;
 	}
