@@ -21,7 +21,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
  * @author ELL
  * Test the generation of a report
  */
-public class TestGenerateReport {
+public class GenerateReport {
 
 	Scheduler scheduler;
 	

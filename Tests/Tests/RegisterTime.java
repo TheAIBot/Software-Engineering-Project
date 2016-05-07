@@ -13,7 +13,7 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
-public class TestRegisterTime {
+public class RegisterTime {
 
 	private Scheduler scheduler = null;
 
