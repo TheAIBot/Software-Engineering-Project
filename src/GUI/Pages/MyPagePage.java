@@ -1,5 +1,8 @@
 package GUI.Pages;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import GUI.GUIController;
 import GUI.Tools;
 import GUI.Panels.MyPagePanel;
@@ -14,7 +17,15 @@ public class MyPagePage extends SuperPage<MyPagePanel> {
 
 	@Override
 	public MyPagePanel createPage(GUIController controlle) {
-		return new MyPagePanel();
+		MyPagePanel myPagePanel = new MyPagePanel();
+		
+		myPagePanel.getAbsenseActivitiesButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlle.switchPage(new AbsenseActivitiesPage(controlle, scheduler));
+			}
+		});
+		
+		return myPagePanel;
 	}
 
 	@Override

@@ -5,11 +5,13 @@ import java.awt.Dimension;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JButton;
 
 public class MyPagePanel extends JPanel {
 	private JScrollPane projectsScrollPane;
 	private JScrollPane activitiesScrollPane;
 	private JLabel initialsLabel;
+	private JButton absenseActivitiesButton;
 
 	/**
 	 * Create the panel.
@@ -21,20 +23,24 @@ public class MyPagePanel extends JPanel {
 		setLayout(null);
 		
 		projectsScrollPane = new JScrollPane();
-		projectsScrollPane.setBounds(152, 11, 270, 548);
+		projectsScrollPane.setBounds(165, 11, 270, 576);
 		add(projectsScrollPane);
 		
 		activitiesScrollPane = new JScrollPane();
-		activitiesScrollPane.setBounds(432, 11, 358, 548);
+		activitiesScrollPane.setBounds(447, 11, 343, 576);
 		add(activitiesScrollPane);
 		
 		JLabel lblInitials = new JLabel("Initials:");
 		lblInitials.setBounds(10, 11, 46, 14);
 		add(lblInitials);
 		
-		initialsLabel = new JLabel("New label");
-		initialsLabel.setBounds(66, 11, 46, 14);
+		initialsLabel = new JLabel("");
+		initialsLabel.setBounds(66, 11, 74, 14);
 		add(initialsLabel);
+		
+		absenseActivitiesButton = new JButton("Frav\u00E6rsaktiviteter");
+		absenseActivitiesButton.setBounds(12, 536, 141, 51);
+		add(absenseActivitiesButton);
 
 	}
 
@@ -57,5 +63,12 @@ public class MyPagePanel extends JPanel {
 	 */
 	public JLabel getInitialsLabel() {
 		return initialsLabel;
+	}
+
+	/**
+	 * @return the absenseActivitiesButton
+	 */
+	public JButton getAbsenseActivitiesButton() {
+		return absenseActivitiesButton;
 	}
 }
