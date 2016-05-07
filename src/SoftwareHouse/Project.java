@@ -41,7 +41,6 @@ public class Project {
 	private boolean isOpen = true;
 	private final String REPORTS_PATH = "res/reports/";
 	private final String FILE_EXTENTION = ".txt";
-	public int budgettedTime = 0;
 	private boolean useAbsenceActivity = false;
 	private String detailedText;
 	
@@ -108,7 +107,7 @@ public class Project {
 			for (Employee employee : employeesToAdd) {
 				this.addEmployee(employee.getInitials());
 			}
-		}
+		} else employees = new ArrayList<Employee>();
 		this.projectNumber = Calendar.getInstance().get(Calendar.YEAR) + serialNumber;
 		serialNumber++;
 	}
@@ -116,9 +115,9 @@ public class Project {
 	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded, EmployeeMaxActivitiesReachedException {
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
-		openActivities.add(new AbsenseActivity("sygdom", "", null, null, null, 0, this));
-		openActivities.add(new AbsenseActivity("ferie", "", null, null, null, 0, this));
-		openActivities.add(new AbsenseActivity("kursus", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("sygdom", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("ferie", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("kursus", "", null, null, null, 0, this));
 	}
 	
 	private void validateinformation(Scheduler scheduler, 
@@ -248,7 +247,7 @@ public class Project {
 			}
 			Activity activity;
 			if (useAbsenceActivity) {
-				activity = new AbsenseActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
+				activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
 			} else {
 				activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
 			}
@@ -351,10 +350,11 @@ public class Project {
 		return name;
 	}
 
-	/**
+	/** Sets the name of the project to a new given name. Throws an error in case of the new name being null, 
+	 *  an empty String or if there exist another project, with that name.
 	 * @param name the name to set
-	 * @throws DuplicateNameException 
-	 * @throws MissingInformationException 
+	 * @throws DuplicateNameException If a project with that name already exists.
+	 * @throws MissingInformationException If the name is null or empty/it is not "specified"
 	 */
 	public void setName(String name) throws DuplicateNameException, MissingInformationException {
 		Project project = null;
@@ -402,9 +402,9 @@ public class Project {
 	/**
 	 * @param isOpen the isOpen to set
 	 */
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
-	}
+//	public void setOpen(boolean isOpen) {
+//		this.isOpen = isOpen;
+//	}
 	
 	/**
 	 * @param costumerName the costumerName to set
@@ -413,24 +413,28 @@ public class Project {
 		this.costumerName = costumerName;
 	}
 
-	/**
-	 * @param budgetedTime the budgetedTime to set
-	 */
-	public void setBudgetedTime(int budgetedTime) {
-		this.budgetedTime = budgetedTime;
-	}
-
-	/**
+	/** Assigns a new project manager, based on the initials given. If the initials are null or empty, 
+	 * the project manager is set to null/no project manager is assigned, and if the new project manager is not part of the project,
+	 * an error is thrown
 	 * @param projectManager the projectManager to set
+	 * @throws ProjectManagerNotPartOfEmployeesAdded The new project manager needs to be a part of the project.
 	 */
-	public void setProjectManager(Employee projectManager) {
-		this.projectManager = projectManager;
+	public void setProjectManager(String initialProjecManager) throws ProjectManagerNotPartOfEmployeesAdded {
+		if (initialProjecManager == null || initialProjecManager == "" ) {
+			projectManager = null;			
+		} else {
+			if (!employees.stream().anyMatch(x -> x.getInitials().equals(initialProjecManager))) {
+				throw new ProjectManagerNotPartOfEmployeesAdded("The project manager that is trying to be assignes, " + 
+			initialProjecManager + " is not part of the project");
+			} else	this.projectManager = employees.stream().filter(x -> x.getInitials().equals(initialProjecManager)).findFirst().get();
+		}
 	}
 
 	/**
 	 * @param timePeriod the timePeriod to set
+	 * @throws InvalidInformationException 
 	 */
-	public void setTimePeriod(TimePeriod timePeriod) {
+	public void setTimePeriod(TimePeriod timePeriod) throws InvalidInformationException {
 		this.timePeriod = timePeriod;
 	}
 
@@ -454,9 +458,17 @@ public class Project {
 	 */
 	public void setEmployees(List<Employee> employees) throws InvalidInformationException {
 		if (employees == null) {
-			throw new InvalidInformationException("Employees can't be null");
+			this.employees = new ArrayList<Employee>();
+		} else {
+			for (Employee employee : employees) {
+				try {
+					scheduler.getEmployeeFromInitials(employee.getInitials());
+				} catch (EmployeeNotFoundException e) {
+					throw new InvalidInformationException("There cannot be added employees to a project, when some of them do not exist");
+				}
+			}
+			this.employees = employees;
 		}
-		this.employees = employees;
 	}
 
 	public String getFilePath() {
@@ -470,18 +482,18 @@ public class Project {
 	 * @return the budgettedTime
 	 */
 	public int getBudgettedTime() {
-		return budgettedTime;
+		return budgetedTime;
 	}
 	
 	/**
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
 	 */
-	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
-		if (budgettedTime < 0) {
+	public void setBudgettedTime(int budgetedTime) throws InvalidInformationException {
+		if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}
-		this.budgettedTime = budgettedTime;
+		this.budgetedTime = budgetedTime;
 	}
 	/** Gets the TimePeriod associated with this project.
 	 * @return
@@ -505,12 +517,11 @@ public class Project {
 		return costumerName;
 	}
 	
-
 	/**
 	 * @return the projectNumber
 	 */
-	public int getProjectNumber() {
-		return projectNumber;
-	}
+//	public int getProjectNumber() {
+//		return projectNumber;
+//	}
 
 }

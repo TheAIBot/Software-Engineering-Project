@@ -208,8 +208,8 @@ public void createProject(String projectName) throws MissingInformationException
 				//will add that functionality later
 				if (Tools.containsActivity(project.getOpenActivities(), activityName)) {
 					return Tools.getActivityFromName(project.getOpenActivities(), activityName);
-				}else if (Tools.containsActivity(absenceProject.getOpenActivities(), activityName)) {
-					return Tools.getActivityFromName(absenceProject.getOpenActivities(), activityName);
+				//}else if (Tools.containsActivity(absenceProject.getOpenActivities(), activityName)) {
+					//return Tools.getActivityFromName(absenceProject.getOpenActivities(), activityName);
 				} else {
 					throw new ActivityNotFoundException();
 				}
