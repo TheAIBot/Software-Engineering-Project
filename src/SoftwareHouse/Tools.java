@@ -3,6 +3,9 @@ package SoftwareHouse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Helping class to handle general static operations used through out every other class
+ */
 public class Tools {
 
 	public static boolean isNullOrEmpty(String string)
@@ -12,23 +15,21 @@ public class Tools {
 	
 	public static boolean containsProject(List<Project> projects, String projectName)
 	{
-		return projects.stream()
-					   .anyMatch(x -> x.getName().equals(projectName));
+		return (projects.stream()
+					   .anyMatch(x -> x.getName().equals(projectName)));
 	}
 	
 	public static boolean containsActivity(List<Activity> activities, String activityName)
 	{
-		return activities.stream()
-				   		 .anyMatch(x -> x.getName().equals(activityName));
+		return activities.stream().anyMatch(x -> x.getName().equals(activityName));
 	}
 	
 	public static boolean containsEmployee(List<Employee> employees, String initials)
 	{
+		
 		return employees.stream()
 		   		 		.anyMatch(x -> x.getInitials().equals(initials));
 	}
-	
-	
 	
 	public static Project getProjectFromName(List<Project> projects, String projectName)
 	{
@@ -53,4 +54,5 @@ public class Tools {
 				   		.collect(Collectors.toList())
 				   		.get(0);
 	}
+	
 }

@@ -5,23 +5,30 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
+import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import sun.net.www.content.audio.x_aiff;
 
 public class Activity {
 	
-	private String name;
-	private String detailText;
-	private List<Employee> assignedEmployees = new ArrayList<Employee>();
-	private TimePeriod timePeriod;
-	private int budgettedTime;
-	private final Project inProject;
+	protected String name;
+	protected String detailText;
+	protected List<Employee> assignedEmployees = new ArrayList<Employee>();
+	protected TimePeriod timePeriod;
+	protected int budgettedTime;
+	protected final Project inProject;
 	
-	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) {
+	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
 		this.name = name;
 		this.detailText = detailText;
 		this.assignedEmployees.addAll(employees);
+		for (Employee employee : employees) {
+			employee.addActivity(this);
+		}
 		this.setTimePeriod(new TimePeriod(startDate, endDate));
 		this.budgettedTime = budgettedTime;
 		this.inProject = inProject;
@@ -36,8 +43,15 @@ public class Activity {
 
 	/**
 	 * @param title the title to set
+	 * @throws MissingInformationException 
 	 */
-	public void setName(String name) {
+	public void setName(String name) throws MissingInformationException, DuplicateNameException {
+		if (Tools.isNullOrEmpty(name)) {
+			throw new MissingInformationException("Missing name");
+		}
+		if (Tools.containsActivity(inProject.getOpenActivities(), name)) {
+			throw new DuplicateNameException("An activity with the specified name already exists");
+		}
 		this.name = name;
 	}
 
@@ -51,7 +65,10 @@ public class Activity {
 	/**
 	 * @param detailText the detailText to set
 	 */
-	public void setDetailText(String detailText) {
+	public void setDetailText(String detailText) throws MissingInformationException {
+		if (Tools.isNullOrEmpty(detailText)) {
+			throw new MissingInformationException("Missing detailed text");
+		}
 		this.detailText = detailText;
 	}
 
@@ -64,8 +81,12 @@ public class Activity {
 
 	/**
 	 * @param budgettedTime the budgettedTime to set
+	 * @throws InvalidInformationException 
 	 */
-	public void setBudgettedTime(int budgettedTime) {
+	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
+		if (budgettedTime < 0) {
+			throw new InvalidInformationException("Budgetted time can't be less than 0");
+		}
 		this.budgettedTime = budgettedTime;
 	}
 
@@ -99,9 +120,54 @@ public class Activity {
 			} else {
 				throw new EmployeeAlreadyAssignedException(initials + " is already assigned to this activity");
 			}
-
 		} else {
 			throw new EmployeeNotFoundException("Employee does not exists or is not part of this project");
 		}
+	}
+
+	public String getProjectName() {
+		return inProject.getName();
+	}
+
+	/**
+	 * @return the inProject
+	 */
+	public Project getInProject() {
+		return inProject;
+	}
+
+	/**
+	 * @param assignedEmployees the assignedEmployees to set
+	 * @throws InvalidInformationException 
+	 */
+	public void setAssignedEmployees(List<Employee> assignedEmployees) throws InvalidInformationException {
+		if (assignedEmployees == null) {
+			throw new InvalidInformationException("Assigned employees can't be null");
+		}
+		this.assignedEmployees = assignedEmployees;
+	}
+	
+	public String toString()
+	{
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("Activity name: ");
+		sBuilder.append(name);
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append("Bugeted time: ");
+		sBuilder.append(budgettedTime);
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append("Detailed text: ");
+		sBuilder.append(detailText);
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append("Employee initials: ");
+		final List<String> employeeInitials = assignedEmployees.stream()
+														 	    .map(x -> x.getInitials())
+														 	    .collect(Collectors.toList());
+		sBuilder.append(String.join(", ", employeeInitials));
+		
+		sBuilder.append(System.getProperty("line.separator"));
+		sBuilder.append(System.getProperty("line.separator"));
+		
+		return sBuilder.toString();
 	}
 }
