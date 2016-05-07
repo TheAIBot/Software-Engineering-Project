@@ -1,14 +1,10 @@
 package SoftwareHouse;
 
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
@@ -22,9 +18,6 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
-import sun.net.www.content.audio.x_aiff;
-import sun.nio.cs.ext.TIS_620;
 
 /**
  * @author Jesper
