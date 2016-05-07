@@ -23,6 +23,8 @@ public class TestRegisterTime {
 		TestTools.login(scheduler);
 		try {
 			TestTools.addEmployee(scheduler, "AAAA");
+			TestTools.addEmployee(scheduler, "AGC");
+			
 			TestTools.createProject(scheduler, "Navision Stat");
 			TestTools.addEmployeeToProject(scheduler, "AAAA", "Navision Stat");
 		} catch (Exception e) {
@@ -57,14 +59,17 @@ public class TestRegisterTime {
 		assertTrue(registeredTime == scheduler.getTimeVault().getActivityTime("Navision Stat", "Brugerinterface").get(0));
 	}
 	
+	//Totally wrong(*) TODO
+	//Gjort bedre end foer - men ret stadig
 	@Test
 	public void testRegisterTimeEmployeeNotAffiliatedWithProject() {
 		Employee employee = null;
 		try {
-			employee = scheduler.getEmployeeFromInitials("AAAA");
+			employee = scheduler.getEmployeeFromInitials("AGC");
 			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout f�rdigt sat op og justeret", 3);
 			Assert.fail();
 		} catch (Exception e) {
+			assertEquals("Employee not affiliated with project", e.getMessage());
 		}
 	}
 	
@@ -103,7 +108,7 @@ public class TestRegisterTime {
 		}
 		
 		try {
-			employee.registerTime("Navision Stat", "Brugerinterface", "", 5);
+			employee.registerTime("Navision Stat", "Brugerinterface", "", 5); //TODO LAES Op.
 			Assert.fail();
 		} catch (Exception e) {
 			assertEquals("Invalid text", e.getMessage());

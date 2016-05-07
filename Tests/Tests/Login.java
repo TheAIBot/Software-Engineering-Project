@@ -12,7 +12,6 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
-//Test-kommentar
 public class Login {
 	Scheduler scheduler;
 	
@@ -29,7 +28,7 @@ public class Login {
 			Assert.fail();
 		}
 	}
-
+	
 	private void addLeLa(){
 		try {
 			scheduler.addEmployee("LeLa");
@@ -38,7 +37,7 @@ public class Login {
 		}	
 	}
 	
-	private void loginAM(){ //TODO (*) Fails are not registrated outside the method.
+	private void loginAM(){ 
 		try {
 			scheduler.login("AM");
 		} catch (EmployeeNotFoundException e) {
@@ -51,7 +50,8 @@ public class Login {
 	public void loginNotLoggedInExistingUser()
 	{
 		addLeLa();	
-		assertFalse(scheduler.isAnyoneLoggedIn());		
+		assertFalse(scheduler.isAnyoneLoggedIn());	
+		assertEquals(null, scheduler.getLoggedInEmployee());
 		try {
 			scheduler.login("LeLa");
 		} catch (EmployeeNotFoundException e) {
@@ -64,14 +64,15 @@ public class Login {
 	@Test
 	public void loginNotLoggedInNonExistingUser()
 	{
-		assertFalse(scheduler.isAnyoneLoggedIn());		
+		assertFalse(scheduler.isAnyoneLoggedIn());	
+		assertEquals(null, scheduler.getLoggedInEmployee());
 		try {
 			scheduler.login("LeLa");
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
 			assertFalse(scheduler.isAnyoneLoggedIn());
-			assertEquals(scheduler.getLoggedInEmployee(), null);
+			assertEquals(null, scheduler.getLoggedInEmployee());
 		} 		
 	}
 	
@@ -103,5 +104,10 @@ public class Login {
 			assertTrue(scheduler.isAnyoneLoggedIn());
 			assertEquals(scheduler.getLoggedInEmployee().getInitials(), "AM");
 		} 		
-	}	
+	}
+	
+	
+	
+	
+	
 }
