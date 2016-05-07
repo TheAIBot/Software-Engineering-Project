@@ -26,6 +26,7 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 	public ProjectPanel createPage(GUIController controlle) {
 		ProjectPanel projectPanel = new ProjectPanel();
 		
+<<<<<<< HEAD
 		projectPanel.getCreateProjectButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CreateProjectDialog dialog = new CreateProjectDialog(scheduler);
@@ -52,6 +53,61 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 			}
 		});
 		
+=======
+		if (project.isProjectManagerLoggedIn()) {
+			projectPanel.getCreateActivityButton().setEnabled(true);
+			projectPanel.getCreateActivityButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					CreateActivityDialog dialog = new CreateActivityDialog(scheduler, project);
+					dialog.addWindowListener(new WindowClosingListener() {
+						@Override
+						public void windowClosing(WindowEvent e) {
+							loadInformation();							
+						}
+					});
+					dialog.setVisible(true);
+					dialog.loadInformation();
+				}
+			});
+			
+			projectPanel.getChangeProjectButton().setEnabled(true);
+			projectPanel.getChangeProjectButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ChangeProjectDialog dialog = new ChangeProjectDialog(scheduler, project);
+					dialog.addWindowListener(new WindowClosingListener() {
+						@Override
+						public void windowClosing(WindowEvent e) {
+							loadInformation();							
+						}
+					});
+					dialog.setVisible(true);
+					dialog.loadInformation();
+				}
+			});
+			
+			projectPanel.getAddEmployeesButton().setEnabled(true);
+			projectPanel.getAddEmployeesButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddEmployeesToProjectDialog dialog = new AddEmployeesToProjectDialog(scheduler, project);
+					dialog.addWindowListener(new WindowClosingListener() {
+						@Override
+						public void windowClosing(WindowEvent e) {
+							loadInformation();							
+						}
+					});
+					dialog.setVisible(true);
+					dialog.loadInformation();
+				}
+			});
+			
+			projectPanel.getFollowupButton().setEnabled(true);
+			projectPanel.getFollowupButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					controlle.switchPage(new FollowupPage(controlle, scheduler, project));
+				}
+			});
+		}
+>>>>>>> refs/remotes/origin/Andreas
 		return projectPanel;
 	}
 

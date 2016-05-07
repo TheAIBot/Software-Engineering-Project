@@ -19,6 +19,7 @@ import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import sun.net.www.content.audio.x_aiff;
 
@@ -198,7 +199,7 @@ public class Project {
 							 int budgetedTime) throws MissingInformationException, 
 													   InvalidInformationException, 
 													   EmployeeNotFoundException, 
-													   DuplicateNameException, EmployeeMaxActivitiesReachedException {
+													   DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException {
 		if (Tools.isNullOrEmpty(title)) {
 			throw new MissingInformationException("Missing title");
 		} else if (Tools.isNullOrEmpty(detailText)) {
@@ -251,34 +252,38 @@ public class Project {
 	}
 	
 	public void forceAddAcitivity(String title, String detailText, List<String> employeeInitials, Calendar startTime, Calendar endTime, int budgetedTime) 
-			throws EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException {
+			throws EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException {
 		if (Tools.containsActivity(openActivities, title)) {
 			throw new DuplicateNameException("An activity with that name already exists");
-		}		
-		//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
-		//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
-		List<Employee> activityEmployees = new ArrayList<Employee>();
-		List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
-		for (String initials : employeeInitials) {
-			if (Tools.containsEmployee(employees, initials)) { //TODO (*) check here.
-				Employee currentEmployee = Tools.getEmployeeFromInitials(employees, initials);
-				if (currentEmployee.canContainMoreActivities()) {
-					activityEmployees.add(Tools.getEmployeeFromInitials(employees, initials));
-				}  else employeesPastMaxActivity.add(currentEmployee);
-			} else {
-				throw new EmployeeNotFoundException("Employee with initials: " + initials + " does not exist or is not part of this project");
+		}	
+		if (isProjectManagerLoggedIn()) {
+			//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
+			//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
+			List<Employee> activityEmployees = new ArrayList<Employee>();
+			List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
+			for (String initials : employeeInitials) {
+				if (Tools.containsEmployee(employees, initials)) { //TODO (*) check here.
+					Employee currentEmployee = Tools.getEmployeeFromInitials(employees, initials);
+					if (currentEmployee.canContainMoreActivities()) {
+						activityEmployees.add(Tools.getEmployeeFromInitials(employees, initials));
+					}  else employeesPastMaxActivity.add(currentEmployee);
+				} else {
+					throw new EmployeeNotFoundException("Employee with initials: " + initials + " does not exist or is not part of this project");
+				}
 			}
-		}
-		if (employeesPastMaxActivity.size() != 0) {
-			throw new EmployeeMaxActivitiesReachedException(employeesPastMaxActivity, "The employees: ", " cannot work on more activities");
-		}
-		Activity activity;
-		if (useAbsenceActivity) {
-			activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
+			if (employeesPastMaxActivity.size() != 0) {
+				throw new EmployeeMaxActivitiesReachedException(employeesPastMaxActivity, "The employees: ", " cannot work on more activities");
+			}
+			Activity activity;
+			if (useAbsenceActivity) {
+				activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
+			} else {
+				activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
+			}
+			openActivities.add(activity);
 		} else {
-			activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
+			throw new ProjectManagerNotLoggedInException("Project manager is not logged in");
 		}
-		openActivities.add(activity);
 	}
 
 	/** Adds employee to the project. Returns true if possible, but if an employee with those initials does not exist,
