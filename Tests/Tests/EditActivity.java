@@ -31,7 +31,7 @@ import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 /**
  * @author ELL
  */
-public class TestEditActivity {
+public class EditActivity {
 
 	Scheduler scheduler;
 

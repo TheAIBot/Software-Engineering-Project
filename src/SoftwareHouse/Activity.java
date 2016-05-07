@@ -25,9 +25,11 @@ public class Activity {
 	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
 		this.name = name;
 		this.detailText = detailText;
-		this.assignedEmployees.addAll(employees);
-		for (Employee employee : employees) {
-			employee.addActivity(this);
+		if (employees != null) {
+			this.assignedEmployees.addAll(employees);
+			for (Employee employee : employees) {
+				employee.addActivity(this);
+			}
 		}
 		this.setTimePeriod(new TimePeriod(startDate, endDate));
 		this.budgettedTime = budgettedTime;
