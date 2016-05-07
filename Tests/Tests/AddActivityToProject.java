@@ -504,6 +504,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
 		}
 		
 		//Test for adding an exisiting empoyee who is not part of the corresponding project. 
@@ -553,6 +555,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
 		}
 	}
 	
@@ -586,6 +590,8 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
 			Assert.fail();
 		}
 	}
@@ -658,6 +664,8 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
 			Assert.fail();
 		}
 	}
