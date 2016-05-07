@@ -39,7 +39,7 @@ public class TestEditActivity {
 		}
 		// Create project
 		try {
-			scheduler.createProject("Navision Stat");
+			TestTools.createProject(scheduler,"Navision Stat");
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -115,7 +115,7 @@ public class TestEditActivity {
 			activity.setName("");
 			Assert.fail();
 		} catch (Exception e) {
-			assertEquals("Missing title", e.getMessage());
+			assertEquals("Missing name", e.getMessage());
 		}
 	}
 	

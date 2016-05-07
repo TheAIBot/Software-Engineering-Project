@@ -45,8 +45,8 @@ public class CreateProject {
 	public void setup(){
 		scheduler = new Scheduler();	
 		try {
-			scheduler.addEmployee("JSB");
-			scheduler.addEmployee("AGC");
+			TestTools.addEmployee(scheduler, "JSB");
+			TestTools.addEmployee(scheduler,"AGC");
 			employeeListWithEmployees = new ArrayList<>();
 			employeeListWithEmployees.add(scheduler.getEmployeeFromInitials("JSB"));
 			employeeListWithEmployees.add(scheduler.getEmployeeFromInitials("AGC"));
@@ -254,7 +254,7 @@ public class CreateProject {
 	@Test
 	public void createProjectEmployeesIsNull(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				null, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
+				null, BUDGETED_TIME, "", VALID_TIME_PERIOD)); //There can be no project manager, in this case
 	}
 	
 	@Test
@@ -277,7 +277,19 @@ public class CreateProject {
 		
 	@Test
 	public void createProjectNonexistentManagerInitials(){
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, //True? TODO
+		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
+	}
+	
+	@Test
+	public void createProjecManagerNotPartOfUserAdded(){
+		try {
+			scheduler.addEmployee("LeLa");
+		} catch (MissingInformationException | DuplicateNameException | TooManyCharsException
+				| IllegalCharException e) {
+			Assert.fail(e.getMessage());
+		}
+		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
 	}
 	
