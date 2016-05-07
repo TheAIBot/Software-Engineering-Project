@@ -5,6 +5,8 @@ import java.util.List;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotAffiliatedWithProjectException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
@@ -78,12 +80,17 @@ public class Employee {
 	 * @throws NotLoggedInException
 	 * @throws ActivityNotFoundException
 	 * @throws InvalidInformationException
+	 * @throws EmployeeNotFoundException
+	 * @throws EmployeeNotAffiliatedWithProjectException
 	 */
 	public void registerTime(String projectName, String activityName, String message, int time)
 			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException,
-			InvalidInformationException {
+			InvalidInformationException, EmployeeNotFoundException, EmployeeNotAffiliatedWithProjectException {
 		if (Tools.isNullOrEmpty(message)) {
 			throw new InvalidInformationException("Invalid text");
+		}
+		if (!Tools.containsProject(projects, projectName)) {
+			throw new EmployeeNotAffiliatedWithProjectException("Employee not affiliated with project");
 		}
 		scheduler.getTimeVault().addTime(projectName, activityName, initials, new RegisteredTime(this, message, time));
 	}
