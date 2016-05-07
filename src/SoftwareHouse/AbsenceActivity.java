@@ -6,6 +6,7 @@ import java.util.List;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 
 /**
  * Activity subclass used for recording absence like holiday or absence because of sickness
@@ -13,7 +14,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 public class AbsenceActivity extends Activity {
 
 	public AbsenceActivity(String name, String detailText, List<Employee> employees, Calendar startDate,
-			Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
+			Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException, InvalidInformationException {
 		super(name, detailText, employees, startDate, endDate, budgettedTime, inProject);
 	}
 	

@@ -216,7 +216,7 @@ public class Project {
 	}
 	
 	public void forceAddAcitivity(String title, String detailText, List<String> employeeInitials, Calendar startTime, Calendar endTime, int budgetedTime) 
-			throws EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException {
+			throws EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException {
 		if (Tools.containsActivity(openActivities, title)) {
 			throw new DuplicateNameException("An activity with that name already exists");
 		}	
@@ -482,7 +482,7 @@ public class Project {
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
 	 */
-	public void setBudgetedTime(int budgetedTime) throws InvalidInformationException {
+	public void setBudgettedTime(int budgetedTime) throws InvalidInformationException {
 		if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}
