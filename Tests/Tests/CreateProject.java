@@ -45,8 +45,8 @@ public class CreateProject {
 			VALID_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012, 3, 20), new GregorianCalendar(2013, 4, 1));
 		} catch (InvalidInformationException e) {
 			Assert.fail();
+			throw new NullPointerException("VALID_TIME_PERIOD is null");
 		}
-		throw new NullPointerException("VALID_TIME_PERIOD is null");
 	}
 	
 	@Before
@@ -213,17 +213,6 @@ public class CreateProject {
 	public void createProjectNegativeBudgetedTime(){
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  employeeListWithEmployees, -BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
-	}
-	
-	@Test
-	public void createProjectImpossibleTimePeriod(){
-		TimePeriod impossibleTimePeriod = null;
-		try {
-			impossibleTimePeriod = new TimePeriod(new GregorianCalendar(2013, 4, 1), new GregorianCalendar(2012, 3, 20));
-		} catch (InvalidInformationException e) {
-			Assert.fail();
-		}
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, impossibleTimePeriod));
 	}
 	
 	@Test
