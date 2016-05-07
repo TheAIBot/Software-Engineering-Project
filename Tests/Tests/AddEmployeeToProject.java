@@ -3,6 +3,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
@@ -49,6 +49,7 @@ public class AddEmployeeToProject {
 			assertTrue(employee1.getProjects().size() == 0);
 			} catch (Exception e) {
 			Assert.fail(e.getMessage());
+			
 		}		
 	}
 	

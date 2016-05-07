@@ -39,7 +39,8 @@ public class CloseProject {
 	{
 		Project project = null;
 		try {
-			project = scheduler.getProject("Navision Stat");
+			assertEquals(1,scheduler.getProjectsContainingStringInName("Navision Stat").size());
+			project = scheduler.getProjectsContainingStringInName("Navision Stat").get(0);
 		} catch (Exception e) {
 			Assert.fail();
 		}
