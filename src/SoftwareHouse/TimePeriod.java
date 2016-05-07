@@ -1,15 +1,19 @@
 package SoftwareHouse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
 public class TimePeriod {
 	
-	private Calendar startDate;
-	private Calendar endDate;
+	public static final String DATE_FORMAT = "dd MM yyyy";
+	
+	private final Calendar startDate;
+	private final Calendar endDate;
 	
 	public TimePeriod(Calendar startDate, Calendar endDate) {
 		this.startDate = startDate;
-		this.setEndDate(endDate);
+		this.endDate = endDate;
 	}
 	
 	public boolean isValidTimePeriod(){
@@ -22,12 +26,11 @@ public class TimePeriod {
 	public Calendar getStartDate() {
 		return startDate;
 	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(Calendar startDate) {
-		this.startDate = startDate;
+	
+	public String getStartDateAsString()
+	{
+		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+		return dateFormat.format(startDate.getTime());
 	}
 
 	/**
@@ -36,11 +39,10 @@ public class TimePeriod {
 	public Calendar getEndDate() {
 		return endDate;
 	}
-
-	/**
-	 * @param endDate the endDate to set
-	 */
-	public void setEndDate(Calendar endDate) {
-		this.endDate = endDate;
+	
+	public String getEndDateAsString()
+	{
+		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+		return dateFormat.format(endDate.getTime());
 	}
 }
