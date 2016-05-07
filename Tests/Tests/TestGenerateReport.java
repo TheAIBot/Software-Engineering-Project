@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 /**
  * @author ELL
@@ -53,8 +55,13 @@ public class TestGenerateReport {
 			Assert.fail();
 		}
 		
-		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
-			Assert.fail();
+				
+		try {
+			if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
+				Assert.fail();
+			}
+		} catch (Exception e1) {
+			Assert.fail(e1.getMessage());
 		}
 		
 		// Create activities

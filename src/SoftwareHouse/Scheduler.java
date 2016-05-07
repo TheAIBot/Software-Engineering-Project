@@ -12,6 +12,7 @@ import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
@@ -37,11 +38,13 @@ public class Scheduler {
 		anyoneLoggedIn = true; //One needs to be logged in to make a project.
 		try {
 			absenceProject = new Project(this, "absenceProject", true); //TODO test creation of absence project if it hasn't been done already
-		} catch (Exception e) { }
+		} catch (Exception e) { 
+			//Cann't be reached
+		}
 		anyoneLoggedIn = false;
 	}
 
-	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException 
+	public void createProject(String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException 
 	{
 		createProject(projectName, "", "", null, 0, "", null);
 	}
@@ -52,11 +55,11 @@ public class Scheduler {
 							  List<Employee> employeesToAdd, 
 							  int budgettedTime, 
 							  String initialsProjectManager, 
-							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
+							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException
 	{
 		if (isAnyoneLoggedIn()) {
 			if (Tools.containsProject(projects, projectName.trim())) {
-				throw new DuplicateNameException("A project with that name already exist");
+				throw new DuplicateNameException("A project with that title already exists");
 			}
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
 		} else {

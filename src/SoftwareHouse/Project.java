@@ -11,6 +11,7 @@ import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
@@ -21,6 +22,7 @@ import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import sun.net.www.content.audio.x_aiff;
+import sun.nio.cs.ext.TIS_620;
 
 /**
  * @author Jesper
@@ -169,39 +171,6 @@ public class Project {
 		}
 		
 	}
-	
-	/** Returns a MissingInformationTable object, containing information on what might be, 
-	 *  or is, missing, for adding the activity to the project.
-	 * @param title Activity name.
-	 * @param detailText Detailed information about the activity.
-	 * @param employeeInitials List of employees to be added to the activity.
-	 * @param startTime Start time of the activity.
-	 * @param endTime End time of the activity
-	 * @param budgetedTime The budgeted time of the activity.
-	 * @return MissingInformationTable containing the above mentioned information.
-	 */
-	public MissingInformationTable addAcitvityTestMissingInformation(String title, 
-			 String detailText, 
-			 List<String> employeeInitials, 
-			 Calendar startTime, 
-			 Calendar endTime, 
-			 int budgetedTime) {		
-		
-		MissingInformationTable tableMissingInformation = new MissingInformationTable();
-		if (Tools.isNullOrEmpty(title)) {
-			tableMissingInformation.setIsMissingTitle(Tools.isNullOrEmpty(title));
-		}
-		tableMissingInformation.setIsMissingTitle(Tools.isNullOrEmpty(title));
-		tableMissingInformation.setIsMissingDetailText(Tools.isNullOrEmpty(detailText));
-		tableMissingInformation.setIsMissingEmployees((employeeInitials == null || employeeInitials.size() == 0));
-		tableMissingInformation.setIsMissingStartDay(startTime == null);
-		tableMissingInformation.setIsMissingEndDay(endTime == null);
-		tableMissingInformation.setIsNotCorrectOrderTime(startTime.after(endTime));
-		tableMissingInformation.setIsBudgetedTimeNonNegative(budgetedTime < 0);
-		tableMissingInformation.setIsNonexistentEmployee(employeeInitials.stream().allMatch(x -> scheduler.doesEmployeeExist(x)));
-		tableMissingInformation.setIsThereEmployeesWhoCantWorkOnMoreActivities(allEmployeesCanWorkOnMoreActivities(employeeInitials));
-		return tableMissingInformation;
-	}
 		
 	public void addAcitivity(String title, 
 							 String detailText, 
@@ -302,17 +271,13 @@ public class Project {
 	 *  or if the employee is already a part of the project, false is returned instead.
 	 * @param initials
 	 * @return True if the employee exist, and is added to the project, else false.
+	 * @throws EmployeeNotFoundException 
+	 * @throws EmployeeAlreadyAssignedException 
 	 */
-	public boolean addEmployee(String initials) {
-		Employee employee = null;
-		try {
-			employee = scheduler.getEmployeeFromInitials(initials);
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean addEmployee(String initials) throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
+		Employee employee = scheduler.getEmployeeFromInitials(initials);
 		if (employee.isAlreadyPartOfProject(this) || employees.contains(initials)) {
-			return false;
-			//This should always be true, as the check for if it is possible, is made above. It does, however make the code shorter.
+			throw new EmployeeAlreadyAssignedException(initials + " is already a part of the project " + this.name);
 		} else	return (employee.addProject(this) && employees.add(employee)); 
 	}
 	
