@@ -40,7 +40,7 @@ public class RegisterAbsenceTime {
 	}
 	
 	@Test
-	public void registerAbsenceTImeNegativTime()
+	public void registerAbsenceTimeNegativeTime()
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
