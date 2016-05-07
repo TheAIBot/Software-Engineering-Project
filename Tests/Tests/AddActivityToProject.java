@@ -47,7 +47,6 @@ public class AddActivityToProject {
 		}
 		assertEquals(project.getOpenActivities().size(), 0);
 		
-		
 		TestTools.addEmployeeToProject(scheduler, "JBS", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");

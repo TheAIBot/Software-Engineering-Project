@@ -13,7 +13,9 @@ import org.junit.Test;
 
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
+import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 public class CloseProject {
 	private Scheduler scheduler;
@@ -22,6 +24,7 @@ public class CloseProject {
 	public void setup()
 	{
 		scheduler = new Scheduler();
+		
 		TestTools.login(scheduler);
 		try {
 			TestTools.createProject(scheduler,"Navision Stat");
