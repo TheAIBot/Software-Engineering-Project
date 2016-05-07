@@ -227,7 +227,6 @@ public class ChangeProjectDialog extends JDialog {
 	
 	private void checkCostumerName()
 	{
-		
 	}
 	
 	private void checkStartDate()
