@@ -5,7 +5,6 @@ import java.util.List;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotAffiliatedWithProjectException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;

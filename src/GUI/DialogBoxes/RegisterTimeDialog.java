@@ -18,7 +18,6 @@ import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
-import SoftwareHouse.ExceptionTypes.EmployeeNotAffiliatedWithProjectException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
@@ -110,7 +109,7 @@ public class RegisterTimeDialog extends JDialog {
 		Tools.changeBorder(hoursUsedTextField, x -> Integer.parseUnsignedInt(x));
 	}
 	
-	public void tryRegisterTime() throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException, InvalidInformationException, EmployeeNotFoundException, EmployeeNotAffiliatedWithProjectException
+	public void tryRegisterTime() throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException, InvalidInformationException, EmployeeNotFoundException
 	{
 		int hoursUsed = Integer.valueOf(hoursUsedTextField.getText());
 		String detailedDescription = detailedTextTextArea.getText();
