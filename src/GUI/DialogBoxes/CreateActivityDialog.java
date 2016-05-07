@@ -249,14 +249,14 @@ public class CreateActivityDialog extends JDialog {
 	
 	private void checkStartDate()
 	{
-		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
-		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(startDateTextField, x -> TimePeriod.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> TimePeriod.getCalendarFromString(x));
 	}
 	
 	private void checkEndDate()
 	{
-		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
-		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(startDateTextField, x -> TimePeriod.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> TimePeriod.getCalendarFromString(x));
 	}
 	
 	private void checkBudgettedTime()
@@ -276,8 +276,8 @@ public class CreateActivityDialog extends JDialog {
 		Calendar endDate = null;
 		if (startDateTextField.getText().trim().length() != 0 &&
 			endDateTextField.getText().trim().length() != 0) {
-			startDate = Tools.getCalendarFromString(startDateTextField.getText());
-			endDate = Tools.getCalendarFromString(endDateTextField.getText());
+			startDate = TimePeriod.getCalendarFromString(startDateTextField.getText());
+			endDate = TimePeriod.getCalendarFromString(endDateTextField.getText());
 			//TODO fix this oddness that lombre mentioned
 		}
 		int budgettedTime = 0;

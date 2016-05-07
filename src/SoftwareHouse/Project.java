@@ -28,7 +28,8 @@ import sun.nio.cs.ext.TIS_620;
  * @author Jesper
  */
 public class Project {
-	private static int loebenummerPart = 0;
+	private static int serialNumber = 0;
+	private final int projectNumber;
 	private Scheduler scheduler;
 	private String name;
 	private String costumerName;
@@ -45,8 +46,9 @@ public class Project {
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
 	private List<Activity> deletedActivities = new ArrayList<Activity>();
-	
 	private List<Employee> employees = new ArrayList<Employee>();
+	
+	
 	/** Creates a new project from the given parameters. Throws an InvalidProjectInitilizationInput if the input is not valid, 
 	 *  which's message contains what is wrong. Must be logged in to create a new project.
 	 * @param scheduler The scheduler to attach the project. Must not be null.
@@ -66,9 +68,19 @@ public class Project {
 	 * @throws MissingInformationException 
 	 * @throws EmployeeAlreadyAssignedException 
 	 */	
-	public Project(Scheduler scheduler, String projectName, String costumerName, String detailedText, 
-			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
-					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
+	public Project(Scheduler scheduler, 
+				   String projectName, 
+				   String costumerName, 
+				   String detailedText, 
+				   List<Employee> employeesToAdd, 
+				   int budgetedTime, 
+				   String initialsProjectManager, 
+				   TimePeriod timePeriod)
+					 throws NotLoggedInException,
+					 		MissingInformationException, 
+					 		InvalidInformationException, 
+					 		EmployeeNotFoundException, 
+					 		EmployeeAlreadyAssignedException
 	{
 		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod);
 		this.scheduler = scheduler;
@@ -76,17 +88,18 @@ public class Project {
 		this.costumerName = costumerName;
 		this.budgetedTime = budgetedTime;
 		this.detailedText = detailedText;
+		this.timePeriod = timePeriod;	
 		try {
 			//It might happen that no manager is given, which would result in an error here. No will be assigned in this case.
 			this.projectManager = scheduler.getEmployeeFromInitials(initialsProjectManager); 
-		} catch (EmployeeNotFoundException e) {
-		}
-		this.timePeriod = timePeriod;	
+		} catch (EmployeeNotFoundException e) {}
 		if (employeesToAdd != null) {
 			for (Employee employee : employeesToAdd) {
 				this.addEmployee(employee.getInitials());
 			}
 		}
+		this.projectNumber = Calendar.getInstance().get(Calendar.YEAR) + serialNumber;
+		serialNumber++;
 	}
 	
 	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException{
@@ -118,63 +131,6 @@ public class Project {
 		timePeriod.getStartDate().after(timePeriod.getEndDate())) {
 			throw new InvalidInformationException("Start date can't be after the end date");
 		}
-	}
-
-	
-	
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 * @throws DuplicateNameException 
-	 * @throws MissingInformationException 
-	 */
-	public void setName(String name) throws DuplicateNameException, MissingInformationException {
-		Project project = null;
-		try {
-			project = scheduler.getProject(name);
-		} catch (Exception e) { }
-		if (project != null) {
-			throw new DuplicateNameException("A project with that name already exist");
-		} else if (Tools.isNullOrEmpty(name)) {
-			throw new MissingInformationException("No name was specified");
-		}
-		this.name = name;
-	}
-
-	/**
-	 * @return the openActivities
-	 */
-	public List<Activity> getOpenActivities() {
-		return openActivities;
-	}
-
-	/**
-	 * @return the closedActivities
-	 */
-	public List<Activity> getClosedActivities() {
-		return closedActivities;
-	}
-
-	/**
-	 * @return the deletedActivities
-	 */
-	public List<Activity> getDeletedActivities() {
-		return deletedActivities;
-	}
-	
-	public Activity getActivity(String name) throws ActivityNotFoundException{
-		try{
-			return openActivities.stream().filter(x -> x.getName().equals(name)).findAny().get();
-		} catch(Exception e){
-			throw new ActivityNotFoundException();
-		}
-		
 	}
 		
 	public void addAcitivity(String title, 
@@ -338,13 +294,6 @@ public class Project {
 		}
 	}
 
-	/**
-	 * @param isOpen the isOpen to set
-	 */
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
-	}
-
 	public void generateReport() {
 		String fileName = getFilePath();
 		try (PrintWriter writer = new PrintWriter(fileName, "UTF-8"))
@@ -353,56 +302,6 @@ public class Project {
 			openActivities.stream().forEach(x -> sBuilder.append(x.toString()));
 			writer.println(sBuilder.toString());
 		} catch (Exception e) {	}
-	}
-
-	public String getFilePath() {
-		String fileName = name.replaceAll("\\s", "_");
-		fileName = fileName.replaceAll("[^\\w.-]", "");
-		fileName += FILE_EXTENTION;
-		return REPORTS_PATH + fileName;
-	}
-
-	/**
-	 * @return the budgettedTime
-	 */
-	public int getBudgettedTime() {
-		return budgettedTime;
-	}
-
-	/**
-	 * @param budgettedTime the budgettedTime to set
-	 * @throws InvalidInformationException 
-	 */
-	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
-		if (budgettedTime < 0) {
-			throw new InvalidInformationException("Budgetted time can't be less than 0");
-		}
-		this.budgettedTime = budgettedTime;
-	}
-	/** Gets the TimePeriod associated with this project.
-	 * @return
-	 */
-	public TimePeriod getTimePeriod() {
-		return timePeriod;
-	}
-
-	/** Gets the project manager associated with this project.
-	 * @return
-	 */
-	public Employee getProjectManager() {
-		return projectManager;
-	}
-
-	public int getBudgetedTime() {
-		return budgetedTime;
-	}
-
-	public String getCostumerName() {
-		return costumerName;
-	}
-	
-	public int getLoebenummerPart() {
-		return loebenummerPart;
 	}
 
 	public boolean isProjectManagerLoggedIn()
@@ -414,6 +313,69 @@ public class Project {
 		}
 	}
 
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 * @throws DuplicateNameException 
+	 * @throws MissingInformationException 
+	 */
+	public void setName(String name) throws DuplicateNameException, MissingInformationException {
+		Project project = null;
+		try {
+			project = scheduler.getProject(name);
+		} catch (Exception e) { }
+		if (project != null) {
+			throw new DuplicateNameException("A project with that name already exist");
+		} else if (Tools.isNullOrEmpty(name)) {
+			throw new MissingInformationException("No name was specified");
+		}
+		this.name = name;
+	}
+
+	/**
+	 * @return the openActivities
+	 */
+	public List<Activity> getOpenActivities() {
+		return openActivities;
+	}
+
+	/**
+	 * @return the closedActivities
+	 */
+	public List<Activity> getClosedActivities() {
+		return closedActivities;
+	}
+
+	/**
+	 * @return the deletedActivities
+	 */
+	public List<Activity> getDeletedActivities() {
+		return deletedActivities;
+	}
+	
+	public Activity getActivity(String name) throws ActivityNotFoundException{
+		try{
+			return openActivities.stream().filter(x -> x.getName().equals(name)).findAny().get();
+		} catch(Exception e){
+			throw new ActivityNotFoundException();
+		}
+		
+	}
+	
+	/**
+	 * @param isOpen the isOpen to set
+	 */
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+	
 	/**
 	 * @param costumerName the costumerName to set
 	 */
@@ -466,4 +428,59 @@ public class Project {
 		}
 		this.employees = employees;
 	}
+
+	public String getFilePath() {
+		String fileName = name.replaceAll("\\s", "_");
+		fileName = fileName.replaceAll("[^\\w.-]", "");
+		fileName += FILE_EXTENTION;
+		return REPORTS_PATH + fileName;
+	}
+
+	/**
+	 * @return the budgettedTime
+	 */
+	public int getBudgettedTime() {
+		return budgettedTime;
+	}
+	
+	/**
+	 * @param budgettedTime the budgettedTime to set
+	 * @throws InvalidInformationException 
+	 */
+	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
+		if (budgettedTime < 0) {
+			throw new InvalidInformationException("Budgetted time can't be less than 0");
+		}
+		this.budgettedTime = budgettedTime;
+	}
+	/** Gets the TimePeriod associated with this project.
+	 * @return
+	 */
+	public TimePeriod getTimePeriod() {
+		return timePeriod;
+	}
+
+	/** Gets the project manager associated with this project.
+	 * @return
+	 */
+	public Employee getProjectManager() {
+		return projectManager;
+	}
+
+	public int getBudgetedTime() {
+		return budgetedTime;
+	}
+
+	public String getCostumerName() {
+		return costumerName;
+	}
+	
+
+	/**
+	 * @return the projectNumber
+	 */
+	public int getProjectNumber() {
+		return projectNumber;
+	}
+
 }
