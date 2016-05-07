@@ -17,6 +17,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
 /**
  * @author ELL
@@ -65,13 +66,11 @@ public class TestFollowUp {
 		}
 		
 		// Add a project manager and log him in
-		Employee toBeProjectManager = null;
 		try {
-			toBeProjectManager = scheduler.getEmployeeFromInitials("AGC");
-		} catch (Exception e1) {
+			project.setProjectManager("AGC");
+		} catch (ProjectManagerNotPartOfEmployeesAdded e2) {
 			Assert.fail();
 		}
-		project.setProjectManager(toBeProjectManager);
 		try {
 			scheduler.login("AGC");
 		} catch (EmployeeNotFoundException e1) {

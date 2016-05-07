@@ -22,7 +22,7 @@ public class Activity {
 	protected int budgettedTime;
 	protected final Project inProject;
 	
-	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
+	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException, InvalidInformationException {
 		this.name = name;
 		this.detailText = detailText;
 		if (employees != null) {
@@ -31,7 +31,9 @@ public class Activity {
 				employee.addActivity(this);
 			}
 		}
-		this.setTimePeriod(new TimePeriod(startDate, endDate));
+		if (startDate != null & endDate != null) {
+			this.setTimePeriod(new TimePeriod(startDate, endDate));
+		}
 		this.budgettedTime = budgettedTime;
 		this.inProject = inProject;
 	}

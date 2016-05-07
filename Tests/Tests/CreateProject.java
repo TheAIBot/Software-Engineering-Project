@@ -37,13 +37,17 @@ public class CreateProject {
 	private static final List<Employee> EMPLOYEE_LIST_EMPTY = new ArrayList<>();
 	private static final String EMPTY_NAME = "";
 	private static final String PROJECT_MANAGER_INITIALS = "JSB";
-	private static final TimePeriod VALID_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012, 3, 20), new GregorianCalendar(2013, 4, 1));
+	private final TimePeriod VALID_TIME_PERIOD;
 	private static List<Employee> employeeListWithEmployees;
 	
-	/*TODO (*)Tilføjelse til blackboxtest
-	 *  Andre:
-	 *  Hvad med løbenummer? (*)
-	 */ 
+	public CreateProject() {
+		try {
+			VALID_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012, 3, 20), new GregorianCalendar(2013, 4, 1));
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+			throw new NullPointerException("VALID_TIME_PERIOD is null");
+		}
+	}
 	
 	@Before
 	public void setup(){
@@ -209,13 +213,6 @@ public class CreateProject {
 	public void createProjectNegativeBudgetedTime(){
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  employeeListWithEmployees, -BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
-	}
-	
-	@Test
-	public void createProjectImpossibleTimePeriod(){
-		TimePeriod impossibleTimePeriod = new TimePeriod(new GregorianCalendar(2013, 4, 1), new GregorianCalendar(2012, 3, 20));
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, impossibleTimePeriod));
 	}
 	
 	@Test
