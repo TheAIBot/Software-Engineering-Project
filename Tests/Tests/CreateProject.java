@@ -141,7 +141,7 @@ public class CreateProject {
 			assertEquals(scheduler.getProjects().size(), 1);
 			Project project = scheduler.getProject(PROJECT_NAME);
 			assertEquals(project.getName(), PROJECT_NAME);
-			assertEquals(COMPANY_NAME, project.getCustomerName());
+			assertEquals(COMPANY_NAME, project.getCostumerName());
 			assertTrue(project.getEmployees().stream().allMatch(x -> employeeListWithEmployees.contains(x)));
 			assertEquals(employeeListWithEmployees.size(), project.getEmployees().size());
 			assertEquals(project.getProjectManager(), scheduler.getEmployeeFromInitials(PROJECT_MANAGER_INITIALS));

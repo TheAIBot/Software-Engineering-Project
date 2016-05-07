@@ -46,7 +46,7 @@ public class Activity {
 	 */
 	public void setName(String name) throws MissingInformationException, DuplicateNameException {
 		if (Tools.isNullOrEmpty(name)) {
-			throw new MissingInformationException("Missing title");
+			throw new MissingInformationException("Missing name");
 		}
 		if (Tools.containsActivity(inProject.getOpenActivities(), name)) {
 			throw new DuplicateNameException("An activity with the specified name already exists");
@@ -126,5 +126,23 @@ public class Activity {
 
 	public String getProjectName() {
 		return inProject.getName();
+	}
+
+	/**
+	 * @return the inProject
+	 */
+	public Project getInProject() {
+		return inProject;
+	}
+
+	/**
+	 * @param assignedEmployees the assignedEmployees to set
+	 * @throws InvalidInformationException 
+	 */
+	public void setAssignedEmployees(List<Employee> assignedEmployees) throws InvalidInformationException {
+		if (assignedEmployees == null) {
+			throw new InvalidInformationException("Assigned employees can't be null");
+		}
+		this.assignedEmployees = assignedEmployees;
 	}
 }

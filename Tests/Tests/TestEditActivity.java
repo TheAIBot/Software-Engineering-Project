@@ -53,7 +53,7 @@ public class TestEditActivity {
 			if(!(project.addEmployee("ELL") &&	project.addEmployee("AGC"))){
 				Assert.fail();
 			}
-		} catch (EmployeeNotFoundException | EmployeeAlreadyAssignedException e) {
+		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
 
