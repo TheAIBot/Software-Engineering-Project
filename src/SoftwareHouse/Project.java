@@ -71,11 +71,6 @@ public class Project {
 	 * @throws EmployeeAlreadyAssignedException 
 	 * @throws ProjectManagerNotPartOfEmployeesAdded 
 	 */	
-<<<<<<< HEAD
-	public Project(Scheduler scheduler, String projectName, String costumerName, String detailedText, 
-			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
-					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
-=======
 	public Project(Scheduler scheduler, 
 				   String projectName, 
 				   String costumerName, 
@@ -88,12 +83,9 @@ public class Project {
 					 		MissingInformationException, 
 					 		InvalidInformationException, 
 					 		EmployeeNotFoundException, 
-					 		EmployeeAlreadyAssignedException
->>>>>>> refs/remotes/origin/Andreas
+					 		EmployeeAlreadyAssignedException, 
+					 		ProjectManagerNotPartOfEmployeesAdded
 	{
-<<<<<<< HEAD
-		validateinformation(scheduler, projectName,employeesToAdd, budgetedTime, initialsProjectManager, timePeriod);
-=======
 		List<String> employeesInitials = null;
 		if (employeesToAdd != null) {
 			employeesInitials = employeesToAdd.stream()
@@ -101,8 +93,7 @@ public class Project {
 					   .collect(Collectors.toList());
 		}
 		
-		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod, employeesInitials);
->>>>>>> refs/remotes/origin/Niklas
+		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod, employeesToAdd, employeesInitials);
 		this.scheduler = scheduler;
 		this.name = projectName;
 		this.costumerName = costumerName;
@@ -118,12 +109,8 @@ public class Project {
 				this.addEmployee(employee.getInitials());
 			}
 		}
-<<<<<<< HEAD
-		
-=======
 		this.projectNumber = Calendar.getInstance().get(Calendar.YEAR) + serialNumber;
 		serialNumber++;
->>>>>>> refs/remotes/origin/Andreas
 	}
 	
 	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded{
@@ -132,16 +119,12 @@ public class Project {
 	}
 	
 	private void validateinformation(Scheduler scheduler, 
-			String projectName, 
-			List<Employee> employeesToAdd,
+			String projectName,
 		   	int budgetedTime, 
 		   	String initialsProjectManager, 
-<<<<<<< HEAD
-		   	TimePeriod timePeriod) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException, ProjectManagerNotPartOfEmployeesAdded
-=======
 		   	TimePeriod timePeriod,
-		   	List<String> employees) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException
->>>>>>> refs/remotes/origin/Niklas
+			List<Employee> employeesToAdd,
+		   	List<String> employees) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		if (scheduler == null) {
 			throw new InvalidInformationException("Scheduler can't be null");
@@ -153,15 +136,10 @@ public class Project {
 					employees != null &&
 					employees.contains(initialsProjectManager)) {
 			scheduler.getEmployeeFromInitials(initialsProjectManager);
-<<<<<<< HEAD
-			if(!isProperProjectManagerToAdd(initialsProjectManager, employeesToAdd)){
-				throw new ProjectManagerNotPartOfEmployeesAdded("The given manager " + initialsProjectManager + " is not a part of the list of employees given." );
-			}
-		} else if (timePeriod != null &&
-=======
 		}
-		if (timePeriod != null &&
->>>>>>> refs/remotes/origin/Niklas
+		if(!isProperProjectManagerToAdd(initialsProjectManager, employeesToAdd)){
+				throw new ProjectManagerNotPartOfEmployeesAdded("The given manager " + initialsProjectManager + " is not a part of the list of employees given." );
+		} else if (timePeriod != null &&
 		timePeriod.getStartDate() == null) {
 			throw new InvalidInformationException("Time periods start date is empty");
 		} else if (timePeriod != null &&

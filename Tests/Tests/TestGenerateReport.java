@@ -44,11 +44,7 @@ public class TestGenerateReport {
 		
 		// Create project
 		try {
-<<<<<<< HEAD
-			TestTools.createProject(scheduler,"Navision Stat?"); // The ?-sign is used on purpose to test file naming
-=======
 			TestTools.createProject(scheduler, "Navision Stat?"); // The ?-sign is used on purpose to test file naming
->>>>>>> refs/remotes/origin/Andreas
 		} catch (Exception e) {
 			Assert.fail();
 		}
