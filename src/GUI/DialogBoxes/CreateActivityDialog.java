@@ -37,6 +37,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 public class CreateActivityDialog extends JDialog {
 
@@ -268,7 +269,7 @@ public class CreateActivityDialog extends JDialog {
 	}
 		
 	
-	private void tryCreateActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException 
+	private void tryCreateActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException, ProjectManagerNotLoggedInException 
 	{
 		String activityName = projectNameTextField.getText();
 		Calendar startDate = null;
