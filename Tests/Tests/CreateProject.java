@@ -45,8 +45,8 @@ public class CreateProject {
 	public void setup(){
 		scheduler = new Scheduler();	
 		try {
-			scheduler.addEmployee("JSB");
-			scheduler.addEmployee("AGC");
+			TestTools.addEmployee(scheduler, "JSB");
+			TestTools.addEmployee(scheduler,"AGC");
 			employeeListWithEmployees = new ArrayList<>();
 			employeeListWithEmployees.add(scheduler.getEmployeeFromInitials("JSB"));
 			employeeListWithEmployees.add(scheduler.getEmployeeFromInitials("AGC"));
@@ -277,7 +277,7 @@ public class CreateProject {
 		
 	@Test
 	public void createProjectNonexistentManagerInitials(){
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, //True? TODO
+		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT,
 				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
 	}
 	

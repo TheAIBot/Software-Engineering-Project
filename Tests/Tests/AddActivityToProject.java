@@ -567,7 +567,7 @@ public class AddActivityToProject {
 	 * @throws EmployeeNotFoundException 
 	 */
 	@Test
-	public void testAddEmployeeNotExisting() throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
+	public void testAddEmployeeNotExisting() {
 		Project project = null;
 		try {
 			project = scheduler.getProject("Navision Stat");
@@ -583,8 +583,12 @@ public class AddActivityToProject {
 		} catch (Exception e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
 		}
-		
+		try{
 		assertFalse(project.addEmployee("XXXX"));
+		Assert.fail();
+		} catch(Exception e){
+			
+		}
 		assertEquals(numberOfEmployeesBefore, project.getEmployees().size());
 
 	}

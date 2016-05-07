@@ -3,6 +3,7 @@ package Tests;
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -196,7 +197,8 @@ public class TestTools {
 	public static Project createProject(Scheduler scheduler,String projectName, String projectManagerInitial) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
 	{
 		int currentNumberOfProjects = scheduler.getProjects().size();
-		scheduler.createProject(projectName, "", "", null, 0, projectManagerInitial, null);;
+		Employee projectmanager = scheduler.getEmployeeFromInitials(projectManagerInitial);
+		scheduler.createProject(projectName, "", "", Collections.singletonList(projectmanager), 0, projectManagerInitial, null);;
 		
 		Project project = null;
 		try {

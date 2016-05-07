@@ -156,8 +156,8 @@ public class AddEmployeeToProject {
 			//Source - GloryHammer
 			
 			//Other projects
-			scheduler.createProject("Tales From the Kingdom of Fife");
-			scheduler.createProject("Space 1992: Rise Of the Chaos Wizards");
+			TestTools.createProject(scheduler,"Tales From the Kingdom of Fife");
+			TestTools.createProject(scheduler,"Space 1992: Rise Of the Chaos Wizards");
 			//Other employees
 			scheduler.addEmployee("AMF"); //Angus McFife
 			scheduler.addEmployee("ZT"); //Zargothrax
@@ -259,7 +259,7 @@ public class AddEmployeeToProject {
 	}
 	
 	@Test
-	public void AddEmployeeIncorrectInitialsTest() throws EmployeeNotFoundException, EmployeeAlreadyAssignedException
+	public void AddEmployeeIncorrectInitialsTest()
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
@@ -275,7 +275,11 @@ public class AddEmployeeToProject {
 			Assert.fail();
 		}
 
-		assertFalse(project.addEmployee("LSB"));
+		try {
+			assertFalse(project.addEmployee("LSB"));
+			Assert.fail();
+		} catch (Exception ee) {
+		}
 	}
 	
 	
@@ -285,7 +289,7 @@ public class AddEmployeeToProject {
 	 * @throws EmployeeNotFoundException 
 	 */
 	@Test
-	public void AddEmployeeNotExisting() throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
+	public void AddEmployeeNotExisting() {
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
 		try {
@@ -307,8 +311,13 @@ public class AddEmployeeToProject {
 		} catch (Exception e) {
 			assertEquals("No employee with those initials exists", e.getMessage());
 		}
-		
-		assertFalse(project.addEmployee("XXXX"));
+		try {
+			assertFalse(project.addEmployee("XXXX"));
+			Assert.fail();
+		} catch (Exception e) {
+			
+		}
+		 
 		assertEquals(0, project.getEmployees().size());
 
 	}
