@@ -281,7 +281,7 @@ public class Project {
 		openActivities.add(activity);
 	}
 
-	/** Adds employee to the project. Returns true if possible, but if an employee with those initials do not exist,
+	/** Adds employee to the project. Returns true if possible, but if an employee with those initials does not exist,
 	 *  or if the employee is already a part of the project, false is returned instead.
 	 * @param initials
 	 * @return True if the employee exist, and is added to the project, else false.

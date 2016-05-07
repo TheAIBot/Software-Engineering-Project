@@ -1,6 +1,9 @@
 package Tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -174,8 +177,20 @@ public class TestTools {
 		} catch (Exception e) {
 			Assert.fail(e.getClass() + e.getMessage());
 		}
+		
+		// test the number of employees and projects are correct before and after 
+		int numberOfProjects = employee.getNumberOfProjects();
+		int numberOfEmployeesBefore = project.getEmployees().size();
+		assertFalse(employee.isAlreadyPartOfProject(project));
+		assertEquals(numberOfProjects, employee.getNumberOfProjects());
+		
 		Assert.assertTrue(project.addEmployee(employeeName));
-		//TODO add asserts here to check that the employee was added
+		//TODO add asserts here to check that the employee was added - DONE?
+		
+		assertEquals(numberOfEmployeesBefore + 1, project.getEmployees().size());
+		assertEquals(numberOfProjects + 1, employee.getNumberOfProjects());
+		assertTrue(employee.isAlreadyPartOfProject(project));
+		
 		return employee;
 	}
 
