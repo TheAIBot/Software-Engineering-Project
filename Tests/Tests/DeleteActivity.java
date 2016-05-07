@@ -56,7 +56,7 @@ public class DeleteActivity {
 			if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 				Assert.fail();
 			}
-		} catch (EmployeeNotFoundException | EmployeeAlreadyAssignedException e) {
+		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
 		

@@ -269,14 +269,10 @@ public class Project {
 	 *  or if the employee is already a part of the project, false is returned instead.
 	 * @param initials
 	 * @return True if the employee exist, and is added to the project, else false.
+	 * @throws EmployeeNotFoundException 
 	 */
-	public boolean addEmployee(String initials) {
-		Employee employee = null;
-		try {
-			employee = scheduler.getEmployeeFromInitials(initials);
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean addEmployee(String initials) throws EmployeeNotFoundException {
+		Employee employee = scheduler.getEmployeeFromInitials(initials);
 		if (employee.isAlreadyPartOfProject(this) || employees.contains(initials)) {
 			return false;
 			//This should always be true, as the check for if it is possible, is made above. It does, however make the code shorter.

@@ -60,10 +60,7 @@ public class TestGenerateReport {
 			if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 				Assert.fail();
 			}
-		} catch (EmployeeNotFoundException e1) {
-			// TODO Auto-generated catch block
-			Assert.fail(e1.getMessage());
-		} catch (EmployeeAlreadyAssignedException e1) {
+		} catch (Exception e1) {
 			Assert.fail(e1.getMessage());
 		}
 		
