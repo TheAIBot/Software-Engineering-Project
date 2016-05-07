@@ -121,15 +121,6 @@ public class Tools {
 		return activityTable;
 	}
 
-	public static GregorianCalendar getCalendarFromString(String dateString) throws ParseException
-	{
-		DateFormat dateFormat = new SimpleDateFormat(TimePeriod.DATE_FORMAT);
-		Date date = dateFormat.parse(dateString);
-		GregorianCalendar dateCalendar = new GregorianCalendar();
-		dateCalendar.setTime(date);
-		return dateCalendar;
-	}
-
 	public static String changeBorder(ColoredBorder borderComponent, ThrowingConsumer<String> func)
 	{
 		String errorText = "";

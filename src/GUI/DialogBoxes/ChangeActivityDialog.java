@@ -199,14 +199,14 @@ public class ChangeActivityDialog extends JDialog {
 	
 	private void checkStartDate()
 	{
-		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
-		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(startDateTextField, x -> TimePeriod.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> TimePeriod.getCalendarFromString(x));
 	}
 	
 	private void checkEndDate()
 	{
-		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
-		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(startDateTextField, x -> TimePeriod.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> TimePeriod.getCalendarFromString(x));
 	}
 	
 	private void checkBudgettedTime()
@@ -225,8 +225,8 @@ public class ChangeActivityDialog extends JDialog {
 		TimePeriod timePeriod = null;
 		if (startDateTextField.getText().trim().length() != 0 &&
 			endDateTextField.getText().trim().length() != 0) {
-			GregorianCalendar startDate = Tools.getCalendarFromString(startDateTextField.getText());
-			GregorianCalendar endDate = Tools.getCalendarFromString(endDateTextField.getText());
+			GregorianCalendar startDate = TimePeriod.getCalendarFromString(startDateTextField.getText());
+			GregorianCalendar endDate = TimePeriod.getCalendarFromString(endDateTextField.getText());
 			timePeriod = new TimePeriod(startDate, endDate);
 			//TODO fix this oddness that lombre mentioned
 		}
