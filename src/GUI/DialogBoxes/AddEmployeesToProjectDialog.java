@@ -144,12 +144,12 @@ public class AddEmployeesToProjectDialog extends JDialog {
 	public void loadInformation()
 	{	
 		assignedEmployees = project.getEmployees();
-		assignedEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(assignedEmployees));
+		assignedEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(assignedEmployees, (a, b) -> b.getActivities().size() - a.getActivities().size()));
 		
 		List<Employee> employees = scheduler.getEmployeesContainingString("");
 		employees = employees.stream()
 							 .filter(x -> !assignedEmployees.contains(x))
 							 .collect(Collectors.toList());
-		allEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(employees));
+		allEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(employees, (a, b) -> b.getActivities().size() - a.getActivities().size()));
 	}
 }
