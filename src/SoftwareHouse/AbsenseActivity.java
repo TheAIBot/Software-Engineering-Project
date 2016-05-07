@@ -10,9 +10,9 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 /**
  * Activity subclass used for recording absence like holiday or absence because of sickness
  */
-public class AbsenceActivity extends Activity {
+public class AbsenseActivity extends Activity {
 
-	public AbsenceActivity(String name, String detailText, List<Employee> employees, Calendar startDate,
+	public AbsenseActivity(String name, String detailText, List<Employee> employees, Calendar startDate,
 			Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
 		super(name, detailText, employees, startDate, endDate, budgettedTime, inProject);
 	}
