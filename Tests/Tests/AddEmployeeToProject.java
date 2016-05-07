@@ -120,7 +120,6 @@ public class AddEmployeeToProject {
 		assertTrue(project1.getEmployees().contains(employee2));
 	}
 	
-
 	@Test
 	public void addEmployeeToProject2EmployeesAlreadyPart(){
 		try {

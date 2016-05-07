@@ -28,7 +28,7 @@ public class CreateProject {
 	public static Scheduler scheduler;
 	private static final String PROJECT_NAME = "Navision Stat";
 	private static final String DETAILED_TEXT = "Programfunktionalitet  udarbejdet for den danske stat";
-	private static final String COMPANY_NAME = "Det offentilige";
+	private static final String COMPANY_NAME = "Det offentlige";
 	private static final int BUDGETED_TIME = 42;
 	private static final List<Employee> EMPLOYEE_LIST_EMPTY = new ArrayList<>();
 	private static final String EMPTY_NAME = "";

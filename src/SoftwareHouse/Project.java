@@ -117,8 +117,6 @@ public class Project {
 			throw new InvalidInformationException("Start date can't be after the end date");
 		}
 	}
-
-	
 	
 	/**
 	 * @return the name
@@ -294,6 +292,10 @@ public class Project {
 		closedActivities.add(activity);
 	}
 	
+	/**
+	 * Closes the project if it has not already been closed
+	 * @throws ProjectAlreadyClosedException
+	 */
 	public void close() throws ProjectAlreadyClosedException {
 		if (isOpen) {
 			isOpen = false;			
@@ -328,6 +330,10 @@ public class Project {
 		this.isOpen = isOpen;
 	}
 
+	/**
+	 * Generate a report containing a list of open activities associated with this project
+	 * Each open activity is listed with name, bugeted time, detailed text and all staffed employees
+	 */
 	public void generateReport() {
 		PrintWriter writer = null;
 		String fileName = getFilePath();
@@ -359,6 +365,9 @@ public class Project {
 		return (obj == null || !(obj instanceof Project))? false: ((Project) obj).getName().equals(this.name);
 	}
 
+	/**
+	 * @return a filepath with a valid ascii name convention standard
+	 */
 	public String getFilePath() {
 		String fileName = name.replaceAll("\\s", "_");
 		fileName = fileName.replaceAll("[^\\w.-]", "");
