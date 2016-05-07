@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.validator.PublicClassValidator;
 
@@ -72,7 +73,18 @@ public class Project {
 			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
 					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
+<<<<<<< HEAD
 		validateinformation(scheduler, projectName,employeesToAdd, budgetedTime, initialsProjectManager, timePeriod);
+=======
+		List<String> employeesInitials = null;
+		if (employeesToAdd != null) {
+			employeesInitials = employeesToAdd.stream()
+					   .map(x -> x.getInitials())
+					   .collect(Collectors.toList());
+		}
+		
+		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod, employeesInitials);
+>>>>>>> refs/remotes/origin/Niklas
 		this.scheduler = scheduler;
 		this.name = projectName;
 		this.costumerName = costumerName;
@@ -102,7 +114,12 @@ public class Project {
 			List<Employee> employeesToAdd,
 		   	int budgetedTime, 
 		   	String initialsProjectManager, 
+<<<<<<< HEAD
 		   	TimePeriod timePeriod) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException, ProjectManagerNotPartOfEmployeesAdded
+=======
+		   	TimePeriod timePeriod,
+		   	List<String> employees) throws MissingInformationException, InvalidInformationException, EmployeeNotFoundException
+>>>>>>> refs/remotes/origin/Niklas
 	{
 		if (scheduler == null) {
 			throw new InvalidInformationException("Scheduler can't be null");
@@ -110,12 +127,19 @@ public class Project {
 			throw new MissingInformationException("Missing project name");
 		} else if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be negative");
-		} else if (!Tools.isNullOrEmpty(initialsProjectManager)) {
+		} else if (!Tools.isNullOrEmpty(initialsProjectManager) &&
+					employees != null &&
+					employees.contains(initialsProjectManager)) {
 			scheduler.getEmployeeFromInitials(initialsProjectManager);
+<<<<<<< HEAD
 			if(!isProperProjectManagerToAdd(initialsProjectManager, employeesToAdd)){
 				throw new ProjectManagerNotPartOfEmployeesAdded("The given manager " + initialsProjectManager + " is not a part of the list of employees given." );
 			}
 		} else if (timePeriod != null &&
+=======
+		}
+		if (timePeriod != null &&
+>>>>>>> refs/remotes/origin/Niklas
 		timePeriod.getStartDate() == null) {
 			throw new InvalidInformationException("Time periods start date is empty");
 		} else if (timePeriod != null &&
@@ -258,7 +282,7 @@ public class Project {
 		if (Tools.containsActivity(openActivities, title)) {
 			throw new DuplicateNameException("An activity with that name already exists");
 		}	
-		if (isProjectManagerLoggedIn()) {
+		if (isProjectManagerLoggedIn() || useAbsenceActivity) {
 			//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
 			//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
 			List<Employee> activityEmployees = new ArrayList<Employee>();

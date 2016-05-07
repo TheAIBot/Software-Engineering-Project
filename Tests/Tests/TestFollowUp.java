@@ -34,7 +34,7 @@ public class TestFollowUp {
 		
 		// Create project
 		try {
-			scheduler.createProject("Navision Stat");
+			TestTools.createProject(scheduler,"Navision Stat");
 		} catch (Exception e) {
 			Assert.fail();
 		}
