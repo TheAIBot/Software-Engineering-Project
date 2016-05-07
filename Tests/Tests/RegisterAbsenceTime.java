@@ -10,10 +10,10 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 
-public class RegisterAbsenseTime {
+public class RegisterAbsenceTime {
 
 	@Test
-	public void registerAbsenseTimeSuccess()
+	public void registerAbsenceTimeSuccess()
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
@@ -40,7 +40,7 @@ public class RegisterAbsenseTime {
 	}
 	
 	@Test
-	public void registerAbsenseTImeNegativTime()
+	public void registerAbsenceTImeNegativTime()
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);

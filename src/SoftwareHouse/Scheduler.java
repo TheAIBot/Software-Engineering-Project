@@ -134,13 +134,13 @@ public void createProject(String projectName) throws MissingInformationException
 	 * @param employees The employees
 	 * @return True if all exists, else false.
 	 */
-//	public boolean doAllEmployeesExist(List<Employee> employees) {
-//		if (employees != null) {
-//			return (employees.stream().allMatch(x -> this.doesEmployeeExist(x.getInitials())));			
-//		} else {
-//			return true;
-//		}
-//	}
+	public boolean doAllEmployeesExist(List<Employee> employees) {
+		if (employees != null) {
+			return (employees.stream().allMatch(x -> this.doesEmployeeExist(x.getInitials())));			
+		} else {
+			return true;
+		}
+	}
 	
 	/**
 	 * @param projectName
@@ -167,17 +167,17 @@ public void createProject(String projectName) throws MissingInformationException
 	 * @return List<Project>
 	 * @throws NotLoggedInException
 	 */
-//	public List<Project> getProjectsContainingStringInName(String partOfProjectName) throws NotLoggedInException
-//	{
-//		if (isAnyoneLoggedIn()) {
-//			return projects.stream()
-//					   	   .filter(x -> x.getName().contains(partOfProjectName))
-//					   	   .collect(Collectors.toList());
-//		} else {
-//			throw new NotLoggedInException();
-//		}
-//
-//	}
+	public List<Project> getProjectsContainingStringInName(String partOfProjectName) throws NotLoggedInException
+	{
+		if (isAnyoneLoggedIn()) {
+			return projects.stream()
+					   	   .filter(x -> x.getName().contains(partOfProjectName))
+					   	   .collect(Collectors.toList());
+		} else {
+			throw new NotLoggedInException();
+		}
+
+	}
 	
  	/**
  	 * @param initials
