@@ -57,6 +57,7 @@ public class TestRegisterTime {
 		assertTrue(registeredTime == scheduler.getTimeVault().getActivityTime("Navision Stat", "Brugerinterface").get(0));
 	}
 	
+	//Totally wrong(*) TODO
 	@Test
 	public void testRegisterTimeEmployeeNotAffiliatedWithProject() {
 		Employee employee = null;
@@ -103,7 +104,7 @@ public class TestRegisterTime {
 		}
 		
 		try {
-			employee.registerTime("Navision Stat", "Brugerinterface", "", 5);
+			employee.registerTime("Navision Stat", "Brugerinterface", "", 5); //TODO LAES Op.
 			Assert.fail();
 		} catch (Exception e) {
 			assertEquals("Invalid text", e.getMessage());

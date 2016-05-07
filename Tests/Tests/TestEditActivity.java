@@ -14,6 +14,8 @@ import java.util.List;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 /**
@@ -47,8 +49,12 @@ public class TestEditActivity {
 		} catch (Exception e) {
 			Assert.fail();
 		}
-		if(!(project.addEmployee("ELL") &&	project.addEmployee("AGC"))){
-			Assert.fail();
+		try {
+			if(!(project.addEmployee("ELL") &&	project.addEmployee("AGC"))){
+				Assert.fail();
+			}
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
 		}
 
 		// Create activity

@@ -13,6 +13,8 @@ import org.junit.Test;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class AddEmployeeToProject {
 	Scheduler scheduler;
@@ -50,34 +52,62 @@ public class AddEmployeeToProject {
 	
 	@Test
 	public void addEmployeeToProject1EmployeeExisting(){
-		assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
+		try {
+			assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 		assertTrue(project1.getEmployees().size() == 1);
 		assertTrue(employee1.getProjects().size() == 1);
-		assertTrue(project1.getEmployees().get(0).getInitials() == EMPLOYEE_1_INITIALS);
-		assertTrue(employee1.getProjects().get(0).getName() == PROJECT_NAME);
+		assertTrue(project1.getEmployees().get(0).getInitials().equals(EMPLOYEE_1_INITIALS));
+		assertTrue(employee1.getProjects().get(0).getName().equals(PROJECT_NAME));
 	}
 	
 	@Test
 	public void addEmployeeToProject1EmployeeNonExisting(){
-		assertFalse(project1.addEmployee("LeLa"));
+		try {
+			assertFalse(project1.addEmployee("LeLa"));
+		} catch (EmployeeNotFoundException e) {
+			//Should throw this error.
+			assertEquals("No employee with those initials exists", e.getMessage());
+		} catch (EmployeeAlreadyAssignedException e) {
+			Assert.fail(e.getMessage());
+		}
 		assertTrue(project1.getEmployees().size() == 0);
 		assertTrue(employee1.getProjects().size() == 0);
 	}
 	
 	@Test
 	public void addEmployeeToProject1EmployeeAlreadyPart(){
-		assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
-		assertFalse(project1.addEmployee(EMPLOYEE_1_INITIALS));
+		try {
+			assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		} 	catch (EmployeeAlreadyAssignedException e) {
+			Assert.fail(e.getMessage());
+		}
+		try {
+			project1.addEmployee(EMPLOYEE_1_INITIALS);
+			Assert.fail();//Should throw an exception.
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		} catch (EmployeeAlreadyAssignedException e) {
+			assertEquals(EMPLOYEE_1_INITIALS + " is already a part of the project " + PROJECT_NAME, e.getMessage());
+		}
 		assertTrue(project1.getEmployees().size() == 1);
 		assertTrue(employee1.getProjects().size() == 1);
-		assertTrue(project1.getEmployees().get(0).getInitials() == EMPLOYEE_1_INITIALS);
-		assertTrue(employee1.getProjects().get(0).getName() == PROJECT_NAME);
+		assertTrue(project1.getEmployees().get(0).getInitials().equals(EMPLOYEE_1_INITIALS));
+		assertTrue(employee1.getProjects().get(0).getName().equals(PROJECT_NAME));
 	}
 	
 	@Test
 	public void addEmployeeToProject2EmployeesExisting(){
-		assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
-		assertTrue(project1.addEmployee(EMPLOYEE_2_INITIALS));
+		try {
+			assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
+			assertTrue(project1.addEmployee(EMPLOYEE_2_INITIALS));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 		assertTrue(project1.getEmployees().size() == 2);
 		assertTrue(employee1.getProjects().size() == 1);
 		assertTrue(employee2.getProjects().size() == 1);
@@ -87,13 +117,30 @@ public class AddEmployeeToProject {
 		assertTrue(project1.getEmployees().contains(employee2));
 	}
 	
-
 	@Test
 	public void addEmployeeToProject2EmployeesAlreadyPart(){
-		assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
-		assertTrue(project1.addEmployee(EMPLOYEE_2_INITIALS));
-		assertFalse(project1.addEmployee(EMPLOYEE_1_INITIALS));
-		assertFalse(project1.addEmployee(EMPLOYEE_2_INITIALS));
+		try {
+			assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
+			assertTrue(project1.addEmployee(EMPLOYEE_2_INITIALS));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+		try {
+			project1.addEmployee(EMPLOYEE_1_INITIALS);
+			Assert.fail();//Should throw an exception.
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		} catch (EmployeeAlreadyAssignedException e) {
+			assertEquals(EMPLOYEE_1_INITIALS + " is already a part of the project " + PROJECT_NAME, e.getMessage());
+		}
+		try {
+			project1.addEmployee(EMPLOYEE_2_INITIALS);
+			Assert.fail();//Should throw an exception.
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		} catch (EmployeeAlreadyAssignedException e) {
+			assertEquals(EMPLOYEE_2_INITIALS + " is already a part of the project " + PROJECT_NAME, e.getMessage());
+		}
 		assertTrue(project1.getEmployees().size() == 2);
 		assertTrue(employee1.getProjects().size() == 1);
 		assertTrue(employee2.getProjects().size() == 1);
@@ -154,7 +201,7 @@ public class AddEmployeeToProject {
 					, chaosArmy, new GregorianCalendar(1992,3,3), new GregorianCalendar(1992,3,4), 7);
 			spaceProject.addAcitivity(	"Hollywood Hootsman", "Immortal warrior with armor made from wolf, His legend proves the centuries with the power of the hoots!"
 					, hootsArmy, new GregorianCalendar(1992,4,3), new GregorianCalendar(1992,4,4), 12);
-			spaceProject.addAcitivity(	"Apocalypse 1992", "The countdown to universal annihilation had begun"
+			spaceProject.addAcitivity(	"Apocalypse 1992", "The countdown to universal annihilation had begun!"
 					, apocalypseArmy, new GregorianCalendar(1992,12,31), new GregorianCalendar(1993,1,1), 18);		
 			
 			//Actual tests
@@ -170,9 +217,6 @@ public class AddEmployeeToProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
-	
-	
 	
 	@Test
 	public void AddEmployeeSuccessTest()
@@ -233,4 +277,38 @@ public class AddEmployeeToProject {
 
 		assertFalse(project.addEmployee("LSB"));
 	}
+	
+	
+	/**
+	 * Test case: Employee does not exists in the internal system
+	 */
+	@Test
+	public void AddEmployeeNotExisting() {
+		Scheduler scheduler = new Scheduler();
+		TestTools.login(scheduler);
+		try {
+			scheduler.createProject("15-puzzle-spil");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		Project project = null;
+		try {
+			project = scheduler.getProject("15-puzzle-spil");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		Employee employeeX = null;
+		try {
+			employeeX = scheduler.getEmployeeFromInitials("XXXX");
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("No employee with those initials exists", e.getMessage());
+		}
+		
+		assertFalse(project.addEmployee("XXXX"));
+		assertEquals(0, project.getEmployees().size());
+
+	}
+	
 }

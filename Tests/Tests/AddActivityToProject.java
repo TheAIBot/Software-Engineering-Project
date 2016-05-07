@@ -1,5 +1,6 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
@@ -26,7 +28,7 @@ public class AddActivityToProject {
 	private Scheduler scheduler = null;
 	
 	/**
-	 * Setup the test environment by initialising the scheduler, login, creating a sample project and staff it with employees 
+	 * Setup the test environment by initializing the scheduler, login, creating a sample project and staff it with employees 
 	 */
 	@Before
 	public void setup()
@@ -381,5 +383,31 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		}
+	}
+	
+	/**
+	 * Test case: Employee does not exists in the internal system
+	 */
+	@Test
+	public void testAddEmployeeNotExisting() {
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		int numberOfEmployeesBefore = project.getEmployees().size();
+		
+		Employee employeeX = null;
+		try {
+			employeeX = scheduler.getEmployeeFromInitials("XXXX");
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("No employee with those initials exists", e.getMessage());
+		}
+		
+		assertFalse(project.addEmployee("XXXX"));
+		assertEquals(numberOfEmployeesBefore, project.getEmployees().size());
+
 	}
 }

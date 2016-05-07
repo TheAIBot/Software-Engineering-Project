@@ -63,6 +63,10 @@ public class Employee {
 	public List<Project> getProjects() {
 		return projects;
 	}
+	
+	public int getNumberOfProjects() {
+		return projects.size();
+	}
 
 	/**
 	 * Register work og absence
@@ -107,4 +111,5 @@ public class Employee {
 	public void addAbsenceActivity(Activity activity) {
 		absenceActivities.add(activity);
 	}
+	
 }

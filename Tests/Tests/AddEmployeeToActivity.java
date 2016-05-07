@@ -56,8 +56,12 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		}
 
-		if (!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") && project.addEmployee("NR"))) {
-			Assert.fail();
+		try {
+			if (!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") && project.addEmployee("NR"))) {
+				Assert.fail();
+			}
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
 		}
 
 		String activityName = "Udvikling af brugerinterface";
@@ -96,7 +100,7 @@ public class AddEmployeeToActivity {
 		}
 		
 		// test the number of employees and activities are correct before and after 
-		int numberOfActivies = employee.getNumberOfActivities();
+		int numberOfActivities = employee.getNumberOfActivities();
 		assertFalse(employee.isAlreadyPartOfActivity(activity));
 		assertEquals(activity.getAssignedEmployees().size(), 3);
 		try {
@@ -105,7 +109,7 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		}
 		assertEquals(activity.getAssignedEmployees().size(), 4);
-		assertEquals(numberOfActivies + 1,employee.getNumberOfActivities());
+		assertEquals(numberOfActivities + 1, employee.getNumberOfActivities());
 		assertTrue(employee.isAlreadyPartOfActivity(activity));
 	}
 
