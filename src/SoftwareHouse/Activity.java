@@ -127,4 +127,22 @@ public class Activity {
 	public String getProjectName() {
 		return inProject.getName();
 	}
+
+	/**
+	 * @return the inProject
+	 */
+	public Project getInProject() {
+		return inProject;
+	}
+
+	/**
+	 * @param assignedEmployees the assignedEmployees to set
+	 * @throws InvalidInformationException 
+	 */
+	public void setAssignedEmployees(List<Employee> assignedEmployees) throws InvalidInformationException {
+		if (assignedEmployees == null) {
+			throw new InvalidInformationException("Assigned employees can't be null");
+		}
+		this.assignedEmployees = assignedEmployees;
+	}
 }

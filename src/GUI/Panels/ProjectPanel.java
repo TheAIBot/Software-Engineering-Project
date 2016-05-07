@@ -14,8 +14,8 @@ public class ProjectPanel extends JPanel {
 	private JLabel projectManagerInitialsLabel;
 	private JLabel budgettedTimeLabel;
 	private JButton createActivityButton;
-	private JButton btnndrProjekt;
-	private JButton btnTilfjMedarbejdere;
+	private JButton changeProjectButton;
+	private JButton addEmployeesButton;
 
 	public ProjectPanel() {
 		setMaximumSize(new Dimension(800, 600));
@@ -61,18 +61,18 @@ public class ProjectPanel extends JPanel {
 		
 		createActivityButton = new JButton("Opret aktivitet");
 		createActivityButton.setEnabled(false);
-		createActivityButton.setBounds(324, 537, 105, 52);
+		createActivityButton.setBounds(309, 537, 120, 52);
 		add(createActivityButton);
 		
-		btnndrProjekt = new JButton("\u00C6ndr projekt");
-		btnndrProjekt.setEnabled(false);
-		btnndrProjekt.setBounds(209, 537, 105, 52);
-		add(btnndrProjekt);
+		changeProjectButton = new JButton("\u00C6ndr projekt");
+		changeProjectButton.setEnabled(false);
+		changeProjectButton.setBounds(176, 537, 123, 52);
+		add(changeProjectButton);
 		
-		btnTilfjMedarbejdere = new JButton("Tilf\u00F8j medarbejdere");
-		btnTilfjMedarbejdere.setEnabled(false);
-		btnTilfjMedarbejdere.setBounds(59, 537, 140, 52);
-		add(btnTilfjMedarbejdere);
+		addEmployeesButton = new JButton("Tilf\u00F8j medarbejdere");
+		addEmployeesButton.setEnabled(false);
+		addEmployeesButton.setBounds(10, 537, 156, 52);
+		add(addEmployeesButton);
 	}
 
 	/**
@@ -115,5 +115,19 @@ public class ProjectPanel extends JPanel {
 	 */
 	public JButton getCreateActivityButton() {
 		return createActivityButton;
+	}
+
+	/**
+	 * @return the changeProjectButton
+	 */
+	public JButton getChangeProjectButton() {
+		return changeProjectButton;
+	}
+
+	/**
+	 * @return the addEmployeesButton
+	 */
+	public JButton getAddEmployeesButton() {
+		return addEmployeesButton;
 	}
 }

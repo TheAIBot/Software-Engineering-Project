@@ -37,6 +37,7 @@ public class Project {
 	private final String FILE_EXTENTION = ".txt";
 	public int budgettedTime = 0;
 	private boolean useAbsenceActivity = false;
+	private String detailedText;
 	
 	private List<Activity> openActivities = new ArrayList<Activity>();
 	private List<Activity> closedActivities = new ArrayList<Activity>();
@@ -70,6 +71,7 @@ public class Project {
 		this.name = projectName;
 		this.costumerName = costumerName;
 		this.budgetedTime = budgetedTime;
+		this.detailedText = detailedText;
 		try {
 			//It might happen that no manager is given, which would result in an error here. No will be assigned in this case.
 			this.projectManager = scheduler.getEmployeeFromInitials(initialsProjectManager); 
@@ -440,5 +442,58 @@ public class Project {
 		} else {
 			return projectManager.equals(scheduler.getLoggedInEmployee());
 		}
+	}
+
+	/**
+	 * @param costumerName the costumerName to set
+	 */
+	public void setCostumerName(String costumerName) {
+		this.costumerName = costumerName;
+	}
+
+	/**
+	 * @param budgetedTime the budgetedTime to set
+	 */
+	public void setBudgetedTime(int budgetedTime) {
+		this.budgetedTime = budgetedTime;
+	}
+
+	/**
+	 * @param projectManager the projectManager to set
+	 */
+	public void setProjectManager(Employee projectManager) {
+		this.projectManager = projectManager;
+	}
+
+	/**
+	 * @param timePeriod the timePeriod to set
+	 */
+	public void setTimePeriod(TimePeriod timePeriod) {
+		this.timePeriod = timePeriod;
+	}
+
+	/**
+	 * @return the detailedText
+	 */
+	public String getDetailedText() {
+		return detailedText;
+	}
+
+	/**
+	 * @param detailedText the detailedText to set
+	 */
+	public void setDetailedText(String detailedText) {
+		this.detailedText = detailedText;
+	}
+
+	/**
+	 * @param employees the employees to set
+	 * @throws InvalidInformationException 
+	 */
+	public void setEmployees(List<Employee> employees) throws InvalidInformationException {
+		if (employees == null) {
+			throw new InvalidInformationException("Employees can't be null");
+		}
+		this.employees = employees;
 	}
 }

@@ -19,7 +19,10 @@ import java.util.function.Predicate;
 import javax.print.attribute.ResolutionSyntax;
 import javax.swing.JTable;
 
+import com.sun.istack.internal.FinalArrayList;
+
 import GUI.BorderComponents.ColoredBorder;
+import GUI.Pages.ActivityPage;
 import GUI.Pages.ProjectPage;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
@@ -92,7 +95,7 @@ public class Tools {
 		return projectTable;
 	}
 	
-	public static JTable createTableOfActivities(List<Activity> activities)
+	public static JTable createTableOfActivities(final List<Activity> activities, GUIController controller, Scheduler scheduler)
 	{
 		final String[] columnNames = {"Aktivitets navn", "Medarbejdere", "Projekt", "Budgetteret tid"};
 		Collections.sort(activities, (a, b) -> b.getProjectName().compareTo(a.getProjectName()));
@@ -104,7 +107,18 @@ public class Tools {
 			employeesAsATable[employeesAsATable.length - 1 - i][2] = activities.get(i).getProjectName();
 			employeesAsATable[employeesAsATable.length - 1 - i][3] = activities.get(i).getBudgettedTime();
 		}
-		return new JTable(employeesAsATable, columnNames);
+		JTable activityTable = new JTable(employeesAsATable, columnNames);
+		activityTable.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent e) {
+		        if (e.getClickCount() == 2) {
+			        int row = activityTable.rowAtPoint(e.getPoint());
+		            try {
+						controller.switchPage(new ActivityPage(controller, scheduler, activities.get(row)));
+					} catch (Exception e1) { }
+		        }
+		    }
+		});
+		return activityTable;
 	}
 
 	public static GregorianCalendar getCalendarFromString(String dateString) throws ParseException

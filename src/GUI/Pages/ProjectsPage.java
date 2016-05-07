@@ -2,6 +2,7 @@ package GUI.Pages;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,12 +13,9 @@ import javax.swing.JTable;
 import GUI.GUIController;
 import GUI.Tools;
 import GUI.DialogBoxes.CreateProjectDialog;
-import GUI.DialogBoxes.CreateUserDialog;
+import GUI.Listeners.WindowClosingListener;
 import GUI.Panels.ProjectsPanel;
-import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 
 public class ProjectsPage extends SuperPage<ProjectsPanel> {
 
@@ -32,23 +30,11 @@ public class ProjectsPage extends SuperPage<ProjectsPanel> {
 		projectPanel.getCreateProjectButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CreateProjectDialog dialog = new CreateProjectDialog(scheduler);
-				dialog.addWindowListener(new WindowListener() {
+				dialog.addWindowListener(new WindowClosingListener() {
 					@Override
-					public void windowOpened(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowIconified(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowDeiconified(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowDeactivated(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowClosing(java.awt.event.WindowEvent e) {
-						loadInformation();
+					public void windowClosing(WindowEvent e) {
+						loadInformation();							
 					}
-					@Override
-					public void windowClosed(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowActivated(java.awt.event.WindowEvent e) {}
 				});
 				dialog.setVisible(true);
 				dialog.loadInformation();
