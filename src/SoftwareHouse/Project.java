@@ -112,9 +112,12 @@ public class Project {
 		serialNumber++;
 	}
 	
-	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded{
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded, EmployeeMaxActivitiesReachedException {
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
+		openActivities.add(new AbsenceActivity("sygdom", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("ferie", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("kursus", "", null, null, null, 0, this));
 	}
 	
 	private void validateinformation(Scheduler scheduler, 
@@ -224,7 +227,7 @@ public class Project {
 		if (Tools.containsActivity(openActivities, title)) {
 			throw new DuplicateNameException("An activity with that name already exists");
 		}	
-		if (isProjectManagerLoggedIn() || useAbsenceActivity) {
+		if (isProjectManagerLoggedIn()) {
 			//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
 			//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
 			List<Employee> activityEmployees = new ArrayList<Employee>();
@@ -399,9 +402,9 @@ public class Project {
 	/**
 	 * @param isOpen the isOpen to set
 	 */
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
-	}
+//	public void setOpen(boolean isOpen) {
+//		this.isOpen = isOpen;
+//	}
 	
 	/**
 	 * @param costumerName the costumerName to set
@@ -517,8 +520,8 @@ public class Project {
 	/**
 	 * @return the projectNumber
 	 */
-	public int getProjectNumber() {
-		return projectNumber;
-	}
+//	public int getProjectNumber() {
+//		return projectNumber;
+//	}
 
 }

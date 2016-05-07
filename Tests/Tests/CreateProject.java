@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
+import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.TimePeriod;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
@@ -24,6 +25,7 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
+import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
 public class CreateProject {	
@@ -299,6 +301,24 @@ public class CreateProject {
 		}
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
+	}
+	
+	@Test
+	public void testNoProjectTime()
+	{
+		TestTools.login(scheduler);
+		try {
+			TestTools.createProject(scheduler, "Navision Stat");
+		} catch (Exception e){
+			Assert.fail();
+		}
+		try {
+			List<RegisteredTime> list = scheduler.getTimeVault().getProjectTime("Navision Stat");
+			assertEquals(list.size(),0);
+		} catch (Exception e){
+			Assert.fail();
+		}
+		
 	}
 	
 	
