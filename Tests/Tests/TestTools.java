@@ -106,7 +106,7 @@ public class TestTools {
 	
 	
 	
-	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException
+	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException
 	{
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
@@ -132,7 +132,7 @@ public class TestTools {
 			   								int expectedHours,
 			   								Calendar startDate,
 			   								Calendar endDate,
-			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException
+			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException
 	{
 		Project project = null;
 		try {

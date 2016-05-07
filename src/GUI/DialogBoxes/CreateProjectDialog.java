@@ -262,7 +262,7 @@ public class CreateProjectDialog extends JDialog {
 				errorLabel.setText("A project with that name already exist");
 			} catch (Exception e) {
 				projectNameTextField.makeBorderGreen();
-				projectNameTextField.setText(e.getMessage());
+				errorLabel.setText(e.getMessage());
 			}
 		}
 	}
