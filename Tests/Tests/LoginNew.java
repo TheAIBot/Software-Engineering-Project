@@ -33,7 +33,8 @@ Scheduler scheduler;
 			scheduler.addEmployee("LeLa");
 		} catch (Exception e) {
 			Assert.fail();
-		}	
+		}
+		
 	}
 	
 	private void loginAM(){ //TODO (*) Fails are not registrated outside the method.
