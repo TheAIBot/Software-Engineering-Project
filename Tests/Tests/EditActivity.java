@@ -13,10 +13,20 @@ import java.util.List;
 
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
+import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.IllegalCharException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
+import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
 /**
  * @author ELL
@@ -216,6 +226,34 @@ public class EditActivity {
 			assertEquals("An activity with the specified name already exists", e.getMessage());
 			assertEquals("Brugerinterface", activityBrugerinterface.getName());
 		}
+	}
+	
+	@Test
+	public void testNoActivityTime()
+	{
+		try {
+			TestTools.addEmployee(scheduler, "bob");
+		} catch (Exception e){
+			Assert.fail();
+		}
+		String[] employees = new String[1];
+		employees[0] = "bob";
+		
+		TestTools.addEmployeeToProject(scheduler, "bob", "Navision Stat");
+		
+		try {
+			TestTools.addActivity(scheduler, "Navision Stat", "abde", employees);
+		} catch (Exception e){
+			Assert.fail();
+		}
+		
+		try {
+			List<RegisteredTime> list = scheduler.getTimeVault().getActivityTime("Navision Stat", "abde");
+			assertEquals(list.size(),0);
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
 	}
 
 
