@@ -169,39 +169,6 @@ public class Project {
 		}
 		
 	}
-	
-	/** Returns a MissingInformationTable object, containing information on what might be, 
-	 *  or is, missing, for adding the activity to the project.
-	 * @param title Activity name.
-	 * @param detailText Detailed information about the activity.
-	 * @param employeeInitials List of employees to be added to the activity.
-	 * @param startTime Start time of the activity.
-	 * @param endTime End time of the activity
-	 * @param budgetedTime The budgeted time of the activity.
-	 * @return MissingInformationTable containing the above mentioned information.
-	 */
-	public MissingInformationTable addAcitvityTestMissingInformation(String title, 
-			 String detailText, 
-			 List<String> employeeInitials, 
-			 Calendar startTime, 
-			 Calendar endTime, 
-			 int budgetedTime) {		
-		
-		MissingInformationTable tableMissingInformation = new MissingInformationTable();
-		if (Tools.isNullOrEmpty(title)) {
-			tableMissingInformation.setIsMissingTitle(Tools.isNullOrEmpty(title));
-		}
-		tableMissingInformation.setIsMissingTitle(Tools.isNullOrEmpty(title));
-		tableMissingInformation.setIsMissingDetailText(Tools.isNullOrEmpty(detailText));
-		tableMissingInformation.setIsMissingEmployees((employeeInitials == null || employeeInitials.size() == 0));
-		tableMissingInformation.setIsMissingStartDay(startTime == null);
-		tableMissingInformation.setIsMissingEndDay(endTime == null);
-		tableMissingInformation.setIsNotCorrectOrderTime(startTime.after(endTime));
-		tableMissingInformation.setIsBudgetedTimeNonNegative(budgetedTime < 0);
-		tableMissingInformation.setIsNonexistentEmployee(employeeInitials.stream().allMatch(x -> scheduler.doesEmployeeExist(x)));
-		tableMissingInformation.setIsThereEmployeesWhoCantWorkOnMoreActivities(allEmployeesCanWorkOnMoreActivities(employeeInitials));
-		return tableMissingInformation;
-	}
 		
 	public void addAcitivity(String title, 
 							 String detailText, 
