@@ -24,7 +24,7 @@ public class CloseProject {
 		scheduler = new Scheduler();
 		TestTools.login(scheduler);
 		try {
-			scheduler.createProject("Navision Stat");
+			TestTools.createProject(scheduler,"Navision Stat");
 		} catch (Exception e1) {
 			Assert.fail();
 		}

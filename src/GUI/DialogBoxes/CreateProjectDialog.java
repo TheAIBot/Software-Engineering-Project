@@ -34,6 +34,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
 public class CreateProjectDialog extends JDialog {
 
@@ -261,6 +262,7 @@ public class CreateProjectDialog extends JDialog {
 				errorLabel.setText("A project with that name already exist");
 			} catch (Exception e) {
 				projectNameTextField.makeBorderGreen();
+				projectNameTextField.setText(e.getMessage());
 			}
 		}
 	}
@@ -273,14 +275,14 @@ public class CreateProjectDialog extends JDialog {
 	
 	private void checkStartDate()
 	{
-		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
-		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(startDateTextField, x -> TimePeriod.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> TimePeriod.getCalendarFromString(x));
 	}
 	
 	private void checkEndDate()
 	{
-		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
-		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(startDateTextField, x -> TimePeriod.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> TimePeriod.getCalendarFromString(x));
 	}
 	
 	private void checkBudgettedTime()
@@ -298,15 +300,15 @@ public class CreateProjectDialog extends JDialog {
 	}
 		
 	
-	private void tryCreateProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException
+	private void tryCreateProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		String projectName = projectNameTextField.getText();
 		String costumerName = costumersNameTextField.getText();
 		TimePeriod timePeriod = null;
 		if (startDateTextField.getText().trim().length() != 0 &&
 			endDateTextField.getText().trim().length() != 0) {
-			GregorianCalendar startDate = Tools.getCalendarFromString(startDateTextField.getText());
-			GregorianCalendar endDate = Tools.getCalendarFromString(endDateTextField.getText());
+			GregorianCalendar startDate = TimePeriod.getCalendarFromString(startDateTextField.getText());
+			GregorianCalendar endDate = TimePeriod.getCalendarFromString(endDateTextField.getText());
 			timePeriod = new TimePeriod(startDate, endDate);
 			//TODO fix this oddness that lombre mentioned
 		}

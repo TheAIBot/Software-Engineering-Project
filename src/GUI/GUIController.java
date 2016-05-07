@@ -42,7 +42,7 @@ public class GUIController {
 			Tests.TestTools.createProject(scheduler, "for the lols");
 			Tests.TestTools.createProject(scheduler, "Test project please ignore");
 			Tests.TestTools.createProject(scheduler, "zing", "ELL");
-			Tests.TestTools.createProject(scheduler, "lave pizza", Tests.TestTools.LOGIN_EMPLOYEE_INITIALS);
+			Tests.TestTools.createProject(scheduler, "lave pizza");
 			Tests.TestTools.createProject(scheduler, "få 12");
 			
 			Tests.TestTools.addEmployeeToProject(scheduler, Tests.TestTools.LOGIN_EMPLOYEE_INITIALS, "zing");

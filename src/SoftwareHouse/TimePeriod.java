@@ -1,7 +1,10 @@
 package SoftwareHouse;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 /**
@@ -21,6 +24,15 @@ public class TimePeriod {
 	
 	public boolean isValidTimePeriod(){
 		return (endDate != null && startDate != null && endDate.after(startDate));
+	}
+	
+	public static GregorianCalendar getCalendarFromString(String dateString) throws ParseException
+	{
+		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+		Date date = dateFormat.parse(dateString);
+		GregorianCalendar dateCalendar = new GregorianCalendar();
+		dateCalendar.setTime(date);
+		return dateCalendar;
 	}
 
 	/**

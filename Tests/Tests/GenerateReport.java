@@ -12,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
@@ -22,7 +21,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
  * @author ELL
  * Test the generation of a report
  */
-public class TestFollowUp {
+public class GenerateReport {
 
 	Scheduler scheduler;
 	
@@ -45,7 +44,7 @@ public class TestFollowUp {
 		
 		// Create project
 		try {
-			scheduler.createProject("Navision Stat?"); // The ?-sign is used on purpose to test file naming
+			TestTools.createProject(scheduler, "Navision Stat?"); // The ?-sign is used on purpose to test file naming
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -56,26 +55,13 @@ public class TestFollowUp {
 			Assert.fail();
 		}
 		
+				
 		try {
 			if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
 				Assert.fail();
 			}
 		} catch (Exception e1) {
 			Assert.fail(e1.getMessage());
-		}
-		
-		// Add a project manager and log him in
-		Employee toBeProjectManager = null;
-		try {
-			toBeProjectManager = scheduler.getEmployeeFromInitials("AGC");
-		} catch (Exception e1) {
-			Assert.fail();
-		}
-		project.setProjectManager(toBeProjectManager);
-		try {
-			scheduler.login("AGC");
-		} catch (EmployeeNotFoundException e1) {
-			Assert.fail();
 		}
 		
 		// Create activities
@@ -92,8 +78,7 @@ public class TestFollowUp {
 		try {
 			project.addAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 		activityName = "Rendering";
 		activityDetailedDescription = "Udikling af Rendering Engine. Herunder shadows, textures, smooth lightning.";

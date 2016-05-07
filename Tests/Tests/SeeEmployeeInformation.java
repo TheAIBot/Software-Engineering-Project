@@ -16,6 +16,7 @@ import org.junit.Test;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
+import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
 
 public class SeeEmployeeInformation {
@@ -104,7 +105,7 @@ public class SeeEmployeeInformation {
 			startDate.set(2015, 4, 16);
 			Calendar endDate = new GregorianCalendar();
 			endDate.set(2016, 7, 18);
-			scheduler.createProject(project2Name);
+			TestTools.createProject(scheduler,project2Name);
 			scheduler.getProject(project2Name).forceAddAcitivity(activity2Name, "'Tis the second one", new ArrayList<String>(), startDate, endDate, 1);
 			scheduler.getProject(project2Name).addEmployee(user1Initials);
 			scheduler.getProject(project2Name).getActivity(activity2Name).addEmployee(user1Initials);
@@ -182,7 +183,7 @@ public class SeeEmployeeInformation {
 			startDate.set(2015, 4, 16);
 			Calendar endDate = new GregorianCalendar();
 			endDate.set(2016, 7, 18);
-			scheduler.createProject(project2Name);
+			TestTools.createProject(scheduler,project2Name);
 			scheduler.getProject(project2Name).addEmployee(user1Initials);
 			scheduler.getProject(project1Name).forceAddAcitivity(activity2Name, "'Tis the second one", new ArrayList<String>(), startDate, endDate, 1);
 			scheduler.getProject(project2Name).forceAddAcitivity(activity3Name, "'Tis the third one", new ArrayList<String>(), startDate, endDate, 1);
@@ -210,5 +211,13 @@ public class SeeEmployeeInformation {
 		//History employeesHistory = hopefullyArndt.getHistory(); 
 		//It is already checked that the history object works, so no need to check it again.			/TODO history tests	
 	}
+	
+	@Test
+	public void testNoEmployeeTime()
+	{
+		List<RegisteredTime> list = scheduler.getTimeVault().getEmployeeTime("DCAB");
+		assertEquals(0,list.size());
+	}
+	
 	
 }

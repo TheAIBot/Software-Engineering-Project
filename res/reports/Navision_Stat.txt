@@ -1,12 +1,11 @@
 Activity name: Brugerinterface
 Bugeted time: 150
 Detailed text: Udvikling af brugerinterface
-Employee initials: AGC ELL 
-
+Employee initials: AGC, ELL
 
 Activity name: Rendering
 Bugeted time: 150
 Detailed text: Udikling af Rendering Engine. Herunder shadows, textures, smooth lightning.
-Employee initials: NR JBS 
+Employee initials: NR, JBS
 
 
