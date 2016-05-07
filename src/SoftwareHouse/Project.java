@@ -425,11 +425,20 @@ public class Project {
 		return budgetedTime;
 	}
 
-	public String getCompanyName() {
+	public String getCostumerName() {
 		return costumerName;
 	}
 	
 	public int getLoebenummerPart() {
 		return loebenummerPart;
+	}
+
+	public boolean isProjectManagerLoggedIn()
+	{
+		if (projectManager == null) {
+			return false;
+		} else {
+			return projectManager.equals(scheduler.getLoggedInEmployee());
+		}
 	}
 }

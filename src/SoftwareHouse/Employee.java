@@ -108,4 +108,9 @@ public class Employee {
 	public void addAbsenceActivity(Activity activity) {
 		absenceActivities.add(activity);
 	}
+	
+	public boolean equals(Employee other)
+	{
+		return initials.equals(other.getInitials());
+	}
 }

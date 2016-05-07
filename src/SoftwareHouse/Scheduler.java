@@ -56,7 +56,7 @@ public class Scheduler {
 	{
 		if (isAnyoneLoggedIn()) {
 			if (Tools.containsProject(projects, projectName.trim())) {
-				throw new DuplicateNameException("A project with that title already exists");
+				throw new DuplicateNameException("A project with that name already exist");
 			}
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
 		} else {

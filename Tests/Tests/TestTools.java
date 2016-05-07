@@ -25,6 +25,8 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
 public class TestTools {
 	
+	public static final String LOGIN_EMPLOYEE_INITIALS = "LLLL";
+	
 	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
 	{
 		scheduler.addEmployee(name);
@@ -181,8 +183,13 @@ public class TestTools {
 
 	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException
 	{
+		return createProject(scheduler, projectName, "");
+	}
+	
+	public static Project createProject(Scheduler scheduler,String projectName, String projectManagerInitial) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException
+	{
 		int currentNumberOfProjects = scheduler.getProjects().size();
-		scheduler.createProject(projectName);
+		scheduler.createProject(projectName, "", "", null, 0, projectManagerInitial, null);;
 		
 		Project project = null;
 		try {
@@ -201,8 +208,8 @@ public class TestTools {
 	{
 		Employee employee = null;
 		try {
-			employee = TestTools.addEmployee(scheduler, "LLLL");
-			scheduler.login("LLLL");
+			employee = TestTools.addEmployee(scheduler, LOGIN_EMPLOYEE_INITIALS);
+			scheduler.login(LOGIN_EMPLOYEE_INITIALS);
 		} catch (Exception e) {
 			Assert.fail();
 		}
