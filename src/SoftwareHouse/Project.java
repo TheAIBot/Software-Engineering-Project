@@ -11,6 +11,7 @@ import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
@@ -21,6 +22,7 @@ import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import sun.net.www.content.audio.x_aiff;
+import sun.nio.cs.ext.TIS_620;
 
 /**
  * @author Jesper
@@ -270,12 +272,12 @@ public class Project {
 	 * @param initials
 	 * @return True if the employee exist, and is added to the project, else false.
 	 * @throws EmployeeNotFoundException 
+	 * @throws EmployeeAlreadyAssignedException 
 	 */
-	public boolean addEmployee(String initials) throws EmployeeNotFoundException {
+	public boolean addEmployee(String initials) throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
 		Employee employee = scheduler.getEmployeeFromInitials(initials);
 		if (employee.isAlreadyPartOfProject(this) || employees.contains(initials)) {
-			return false;
-			//This should always be true, as the check for if it is possible, is made above. It does, however make the code shorter.
+			throw new EmployeeAlreadyAssignedException(initials + " is already a part of the project " + this.name);
 		} else	return (employee.addProject(this) && employees.add(employee)); 
 	}
 	

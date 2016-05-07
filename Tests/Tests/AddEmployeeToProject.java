@@ -70,6 +70,8 @@ public class AddEmployeeToProject {
 		} catch (EmployeeNotFoundException e) {
 			//Should throw this error.
 			assertEquals("No employee with those initials exists", e.getMessage());
+		} catch (EmployeeAlreadyAssignedException e) {
+			Assert.fail(e.getMessage());
 		}
 		assertTrue(project1.getEmployees().size() == 0);
 		assertTrue(employee1.getProjects().size() == 0);
@@ -80,6 +82,8 @@ public class AddEmployeeToProject {
 		try {
 			assertTrue(project1.addEmployee(EMPLOYEE_1_INITIALS));
 		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		} 	catch (EmployeeAlreadyAssignedException e) {
 			Assert.fail(e.getMessage());
 		}
 		try {
