@@ -50,10 +50,14 @@ public class CloseActivity {
 			Assert.fail();
 		}
 		
-		
-		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") &&	project.addEmployee("NR"))){
-			Assert.fail();
-		}
+
+		try {
+			if(!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") &&	project.addEmployee("NR"))){
+				Assert.fail();
+			}
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		} 
 		
 		
 		List<String> employeeInitials = new ArrayList<String>();

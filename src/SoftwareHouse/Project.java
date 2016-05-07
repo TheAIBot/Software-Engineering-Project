@@ -12,6 +12,7 @@ import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
@@ -26,7 +27,7 @@ import sun.net.www.content.audio.x_aiff;
  * @author Jesper
  */
 public class Project {
-	private static int loebenummerPart = 0;
+	private static int serialNumberPart = 0;
 	private Scheduler scheduler;
 	private String name;
 	private String costumerName;
@@ -48,7 +49,7 @@ public class Project {
 	 *  which's message contains what is wrong. Must be logged in to create a new project.
 	 * @param scheduler The scheduler to attach the project. Must not be null.
 	 * @param projectName The project name. Must be unique for the scheduler, not null or "".
-	 * @param companyName The name of the company requesting the project. Is allowed to be "" or null.
+	 * @param customerName The name of the company requesting the project. Is allowed to be "" or null.
 	 * @param detailedText The detailed description associated with the project. Is allowed to be "" or null.
 	 * @param employeesToAdd The employees to add to the project, at the start of it. Is allowed to be empty, or null. All employees must exist.
 	 * 				                They can of course not already be part of the project.
@@ -61,10 +62,11 @@ public class Project {
 	 * @throws EmployeeNotFoundException 
 	 * @throws InvalidInformationException 
 	 * @throws MissingInformationException 
+	 * @throws EmployeeAlreadyAssignedException 
 	 */	
 	public Project(Scheduler scheduler, String projectName, String costumerName, String detailedText, 
 			    List<Employee> employeesToAdd, int budgetedTime, String initialsProjectManager, TimePeriod timePeriod)
-					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException
+					 throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
 	{
 		validateinformation(scheduler, projectName, budgetedTime, initialsProjectManager, timePeriod);
 		this.scheduler = scheduler;
@@ -75,12 +77,17 @@ public class Project {
 			//It might happen that no manager is given, which would result in an error here. No will be assigned in this case.
 			this.projectManager = scheduler.getEmployeeFromInitials(initialsProjectManager); 
 		} catch (EmployeeNotFoundException e) {
+			
 		}
 		this.timePeriod = timePeriod;	
-		if (employeesToAdd != null) employeesToAdd.stream().forEach(x -> this.addEmployee(x.getInitials()));
+		if (employeesToAdd != null){
+			for (Employee employee : employeesToAdd) { //Can't use streams, as this needs to be able to throw an error. 
+				this.addEmployee(employee.getInitials());
+			}
+		}
 	}
 	
-	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException{
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException{
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
 	}
@@ -155,39 +162,6 @@ public class Project {
 			throw new ActivityNotFoundException();
 		}
 		
-	}
-	
-	/** Returns a MissingInformationTable object, containing information on what might be, 
-	 *  or is, missing, for adding the activity to the project.
-	 * @param title Activity name.
-	 * @param detailText Detailed information about the activity.
-	 * @param employeeInitials List of employees to be added to the activity.
-	 * @param startTime Start time of the activity.
-	 * @param endTime End time of the activity
-	 * @param budgetedTime The budgeted time of the activity.
-	 * @return MissingInformationTable containing the above mentioned information.
-	 */
-	public MissingInformationTable addAcitvityTestMissingInformation(String title, 
-			 String detailText, 
-			 List<String> employeeInitials, 
-			 Calendar startTime, 
-			 Calendar endTime, 
-			 int budgetedTime) {		
-		
-		MissingInformationTable tableMissingInformation = new MissingInformationTable();
-		if (Tools.isNullOrEmpty(title)) {
-			tableMissingInformation.setIsMissingTitle(Tools.isNullOrEmpty(title));
-		}
-		tableMissingInformation.setIsMissingTitle(Tools.isNullOrEmpty(title));
-		tableMissingInformation.setIsMissingDetailText(Tools.isNullOrEmpty(detailText));
-		tableMissingInformation.setIsMissingEmployees((employeeInitials == null || employeeInitials.size() == 0));
-		tableMissingInformation.setIsMissingStartDay(startTime == null);
-		tableMissingInformation.setIsMissingEndDay(endTime == null);
-		tableMissingInformation.setIsNotCorrectOrderTime(startTime.after(endTime));
-		tableMissingInformation.setIsBudgetedTimeNonNegative(budgetedTime < 0);
-		tableMissingInformation.setIsNonexistentEmployee(employeeInitials.stream().allMatch(x -> scheduler.doesEmployeeExist(x)));
-		tableMissingInformation.setIsThereEmployeesWhoCantWorkOnMoreActivities(allEmployeesCanWorkOnMoreActivities(employeeInitials));
-		return tableMissingInformation;
 	}
 		
 	public void addAcitivity(String title, 
@@ -285,17 +259,13 @@ public class Project {
 	 *  or if the employee is already a part of the project, false is returned instead.
 	 * @param initials
 	 * @return True if the employee exist, and is added to the project, else false.
+	 * @throws EmployeeNotFoundException 
+	 * @throws EmployeeAlreadyAssignedException 
 	 */
-	public boolean addEmployee(String initials) {
-		Employee employee = null;
-		try {
-			employee = scheduler.getEmployeeFromInitials(initials);
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean addEmployee(String initials) throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
+		Employee employee = scheduler.getEmployeeFromInitials(initials);
 		if (employee.isAlreadyPartOfProject(this) || employees.contains(initials)) {
-			return false;
-			//This should always be true, as the check for if it is possible, is made above. It does, however make the code shorter.
+			throw new EmployeeAlreadyAssignedException(initials + " is already a part of the project " + this.getName());
 		} else	return (employee.addProject(this) && employees.add(employee)); 
 	}
 	
@@ -431,11 +401,11 @@ public class Project {
 		return budgetedTime;
 	}
 
-	public String getCompanyName() {
+	public String getCustomerName() {
 		return costumerName;
 	}
 	
-	public int getLoebenummerPart() {
-		return loebenummerPart;
+	public int getLoebenummerPart() { //TODO make(*)
+		return serialNumberPart;
 	}
 }

@@ -16,6 +16,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.IllegalCharException;
@@ -184,7 +185,11 @@ public class TestTools {
 		assertFalse(employee.isAlreadyPartOfProject(project));
 		assertEquals(numberOfProjects, employee.getNumberOfProjects());
 		
-		Assert.assertTrue(project.addEmployee(employeeName));
+		try {
+			Assert.assertTrue(project.addEmployee(employeeName));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		} 
 		//TODO add asserts here to check that the employee was added - DONE?
 		
 		assertEquals(numberOfEmployeesBefore + 1, project.getEmployees().size());
@@ -194,7 +199,7 @@ public class TestTools {
 		return employee;
 	}
 
-	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException
+	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
 	{
 		int currentNumberOfProjects = scheduler.getProjects().size();
 		scheduler.createProject(projectName);

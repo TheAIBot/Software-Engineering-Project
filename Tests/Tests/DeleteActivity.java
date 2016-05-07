@@ -12,6 +12,8 @@ import org.junit.Test;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 public class DeleteActivity {
 
@@ -50,8 +52,12 @@ public class DeleteActivity {
 			Assert.fail();
 		}
 		
-		if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
-			Assert.fail();
+		try {
+			if(!(project.addEmployee("JBS") && project.addEmployee("ELL") &&	project.addEmployee("AGC") &&	project.addEmployee("NR"))){
+				Assert.fail();
+			}
+		} catch (EmployeeNotFoundException | EmployeeAlreadyAssignedException e) {
+			Assert.fail(e.getMessage());
 		}
 		
 		List<String> employeeInitials = new ArrayList<String>();
