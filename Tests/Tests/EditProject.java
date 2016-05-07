@@ -42,7 +42,17 @@ public class EditProject {
 	private static final int NEW_BUDGETTED_TIME = 12000;
 	private static final String START_INITIALS_PROJECT_MANAGER = "DIO";
 	private static final String NEW_INITIALS_PROJECT_MANAGER = "JoJo";
-	private static final TimePeriod START_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012,2,10), new GregorianCalendar(2012,2,11));
+	private final TimePeriod START_TIME_PERIOD;	
+	
+	public EditProject() {
+		try {
+			START_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012,2,10), new GregorianCalendar(2012,2,11));
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		}
+		throw new NullPointerException("START_TIME_PERIOD is null");
+
+	}
 	
 	//add test where we add bugetted time and verify it fd
 	//add test where we add detailed text to project and verify it
@@ -141,7 +151,7 @@ public class EditProject {
 	@Test
 	public void testChangeBudgettedTimeToNegativeTime(){
 		try {
-			project.setBudgetedTime(-1);
+			project.setBudgettedTime(-1);
 			Assert.fail();
 		} catch (InvalidInformationException e) {
 			assertEquals("Budgetted time can't be less than 0",e.getMessage());
@@ -152,7 +162,7 @@ public class EditProject {
 	@Test
 	public void testChangeBudgettedTimeToNewTime(){
 		try {
-			project.setBudgetedTime(NEW_BUDGETTED_TIME);
+			project.setBudgettedTime(NEW_BUDGETTED_TIME);
 		} catch (InvalidInformationException e) {
 			Assert.fail(e.getMessage());
 		}

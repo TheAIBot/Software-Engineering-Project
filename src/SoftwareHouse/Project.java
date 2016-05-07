@@ -489,7 +489,7 @@ public class Project {
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
 	 */
-	public void setBudgetedTime(int budgetedTime) throws InvalidInformationException {
+	public void setBudgettedTime(int budgetedTime) throws InvalidInformationException {
 		if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}

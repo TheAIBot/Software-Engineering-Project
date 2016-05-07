@@ -93,7 +93,7 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 		page.getProjectNameLabel().setText(project.getName());
 		page.getProjectManagerInitialsLabel().setText(project.getProjectManager().getInitials());
 		page.getCostumerNameLabel().setText(project.getCostumerName());
-		page.getBudgettedTimeLabel().setText(String.valueOf(project.budgettedTime));
+		page.getBudgettedTimeLabel().setText(String.valueOf(project.getBudgetedTime()));
 	}
 
 }
