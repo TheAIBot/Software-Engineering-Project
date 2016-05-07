@@ -29,6 +29,7 @@ import SoftwareHouse.Employee;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.TimePeriod;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
@@ -297,7 +298,7 @@ public class CreateProjectDialog extends JDialog {
 	}
 		
 	
-	private void tryCreateProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
+	private void tryCreateProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException
 	{
 		String projectName = projectNameTextField.getText();
 		String costumerName = costumersNameTextField.getText();
