@@ -1,5 +1,6 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,15 +11,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 public class AddActivityToProject {
@@ -103,6 +107,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		try {
@@ -117,6 +123,8 @@ public class AddActivityToProject {
 		} catch (DuplicateNameException e) {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		}
 		
@@ -133,6 +141,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		try {
@@ -147,6 +157,8 @@ public class AddActivityToProject {
 		} catch (DuplicateNameException e) {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		}
 		
@@ -163,6 +175,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		try {
@@ -178,6 +192,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		try {
@@ -192,6 +208,8 @@ public class AddActivityToProject {
 		} catch (DuplicateNameException e) {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		}
 		
@@ -219,6 +237,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		try {
@@ -235,6 +255,8 @@ public class AddActivityToProject {
 		} catch (NotLoggedInException e) {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		}
 		
@@ -263,6 +285,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		try {
@@ -279,6 +303,8 @@ public class AddActivityToProject {
 		} catch (NotLoggedInException e) {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		}
 	}
@@ -311,6 +337,8 @@ public class AddActivityToProject {
 		} catch (DuplicateNameException e) {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		}
 	}
@@ -363,6 +391,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
 		
 		try {
@@ -380,6 +410,36 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
 		}
+	}
+	
+	/**
+	 * Test case: Employee does not exists in the internal system
+	 * @throws EmployeeAlreadyAssignedException 
+	 * @throws EmployeeNotFoundException 
+	 */
+	@Test
+	public void testAddEmployeeNotExisting() throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
+		Project project = null;
+		try {
+			project = scheduler.getProject("Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		int numberOfEmployeesBefore = project.getEmployees().size();
+		
+		Employee employeeX = null;
+		try {
+			employeeX = scheduler.getEmployeeFromInitials("XXXX");
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("No employee with those initials exists", e.getMessage());
+		}
+		
+		assertFalse(project.addEmployee("XXXX"));
+		assertEquals(numberOfEmployeesBefore, project.getEmployees().size());
+
 	}
 }
