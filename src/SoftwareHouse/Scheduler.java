@@ -59,7 +59,9 @@ public class Scheduler {
 							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		if (isAnyoneLoggedIn()) {
-			if (Tools.containsProject(projects, projectName.trim())) {
+			if (projectName == null) {
+				throw new MissingInformationException("Missing project name");
+			} else if (Tools.containsProject(projects, projectName.trim())) {
 				throw new DuplicateNameException("A project with that title already exists");
 			} 
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
