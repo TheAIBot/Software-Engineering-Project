@@ -1,6 +1,7 @@
 package SoftwareHouse.ExceptionTypes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import SoftwareHouse.Employee;
 
@@ -17,6 +18,6 @@ public class EmployeeMaxActivitiesReachedException extends Exception {
 	}
 	
 	public EmployeeMaxActivitiesReachedException(List<Employee> employees, String messagePart1, String messagePart2) {
-		super(messagePart1 + " " + employees.toString() + " " + messagePart2);
+		super(messagePart1 + " " + String.join(", ", employees.stream().map(x -> x.getInitials()).collect(Collectors.toList())) + " " + messagePart2);
 	}
 }
