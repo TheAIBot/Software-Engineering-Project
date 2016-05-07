@@ -135,14 +135,13 @@ public class TestFollowUp {
 		Assert.assertEquals("Activity name: Brugerinterface", scanner.nextLine());
 		Assert.assertEquals("Bugeted time: 150", scanner.nextLine());
 		Assert.assertEquals("Detailed text: Udvikling af brugerinterface", scanner.nextLine());
-		Assert.assertEquals("Employee initials: AGC ELL ", scanner.nextLine());
-		Assert.assertEquals("", scanner.nextLine());
+		Assert.assertEquals("Employee initials: AGC, ELL", scanner.nextLine());
 		Assert.assertEquals("", scanner.nextLine());
 		
 		Assert.assertEquals("Activity name: Rendering", scanner.nextLine());
 		Assert.assertEquals("Bugeted time: 150", scanner.nextLine());
 		Assert.assertEquals("Detailed text: Udikling af Rendering Engine. Herunder shadows, textures, smooth lightning.", scanner.nextLine());
-		Assert.assertEquals("Employee initials: NR JBS ", scanner.nextLine());
+		Assert.assertEquals("Employee initials: NR, JBS", scanner.nextLine());
 		Assert.assertEquals("", scanner.nextLine());
 		Assert.assertEquals("", scanner.nextLine());
 		Assert.assertFalse(scanner.hasNextLine());
