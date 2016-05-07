@@ -1,5 +1,6 @@
 package SoftwareHouse;
 
+import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Scheduler {
 	private boolean anyoneLoggedIn = false;
 	private Employee loggedInEmployee = null;
 	private TimeVault timeVault = new TimeVault(this);	
-	private Project absenceProject;
+	private final Project absenceProject;
 	
 	/**
 	 * Creates the absence project used to recording absence activites
@@ -36,9 +37,14 @@ public class Scheduler {
 	public Scheduler() {
 		anyoneLoggedIn = true; //One needs to be logged in to make a project.
 		try {
-			absenceProject = new Project(this, "absenceProject", true); //TODO test creation of absence project if it hasn't been done already
+			this.absenceProject = new Project(this, "Fraværs Project", true); 
+			//TODO test creation of absence project if it hasn't been done already
 		} catch (Exception e) { 
+<<<<<<< HEAD
 			//Cannot be reached
+=======
+			throw new NullPointerException("Couldn't create the absense project");
+>>>>>>> refs/remotes/origin/Andreas
 		}
 		anyoneLoggedIn = false;
 	}
@@ -268,6 +274,7 @@ public void createProject(String projectName) throws MissingInformationException
 		if (initials.length() > 4) {
 			throw new TooManyCharsException("Number of characters has exceeded the maximum of 4");
 		}
+		//match all unicode characters that are part of a alphabet and the initials has atleast 1 character in it
 		if(!initials.matches("\\p{L}+")){
 			throw new IllegalCharException("Only letters are allowed for initials");
 		}

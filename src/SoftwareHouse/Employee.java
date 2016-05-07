@@ -28,17 +28,38 @@ public class Employee {
 		this.scheduler = scheduler;
 		this.initials = initials;
 	}
+	
+	/**
+	 * Register work og absence
+	 * @param projectName
+	 * @param activityName
+	 * @param message
+	 * @param time n.o. hours
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 * @throws ActivityNotFoundException
+	 * @throws InvalidInformationException
+	 * @throws EmployeeNotFoundException
+	 * @throws EmployeeNotAffiliatedWithProjectException
+	 */
+	public void registerTime(String projectName, String activityName, String message, int time)
+			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException, EmployeeNotFoundException, InvalidInformationException {
+		scheduler.getTimeVault().addTime(projectName, activityName, initials, new RegisteredTime(this, message, time));
+	}
 
 	public String getInitials() {
 		return initials;
 	}
 
 	public boolean isAlreadyPartOfActivity(Activity activity){
-		return activities.stream().anyMatch(x -> (x.getName().equals(activity.getName()) && x.getProjectName().equals(activity.getProjectName())));
+		return activities.stream()
+						 .anyMatch(x -> (x.getName().equals(activity.getName()) && 
+								  		 x.getProjectName().equals(activity.getProjectName())));
 	}
 	
 	public boolean isAlreadyPartOfProject(Project project){
-		return projects.stream().anyMatch(x -> (x.getName().equals(project.getName()))); //TODO Loebenummer sammenligning.
+		return projects.stream()
+					   .anyMatch(x -> (x.getName().equals(project.getName())));
 	}
 	
 	public boolean addProject(Project project)
@@ -68,31 +89,6 @@ public class Employee {
 	
 	public int getNumberOfProjects() {
 		return projects.size();
-	}
-
-	/**
-	 * Register work og absence
-	 * @param projectName
-	 * @param activityName
-	 * @param message
-	 * @param time n.o. hours
-	 * @throws ProjectNotFoundException
-	 * @throws NotLoggedInException
-	 * @throws ActivityNotFoundException
-	 * @throws InvalidInformationException
-	 * @throws EmployeeNotFoundException
-	 * @throws EmployeeNotAffiliatedWithProjectException
-	 */
-	public void registerTime(String projectName, String activityName, String message, int time)
-			throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException,
-			InvalidInformationException, EmployeeNotFoundException, EmployeeNotAffiliatedWithProjectException {
-		if (Tools.isNullOrEmpty(message)) {
-			throw new InvalidInformationException("Invalid text");
-		}
-		if (!Tools.containsProject(projects, projectName)) {
-			throw new EmployeeNotAffiliatedWithProjectException("Employee not affiliated with project");
-		}
-		scheduler.getTimeVault().addTime(projectName, activityName, initials, new RegisteredTime(this, message, time));
 	}
 
 	public List<Activity> getActivities() {
