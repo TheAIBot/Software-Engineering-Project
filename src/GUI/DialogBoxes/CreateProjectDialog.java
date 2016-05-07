@@ -27,7 +27,6 @@ import GUI.Tools;
 import GUI.BorderComponents.JBorderComboBox;
 import GUI.BorderComponents.JBorderTextField;
 import GUI.Listeners.TextChangedListener;
-import GUI.Pages.ProjectPage;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
@@ -63,7 +62,7 @@ public class CreateProjectDialog extends JDialog {
 	private final JBorderTextField projectManagerTextField;
 	private final JTextField costumersNameTextField;
 	private final JTextArea detailedTextTextArea;
-	private JBorderTextField projectNameComboBox;
+	private JBorderTextField projectNameTextField;
 	private JBorderTextField BudgettedTimeTextField;
 	private JLabel errorLabel;
 
@@ -174,7 +173,7 @@ public class CreateProjectDialog extends JDialog {
 			startDateTextField.getDocument().addDocumentListener(new TextChangedListener() {
 				@Override
 				public void textChanged() {
-					Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
+					checkStartDate();
 				}
 			});
 		}
@@ -186,7 +185,7 @@ public class CreateProjectDialog extends JDialog {
 			endDateTextField.getDocument().addDocumentListener(new TextChangedListener() {
 				@Override
 				public void textChanged() {
-					Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+					checkEndDate();
 				}
 			});
 		}
@@ -198,15 +197,22 @@ public class CreateProjectDialog extends JDialog {
 			projectManagerTextField.getDocument().addDocumentListener(new TextChangedListener() {
 				@Override
 				public void textChanged() {
-					Tools.changeBorder(projectManagerTextField, x -> scheduler.getEmployeeFromInitials(x));
+					checkProjectManagerInitials();
 				}
 			});
 		}
 		
-		projectNameComboBox = new JBorderTextField();
-		projectNameComboBox.setEditable(true);
-		projectNameComboBox.setBounds(140, 8, 209, 20);
-		contentPanel.add(projectNameComboBox);
+		projectNameTextField = new JBorderTextField();
+		projectNameTextField.setEditable(true);
+		projectNameTextField.setBounds(140, 8, 209, 20);
+		contentPanel.add(projectNameTextField);
+		projectNameTextField.makeBorderRed();
+		projectNameTextField.getDocument().addDocumentListener(new TextChangedListener() {
+			@Override
+			public void textChanged() {
+				checkProjectName();
+			}
+		});
 		
 		JLabel lblBudgetteretTid = new JLabel("Budgetteret tid:");
 		lblBudgetteretTid.setBounds(10, 111, 110, 14);
@@ -225,7 +231,7 @@ public class CreateProjectDialog extends JDialog {
 		BudgettedTimeTextField.getDocument().addDocumentListener(new TextChangedListener() {
 			@Override
 			public void textChanged() {
-				Tools.changeBorder(BudgettedTimeTextField, x -> Integer.parseUnsignedInt(x));
+				checkBudgettedTime();
 			}
 		});
 		{
@@ -259,9 +265,57 @@ public class CreateProjectDialog extends JDialog {
 		}
 	}
 	
+	private void checkProjectName()
+	{
+		if (projectNameTextField.getText().trim().length() == 0) {
+			projectNameTextField.makeBorderRed();
+		} else {
+			try {
+				scheduler.getProject(projectNameTextField.getText());
+				projectNameTextField.makeBorderRed();
+				errorLabel.setText("A project with that name already exist");
+			} catch (Exception e) {
+				projectNameTextField.makeBorderGreen();
+			}
+		}
+	}
+	
+	
+	private void checkCostumerName()
+	{
+		
+	}
+	
+	private void checkStartDate()
+	{
+		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+	}
+	
+	private void checkEndDate()
+	{
+		Tools.changeBorder(startDateTextField, x -> Tools.getCalendarFromString(x));
+		Tools.changeBorder(endDateTextField, x -> Tools.getCalendarFromString(x));
+	}
+	
+	private void checkBudgettedTime()
+	{
+		Tools.changeBorder(BudgettedTimeTextField, x -> Integer.parseUnsignedInt(x));
+	}
+	
+	private void checkProjectManagerInitials()
+	{
+		Tools.changeBorder(projectManagerTextField, x -> scheduler.getEmployeeFromInitials(x)).length();
+	}
+	
+	private void checkDetailedText()
+	{
+	}
+		
+	
 	private void tryCreateProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
 	{
-		String projectName = projectNameComboBox.getText();
+		String projectName = projectNameTextField.getText();
 		String costumerName = costumersNameTextField.getText();
 		TimePeriod timePeriod = null;
 		if (startDateTextField.getText().trim().length() != 0 &&
@@ -269,6 +323,7 @@ public class CreateProjectDialog extends JDialog {
 			GregorianCalendar startDate = Tools.getCalendarFromString(startDateTextField.getText());
 			GregorianCalendar endDate = Tools.getCalendarFromString(endDateTextField.getText());
 			timePeriod = new TimePeriod(startDate, endDate);
+			//TODO fix this oddness that lombre mentioned
 		}
 		int budgettedTime = 0;
 		if (BudgettedTimeTextField.getText().trim().length() != 0) {
