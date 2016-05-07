@@ -40,11 +40,7 @@ public class Scheduler {
 			this.absenceProject = new Project(this, "Fraværs Project", true); 
 			//TODO test creation of absence project if it hasn't been done already
 		} catch (Exception e) { 
-<<<<<<< HEAD
-			//Cannot be reached
-=======
 			throw new NullPointerException("Couldn't create the absense project");
->>>>>>> refs/remotes/origin/Andreas
 		}
 		anyoneLoggedIn = false;
 	}
