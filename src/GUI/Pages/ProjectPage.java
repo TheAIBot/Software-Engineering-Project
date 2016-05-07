@@ -75,6 +75,13 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 					dialog.loadInformation();
 				}
 			});
+			
+			projectPanel.getFollowupButton().setEnabled(true);
+			projectPanel.getFollowupButton().addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					controlle.switchPage(new FollowupPage(controlle, scheduler, project));
+				}
+			});
 		}
 		return projectPanel;
 	}
