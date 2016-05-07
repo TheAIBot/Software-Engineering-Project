@@ -2,16 +2,12 @@ package GUI.Panels;
 
 import java.awt.Dimension;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTable;
 
 public class ProjectPanel extends JPanel {
-	private JScrollPane ProjectsScrollBar;
-	private JButton createProjectButton;
 	private JScrollPane activitiesScrollPane;
 	private JLabel projectNameLabel;
 	private JLabel costumerNameLabel;
@@ -28,13 +24,37 @@ public class ProjectPanel extends JPanel {
 		setPreferredSize(new Dimension(800, 600));
 		setLayout(null);
 		
-		ProjectsScrollBar = new JScrollPane();
-		ProjectsScrollBar.setBounds(596, 11, 194, 544);
-		add(ProjectsScrollBar);
+		activitiesScrollPane = new JScrollPane();
+		activitiesScrollPane.setBounds(439, 11, 351, 578);
+		add(activitiesScrollPane);
 		
-		createProjectButton = new JButton("Opret projekt");
-		createProjectButton.setBounds(596, 566, 194, 23);
-		add(createProjectButton);	
+		JLabel lblProjektNavn = new JLabel("Projekt navn:");
+		lblProjektNavn.setBounds(10, 11, 95, 14);
+		add(lblProjektNavn);
+		
+		projectNameLabel = new JLabel("");
+		projectNameLabel.setBounds(125, 11, 151, 14);
+		add(projectNameLabel);
+		
+		JLabel lblNewLabel = new JLabel("K\u00F8ber:");
+		lblNewLabel.setBounds(10, 36, 95, 14);
+		add(lblNewLabel);
+		
+		costumerNameLabel = new JLabel("");
+		costumerNameLabel.setBounds(125, 36, 151, 14);
+		add(costumerNameLabel);
+		
+		JLabel lblProjektManager = new JLabel("Projekt manager:");
+		lblProjektManager.setBounds(10, 61, 105, 14);
+		add(lblProjektManager);
+		
+		JLabel lblBudgetteretTid = new JLabel("Budgetteret tid:");
+		lblBudgetteretTid.setBounds(10, 86, 95, 14);
+		add(lblBudgetteretTid);
+		
+		projectManagerInitialsLabel = new JLabel("");
+		projectManagerInitialsLabel.setBounds(125, 61, 151, 14);
+		add(projectManagerInitialsLabel);
 		
 		budgettedTimeLabel = new JLabel("");
 		budgettedTimeLabel.setBounds(125, 86, 151, 14);
@@ -104,17 +124,17 @@ public class ProjectPanel extends JPanel {
 	}
 
 	/**
-	 * @return the projectsScrollBar
+	 * @return the changeProjectButton
 	 */
-	public JScrollPane getProjectsScrollBar() {
-		return ProjectsScrollBar;
+	public JButton getChangeProjectButton() {
+		return changeProjectButton;
 	}
 
 	/**
-	 * @return the createProjectButton
+	 * @return the addEmployeesButton
 	 */
-	public JButton getCreateProjectButton() {
-		return createProjectButton;
+	public JButton getAddEmployeesButton() {
+		return addEmployeesButton;
 	}
 
 	/**

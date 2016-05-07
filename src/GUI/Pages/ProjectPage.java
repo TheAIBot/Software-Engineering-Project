@@ -2,24 +2,28 @@ package GUI.Pages;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.List;
-
-import javax.swing.JTable;
 
 import GUI.GUIController;
+import GUI.Tools;
+import GUI.DialogBoxes.AddEmployeesToProjectDialog;
+import GUI.DialogBoxes.ChangeActivityDialog;
+import GUI.DialogBoxes.ChangeProjectDialog;
+import GUI.DialogBoxes.CreateActivityDialog;
 import GUI.DialogBoxes.CreateProjectDialog;
-import GUI.DialogBoxes.CreateUserDialog;
+import GUI.Listeners.WindowClosingListener;
 import GUI.Panels.ProjectPanel;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
-import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 
 public class ProjectPage extends SuperPage<ProjectPanel> {
 
-	public ProjectPage(GUIController controller, Scheduler scheduler) {
+	private final Project project;
+	
+	public ProjectPage(GUIController controller, Scheduler scheduler, Project project) {
 		super(controller, scheduler);
+		this.project = project;
 	}
 
 	@Override
@@ -84,18 +88,12 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 
 	@Override
 	public void loadInformation() {
-		final String[] columnNames = {"Projeker"};
-		List<Project> projects = null;
-		try {
-			projects = scheduler.getProjects();
-			final Object[][] employeesAsATable = new Object[projects.size()][1];
-			for(int i = projects.size() - 1; i >= 0 ; i--)
-			{
-				employeesAsATable[employeesAsATable.length - 1 - i][0] = projects.get(i).getName();
-			}
-			page.getProjectsScrollBar().setViewportView(new JTable(employeesAsATable, columnNames));
-		} catch (Exception e) { }
+		page.getActivitiesScrollPane().setViewportView(Tools.createTableOfActivities(project.getOpenActivities(), controller, scheduler));
 		
+		page.getProjectNameLabel().setText(project.getName());
+		page.getProjectManagerInitialsLabel().setText(project.getProjectManager().getInitials());
+		page.getCostumerNameLabel().setText(project.getCostumerName());
+		page.getBudgettedTimeLabel().setText(String.valueOf(project.budgettedTime));
 	}
 
 }
