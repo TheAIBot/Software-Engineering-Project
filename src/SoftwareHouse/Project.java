@@ -123,8 +123,19 @@ public class Project {
 
 	/**
 	 * @param name the name to set
+	 * @throws DuplicateNameException 
+	 * @throws MissingInformationException 
 	 */
-	public void setName(String name) {
+	public void setName(String name) throws DuplicateNameException, MissingInformationException {
+		Project project = null;
+		try {
+			project = scheduler.getProject(name);
+		} catch (Exception e) { }
+		if (project != null) {
+			throw new DuplicateNameException("A project with that name already exist");
+		} else if (Tools.isNullOrEmpty(name)) {
+			throw new MissingInformationException("No name was specified");
+		}
 		this.name = name;
 	}
 
