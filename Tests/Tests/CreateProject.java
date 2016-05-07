@@ -28,7 +28,7 @@ public class CreateProject {
 	public static Scheduler scheduler;
 	private static final String PROJECT_NAME = "Navision Stat";
 	private static final String DETAILED_TEXT = "Programfunktionalitet  udarbejdet for den danske stat";
-	private static final String COMPANY_NAME = "Det offentilige";
+	private static final String COMPANY_NAME = "Det offentlige";
 	private static final int BUDGETED_TIME = 42;
 	private static final List<Employee> EMPLOYEE_LIST_EMPTY = new ArrayList<>();
 	private static final String EMPTY_NAME = "";
@@ -37,14 +37,8 @@ public class CreateProject {
 	private static List<Employee> employeeListWithEmployees;
 	
 	/*TODO (*)Tilføjelse til blackboxtest
-	 *  Alle ting der kan mangle
-	 *  Om project manageren er en del af employeesne i gruppen.	
-	 *   f
 	 *  Andre:
-	 *  Not logged in (*) /TODO
 	 *  Hvad med løbenummer? (*)
-	 *  	wrong manager
-	 *  		Time period not filled
 	 */ 
 	
 	@Before
@@ -71,11 +65,11 @@ public class CreateProject {
 		}
 	}
 	
-	private boolean testSuccesOnProjectCreation(String projectName, String companyName, String detailedText, 
+	private boolean testSuccesOnProjectCreation(String projectName, String customerName, String detailedText, 
 			                                          List<Employee> employeesToAdd, int budgettedTime, String initialsProjectManager, TimePeriod timePeriod){
 		loginIfNotLoggedIn();
 		try {
-			scheduler.createProject(projectName, companyName, detailedText, 
+			scheduler.createProject(projectName, customerName, detailedText, 
                     employeesToAdd, budgettedTime, initialsProjectManager, timePeriod);
 		} catch (Exception e) {
 			return false;
@@ -147,7 +141,7 @@ public class CreateProject {
 			assertEquals(scheduler.getProjects().size(), 1);
 			Project project = scheduler.getProject(PROJECT_NAME);
 			assertEquals(project.getName(), PROJECT_NAME);
-			assertEquals(COMPANY_NAME, project.getCompanyName());
+			assertEquals(COMPANY_NAME, project.getCustomerName());
 			assertTrue(project.getEmployees().stream().allMatch(x -> employeeListWithEmployees.contains(x)));
 			assertEquals(employeeListWithEmployees.size(), project.getEmployees().size());
 			assertEquals(project.getProjectManager(), scheduler.getEmployeeFromInitials(PROJECT_MANAGER_INITIALS));
@@ -195,7 +189,6 @@ public class CreateProject {
 		try {
 			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 						employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
-				Assert.fail();
 			Assert.fail();
 		} catch (Exception e) {
 			//Succes!
@@ -235,13 +228,13 @@ public class CreateProject {
 	}
 	
 	@Test
-	public void createProjectNoCompanyName(){
+	public void createProjectNoCostumerName(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, "", DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
-	public void createProjectCompanyNameIsNull(){
+	public void createProjectCustomerNameIsNull(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, null, DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}

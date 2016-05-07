@@ -15,17 +15,20 @@ import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import GUI.Tools;
 import GUI.BorderComponents.JBorderTextField;
 import GUI.Listeners.TextChangedListener;
 import SoftwareHouse.Employee;
+import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.TimePeriod;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
@@ -34,18 +37,16 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 
-public class CreateProjectDialog extends JDialog {
+public class ChangeProjectDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private final JScrollPane allEmployeesScrollBar;
-	private final JScrollPane assignedEmployeesScrollBar;
 	private final Scheduler scheduler;
-	private final List<Employee> assignedEmployees = new ArrayList<Employee>();
 	private final JBorderTextField startDateTextField;
 	private final JBorderTextField endDateTextField;
 	private final JBorderTextField projectManagerTextField;
 	private final JTextField costumersNameTextField;
 	private final JTextArea detailedTextTextArea;
+	private final Project project;
 	private JBorderTextField projectNameTextField;
 	private JBorderTextField BudgettedTimeTextField;
 	private JLabel errorLabel;
@@ -53,11 +54,12 @@ public class CreateProjectDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public CreateProjectDialog(Scheduler scheduler) {
+	public ChangeProjectDialog(Scheduler scheduler, Project project) {
 		this.scheduler = scheduler;
+		this.project = project;
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 722, 400);
+		setBounds(100, 100, 374, 400);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
@@ -81,52 +83,6 @@ public class CreateProjectDialog extends JDialog {
 			detailedTextTextArea.setBorder(UIManager.getBorder("TextField.border"));
 			detailedTextTextArea.setBounds(10, 184, 339, 108);
 			contentPanel.add(detailedTextTextArea);
-		}
-		{
-			allEmployeesScrollBar = new JScrollPane();
-			allEmployeesScrollBar.setBounds(359, 8, 110, 284);
-			contentPanel.add(allEmployeesScrollBar);
-		}
-		{
-			assignedEmployeesScrollBar = new JScrollPane();
-			assignedEmployeesScrollBar.setBounds(588, 8, 110, 284);
-			contentPanel.add(assignedEmployeesScrollBar);
-		}
-		{
-			JButton assignEmployeeButton = new JButton("Tilf\u00F8j");
-			assignEmployeeButton.setBounds(479, 130, 99, 23);
-			contentPanel.add(assignEmployeeButton);
-			assignEmployeeButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JTable table = (JTable)allEmployeesScrollBar.getViewport().getView();
-					if (table.getSelectedRow() != -1) {
-						String emplyeeInitials = (String)table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());	
-						try {
-							Employee employee = scheduler.getEmployeeFromInitials(emplyeeInitials);
-							assignedEmployees.add(employee);
-							loadInformation();
-						} catch (Exception e1) { }
-					}
-				}
-			});
-		}
-		{
-			JButton unassignEmployeeButton = new JButton("Fjern");
-			unassignEmployeeButton.setBounds(479, 164, 99, 23);
-			contentPanel.add(unassignEmployeeButton);
-			unassignEmployeeButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JTable table = (JTable)assignedEmployeesScrollBar.getViewport().getView();
-					if (table.getSelectedRow() != -1) {
-						String emplyeeInitials = (String)table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());	
-						try {
-							Employee employee = scheduler.getEmployeeFromInitials(emplyeeInitials);
-							assignedEmployees.remove(employee);
-							loadInformation();
-						} catch (EmployeeNotFoundException e1) { }
-					}
-				}
-			});
 		}
 		{
 			costumersNameTextField = new JBorderTextField();
@@ -209,7 +165,7 @@ public class CreateProjectDialog extends JDialog {
 		{
 			errorLabel = new JLabel("");
 			errorLabel.setForeground(Color.RED);
-			errorLabel.setBounds(10, 303, 688, 14);
+			errorLabel.setBounds(10, 303, 339, 14);
 			contentPanel.add(errorLabel);
 		}
 		BudgettedTimeTextField.getDocument().addDocumentListener(new TextChangedListener() {
@@ -223,14 +179,14 @@ public class CreateProjectDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Opret projekt");
+				JButton okButton = new JButton("Foretag \u00E6ndringer");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try {
-							tryCreateProject();
-							CreateProjectDialog.this.dispatchEvent(new WindowEvent(CreateProjectDialog.this, WindowEvent.WINDOW_CLOSING));
+							changeProject();
+							ChangeProjectDialog.this.dispatchEvent(new WindowEvent(ChangeProjectDialog.this, WindowEvent.WINDOW_CLOSING));
 						} catch (Exception e2) {	
 							errorLabel.setText(e2.getMessage());
 						}
@@ -238,7 +194,7 @@ public class CreateProjectDialog extends JDialog {
 				});
 			}
 			{
-				JButton cancelButton = new JButton("Annuller oprettelse");
+				JButton cancelButton = new JButton("Annuller \u00E6ndringer");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
@@ -254,11 +210,15 @@ public class CreateProjectDialog extends JDialog {
 		if (projectNameTextField.getText().trim().length() == 0) {
 			projectNameTextField.makeBorderRed();
 		} else {
-			try {
-				scheduler.getProject(projectNameTextField.getText());
-				projectNameTextField.makeBorderRed();
-				errorLabel.setText("A project with that name already exist");
-			} catch (Exception e) {
+			if (!projectNameTextField.getText().equals(project.getName())) {
+				try {
+					scheduler.getProject(projectNameTextField.getText());
+					projectNameTextField.makeBorderRed();
+					errorLabel.setText("A project with that name already exist");
+				} catch (Exception e) {
+					projectNameTextField.makeBorderGreen();
+				}
+			} else {
 				projectNameTextField.makeBorderGreen();
 			}
 		}
@@ -297,7 +257,7 @@ public class CreateProjectDialog extends JDialog {
 	}
 		
 	
-	private void tryCreateProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
+	private void changeProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
 	{
 		String projectName = projectNameTextField.getText();
 		String costumerName = costumersNameTextField.getText();
@@ -317,16 +277,34 @@ public class CreateProjectDialog extends JDialog {
 		String projectManagerInitials = projectManagerTextField.getText();
 		String detailedDescription = detailedTextTextArea.getText();
 		
-		scheduler.createProject(projectName, costumerName, detailedDescription, assignedEmployees, budgettedTime, projectManagerInitials, timePeriod);
+		int dialogResult = JOptionPane.showConfirmDialog(null, "Vil du foretage disse ændringer?");
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			if (!project.getName().equals(projectName)) {
+				project.setName(projectName);
+			}
+			if (!SoftwareHouse.Tools.isNullOrEmpty(projectManagerInitials)) {
+				Employee newProjectManager = scheduler.getEmployeeFromInitials(projectManagerInitials);
+				project.setProjectManager(newProjectManager);
+			}
+			project.setCostumerName(costumerName);
+			project.setTimePeriod(timePeriod);
+			project.setBudgettedTime(budgettedTime);
+			project.setDetailedText(detailedDescription);
+		}
 	}
 	
 	public void loadInformation()
 	{		
-		List<Employee> employees = scheduler.getEmployeesContainingString("");
-		employees = employees.stream()
-							 .filter(x -> !assignedEmployees.contains(x))
-							 .collect(Collectors.toList());
-		allEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(employees));
-		assignedEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(assignedEmployees));
+		projectNameTextField.setText(project.getName());
+		costumersNameTextField.setText(project.getCostumerName());
+		if (project.getTimePeriod() != null) {
+			startDateTextField.setText(project.getTimePeriod().getStartDateAsString());
+			endDateTextField.setText(project.getTimePeriod().getEndDateAsString());
+		}
+		BudgettedTimeTextField.setText(String.valueOf(project.getBudgetedTime()));
+		if (project.getProjectManager() != null) {
+			projectManagerTextField.setText(project.getProjectManager().getInitials());
+		}
+		detailedTextTextArea.setText(project.getDetailedText());
 	}
 }

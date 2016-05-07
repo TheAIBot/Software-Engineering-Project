@@ -56,8 +56,14 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		}
 
-		if (!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") && project.addEmployee("NR"))) {
-			Assert.fail();
+		try {
+			if (!(project.addEmployee("JBS") && project.addEmployee("ELL") && project.addEmployee("AGC") && project.addEmployee("NR"))) {
+				Assert.fail();
+			}
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		} catch (EmployeeAlreadyAssignedException e) {
+			Assert.fail(e.getMessage());
 		}
 
 		String activityName = "Udvikling af brugerinterface";

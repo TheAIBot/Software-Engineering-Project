@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
 /**
  * @author ELL
@@ -42,9 +44,12 @@ public class TestFollowUp {
 		} catch (Exception e1) {
 			Assert.fail();
 		}
-		if(!project.addEmployee("ELL") ||	
-		   !project.addEmployee("AGC")){
-			Assert.fail();
+		try {
+			if(!(project.addEmployee("ELL") &&	project.addEmployee("AGC"))){
+				Assert.fail();
+			}
+		} catch (EmployeeNotFoundException | EmployeeAlreadyAssignedException e) {
+			Assert.fail(e.getMessage());
 		}
 		
 		// Create activity

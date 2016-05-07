@@ -16,12 +16,14 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
@@ -36,7 +38,7 @@ public class TestTools {
 		return employee;
 	}
 	
-	public static Activity addActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException
+	public static Activity addActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException
 	{		
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
@@ -70,7 +72,8 @@ public class TestTools {
 															 InvalidInformationException, 
 															 EmployeeNotFoundException, 
 															 DuplicateNameException, 
-															 EmployeeMaxActivitiesReachedException
+															 EmployeeMaxActivitiesReachedException, 
+															 ProjectManagerNotLoggedInException
 	{
 		Project project = null;
 		try {
@@ -102,7 +105,7 @@ public class TestTools {
 	
 	
 	
-	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException
+	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException
 	{
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
@@ -128,7 +131,7 @@ public class TestTools {
 			   								int expectedHours,
 			   								Calendar startDate,
 			   								Calendar endDate,
-			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException
+			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException
 	{
 		Project project = null;
 		try {
@@ -184,7 +187,11 @@ public class TestTools {
 		assertFalse(employee.isAlreadyPartOfProject(project));
 		assertEquals(numberOfProjects, employee.getNumberOfProjects());
 		
-		Assert.assertTrue(project.addEmployee(employeeName));
+		try {
+			Assert.assertTrue(project.addEmployee(employeeName));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		} 
 		//TODO add asserts here to check that the employee was added - DONE?
 		
 		assertEquals(numberOfEmployeesBefore + 1, project.getEmployees().size());
@@ -194,8 +201,16 @@ public class TestTools {
 		return employee;
 	}
 
-	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException
+	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException
 	{
+<<<<<<< HEAD
+=======
+		return createProject(scheduler, projectName, LOGIN_EMPLOYEE_INITIALS);
+	}
+	
+	public static Project createProject(Scheduler scheduler,String projectName, String projectManagerInitial) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException
+	{
+>>>>>>> refs/remotes/origin/Andreas
 		int currentNumberOfProjects = scheduler.getProjects().size();
 		scheduler.createProject(projectName);
 		

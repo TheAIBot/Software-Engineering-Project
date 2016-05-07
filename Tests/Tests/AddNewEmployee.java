@@ -20,9 +20,9 @@ public class AddNewEmployee {
 	public void addEmployeeSuccessTest()
 	{
 		try {
-			TestTools.addEmployee(new Scheduler(), "DERP");
+			TestTools.addEmployee(new Scheduler(), "AM");
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 	}
 	
@@ -32,17 +32,17 @@ public class AddNewEmployee {
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
 		try {
-			TestTools.addEmployee(scheduler, "DERP");
+			TestTools.addEmployee(scheduler, "AM");
 		} catch (Exception e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 		try {
-			TestTools.addEmployee(scheduler, "DERP");
+			TestTools.addEmployee(scheduler, "AM");
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (MissingInformationException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (DuplicateNameException e) {
 			assertEquals(e.getMessage(), "An employee with those initials already exist");
 		} catch (TooManyCharsException e){
@@ -56,40 +56,13 @@ public class AddNewEmployee {
 	public void addEmployeeNoNameTest()
 	{
 		Scheduler scheduler = new Scheduler();
-		//need to refractor this into method calls
 		try {
 			scheduler.addEmployee("");
 			Assert.fail();
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing employee initials");
 		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (TooManyCharsException e){
-			Assert.fail();
-		} catch (IllegalCharException e){
-			Assert.fail();
-		}
-		
-		try {
-			scheduler.addEmployee(" ");
-			Assert.fail();
-		} catch (MissingInformationException  e) {
-			assertEquals(e.getMessage(), "Missing employee initials");
-		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (TooManyCharsException e){
-			Assert.fail();
-		} catch (IllegalCharException e){
-			Assert.fail();
-		}
-		
-		try {
-			scheduler.addEmployee("     ");
-			Assert.fail();
-		} catch (MissingInformationException  e) {
-			assertEquals(e.getMessage(), "Missing employee initials");
-		} catch (DuplicateNameException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (TooManyCharsException e){
 			Assert.fail();
 		} catch (IllegalCharException e){
@@ -102,7 +75,7 @@ public class AddNewEmployee {
 		} catch (MissingInformationException  e) {
 			assertEquals(e.getMessage(), "Missing employee initials");
 		} catch (DuplicateNameException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (TooManyCharsException e){
 			Assert.fail();
 		} catch (IllegalCharException e){
@@ -115,12 +88,11 @@ public class AddNewEmployee {
 	{
 		Scheduler scheduler = new Scheduler();
 		try{
-			scheduler.addEmployee("TOOMANYINITIALS");
-		} 
-		  catch (MissingInformationException  e) {
+			scheduler.addEmployee("ABCDEFG");
+		} catch (MissingInformationException  e) {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (TooManyCharsException e){
 			assertEquals(e.getMessage(), "Number of characters has exceeded the maximum of 4");
 		} catch (IllegalCharException e){
@@ -136,33 +108,33 @@ public class AddNewEmployee {
 		try {
 			scheduler.addEmployee("1234");
 		} catch (MissingInformationException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (DuplicateNameException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (TooManyCharsException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (IllegalCharException e) {
 			assertEquals(e.getMessage(),"Only letters are allowed for initials");
 		}
 		try {
-			scheduler.addEmployee("bob3");
+			scheduler.addEmployee("b3b?");
 		} catch (MissingInformationException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (DuplicateNameException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (TooManyCharsException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (IllegalCharException e) {
 			assertEquals(e.getMessage(),"Only letters are allowed for initials");
 		}
 		try {
 			scheduler.addEmployee("BoB_");
 		} catch (MissingInformationException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (DuplicateNameException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (TooManyCharsException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (IllegalCharException e) {
 			assertEquals(e.getMessage(),"Only letters are allowed for initials");
 		}
@@ -170,25 +142,13 @@ public class AddNewEmployee {
 		try {
 			scheduler.addEmployee("c@t?");
 		} catch (MissingInformationException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (DuplicateNameException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (TooManyCharsException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (IllegalCharException e) {
 			assertEquals(e.getMessage(),"Only letters are allowed for initials");
-		}
-		
-		try {
-			scheduler.addEmployee("���");
-		} catch (MissingInformationException e) {
-			Assert.fail();
-		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (TooManyCharsException e) {
-			//TODO verify with funtasterisks that this is the expected result 
-		} catch (IllegalCharException e) {
-			Assert.fail();
 		}
 	}
 }

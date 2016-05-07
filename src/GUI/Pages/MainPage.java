@@ -48,7 +48,7 @@ public class MainPage extends SuperPage<JPanel> {
 		myPageButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (scheduler.isAnyoneLoggedIn()) {
-					controller.switchPage(controller.loginPage);
+					controller.switchPage(controller.myPagePage);
 				}
 			}
 		});
