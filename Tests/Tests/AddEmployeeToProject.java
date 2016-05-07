@@ -281,9 +281,11 @@ public class AddEmployeeToProject {
 	
 	/**
 	 * Test case: Employee does not exists in the internal system
+	 * @throws EmployeeAlreadyAssignedException 
+	 * @throws EmployeeNotFoundException 
 	 */
 	@Test
-	public void AddEmployeeNotExisting() {
+	public void AddEmployeeNotExisting() throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
 		try {
