@@ -171,9 +171,6 @@ public class AddEmployeeToProject {
 		}
 	}
 	
-	
-	
-	
 	@Test
 	public void AddEmployeeSuccessTest()
 	{
@@ -243,13 +240,13 @@ public class AddEmployeeToProject {
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
 		try {
-			scheduler.createProject("Battlefield 1");
+			scheduler.createProject("15-puzzle-spil");
 		} catch (Exception e) {
 			Assert.fail();
 		}
 		Project project = null;
 		try {
-			project = scheduler.getProject("Battlefield 1");
+			project = scheduler.getProject("15-puzzle-spil");
 		} catch (Exception e) {
 			Assert.fail();
 		}
