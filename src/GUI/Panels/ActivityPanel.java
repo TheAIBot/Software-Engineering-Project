@@ -16,6 +16,7 @@ public class ActivityPanel extends JPanel {
 	private JButton addEmployeesButton;
 	private JScrollPane employeesScrollPane;
 	private JLabel inProjectLabel;
+	private JButton registerTimeButton;
 	
 	public ActivityPanel() {
 		setMaximumSize(new Dimension(800, 600));
@@ -64,6 +65,10 @@ public class ActivityPanel extends JPanel {
 		inProjectLabel = new JLabel("");
 		inProjectLabel.setBounds(105, 61, 173, 14);
 		add(inProjectLabel);
+		
+		registerTimeButton = new JButton("Registrer tid");
+		registerTimeButton.setBounds(92, 537, 119, 52);
+		add(registerTimeButton);
 	}
 
 	/**
@@ -106,5 +111,12 @@ public class ActivityPanel extends JPanel {
 	 */
 	public JLabel getInProjectLabel() {
 		return inProjectLabel;
+	}
+
+	/**
+	 * @return the registerTimeButton
+	 */
+	public JButton getRegisterTimeButton() {
+		return registerTimeButton;
 	}
 }

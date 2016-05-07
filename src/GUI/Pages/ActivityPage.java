@@ -9,6 +9,7 @@ import GUI.Tools;
 import GUI.DialogBoxes.AddEmployeesToActivityDialog;
 import GUI.DialogBoxes.ChangeActivityDialog;
 import GUI.DialogBoxes.CreateActivityDialog;
+import GUI.DialogBoxes.RegisterTimeDialog;
 import GUI.Listeners.WindowClosingListener;
 import GUI.Panels.ActivityPanel;
 import GUI.Panels.ProjectPanel;
@@ -62,6 +63,18 @@ public class ActivityPage extends SuperPage<ActivityPanel> {
 			
 			
 		}
+		activityPanel.getRegisterTimeButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegisterTimeDialog dialog = new RegisterTimeDialog(scheduler, activity.getInProject(), activity);
+				dialog.addWindowListener(new WindowClosingListener() {
+					@Override
+					public void windowClosing(WindowEvent e) {
+						loadInformation();							
+					}
+				});
+				dialog.setVisible(true);
+			}
+		});
 		return activityPanel;
 	}
 
