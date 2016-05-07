@@ -259,7 +259,7 @@ public class AddEmployeeToProject {
 	}
 	
 	@Test
-	public void AddEmployeeIncorrectInitialsTest()
+	public void AddEmployeeIncorrectInitialsTest() throws EmployeeNotFoundException, EmployeeAlreadyAssignedException
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
