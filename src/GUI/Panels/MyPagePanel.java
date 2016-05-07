@@ -2,10 +2,6 @@ package GUI.Panels;
 
 import javax.swing.JPanel;
 import java.awt.Dimension;
-<<<<<<< HEAD
-
-public class MyPagePanel extends JPanel {
-=======
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -16,7 +12,6 @@ public class MyPagePanel extends JPanel {
 	private JScrollPane activitiesScrollPane;
 	private JLabel initialsLabel;
 	private JButton absenseActivitiesButton;
->>>>>>> refs/remotes/origin/Andreas
 
 	/**
 	 * Create the panel.
@@ -25,11 +20,6 @@ public class MyPagePanel extends JPanel {
 		setMaximumSize(new Dimension(800, 600));
 		setMinimumSize(new Dimension(800, 600));
 		setPreferredSize(new Dimension(800, 600));
-<<<<<<< HEAD
-
-	}
-
-=======
 		setLayout(null);
 		
 		projectsScrollPane = new JScrollPane();
@@ -81,5 +71,4 @@ public class MyPagePanel extends JPanel {
 	public JButton getAbsenseActivitiesButton() {
 		return absenseActivitiesButton;
 	}
->>>>>>> refs/remotes/origin/Andreas
 }

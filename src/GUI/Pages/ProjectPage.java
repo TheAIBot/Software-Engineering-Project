@@ -26,34 +26,6 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 	public ProjectPanel createPage(GUIController controlle) {
 		ProjectPanel projectPanel = new ProjectPanel();
 		
-<<<<<<< HEAD
-		projectPanel.getCreateProjectButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CreateProjectDialog dialog = new CreateProjectDialog(scheduler);
-				dialog.addWindowListener(new WindowListener() {
-					@Override
-					public void windowOpened(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowIconified(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowDeiconified(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowDeactivated(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowClosing(java.awt.event.WindowEvent e) {
-						loadInformation();
-					}
-					@Override
-					public void windowClosed(java.awt.event.WindowEvent e) {}
-					@Override
-					public void windowActivated(java.awt.event.WindowEvent e) {}
-				});
-				dialog.setVisible(true);
-				dialog.loadInformation();
-			}
-		});
-		
-=======
 		if (project.isProjectManagerLoggedIn()) {
 			projectPanel.getCreateActivityButton().setEnabled(true);
 			projectPanel.getCreateActivityButton().addActionListener(new ActionListener() {
@@ -107,7 +79,6 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 				}
 			});
 		}
->>>>>>> refs/remotes/origin/Andreas
 		return projectPanel;
 	}
 

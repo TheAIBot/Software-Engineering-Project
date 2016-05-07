@@ -6,17 +6,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 
 public class ProjectPanel extends JPanel {
-<<<<<<< HEAD
 	private JScrollPane ProjectsScrollBar;
 	private JButton createProjectButton;
-	
-	/**
-	 * Create the panel.
-	 */
-=======
 	private JScrollPane activitiesScrollPane;
 	private JLabel projectNameLabel;
 	private JLabel costumerNameLabel;
@@ -27,7 +22,6 @@ public class ProjectPanel extends JPanel {
 	private JButton addEmployeesButton;
 	private JButton createActivityButton;
 
->>>>>>> refs/remotes/origin/Andreas
 	public ProjectPanel() {
 		setMaximumSize(new Dimension(800, 600));
 		setMinimumSize(new Dimension(800, 600));
@@ -38,11 +32,10 @@ public class ProjectPanel extends JPanel {
 		ProjectsScrollBar.setBounds(596, 11, 194, 544);
 		add(ProjectsScrollBar);
 		
-<<<<<<< HEAD
 		createProjectButton = new JButton("Opret projekt");
 		createProjectButton.setBounds(596, 566, 194, 23);
 		add(createProjectButton);	
-=======
+		
 		budgettedTimeLabel = new JLabel("");
 		budgettedTimeLabel.setBounds(125, 86, 151, 14);
 		add(budgettedTimeLabel);
@@ -108,7 +101,6 @@ public class ProjectPanel extends JPanel {
 	 */
 	public JButton getCreateActivityButton() {
 		return createActivityButton;
->>>>>>> refs/remotes/origin/Andreas
 	}
 
 	/**
