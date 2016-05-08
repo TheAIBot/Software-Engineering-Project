@@ -38,7 +38,23 @@ public class EditActivity {
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
+		
+		// Test cannot fetch activities or projects without being logged in
+		assertFalse(scheduler.isAnyoneLoggedIn());
+		try {
+			scheduler.getActivity("sygdom", "sygdom");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		try {
+			scheduler.getProjectsContainingStringInName("sy");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		
+		// Login
 		TestTools.login(scheduler);
+		assertTrue(scheduler.isAnyoneLoggedIn());
 		
 		// Create employees
 		try {
@@ -255,6 +271,25 @@ public class EditActivity {
 		}
 		
 	}
+	
+	@Test
+	public void testGetNonExistingActivityOrProject()
+	{
+		try {
+			scheduler.getActivity("Navision Stat", "xxxx");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		
+		try {
+			scheduler.getActivity("xxxx", "Brugerinterface");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		
+	}
+	
+	
 
 
 }
