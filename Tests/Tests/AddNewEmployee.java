@@ -15,15 +15,18 @@ import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import org.junit.Assert;
 
 public class AddNewEmployee {
-
+	
+	Scheduler scheduler = new Scheduler();
+	
 	@Test
 	public void addEmployeeSuccessTest()
 	{
 		try {
-			TestTools.addEmployee(new Scheduler(), "AM");
+			TestTools.addEmployee(scheduler, "AM");
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
+		
 	}
 	
 	@Test
@@ -36,6 +39,8 @@ public class AddNewEmployee {
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
+		
+		// Using TestTools to try adding employee duplicate with initials
 		try {
 			TestTools.addEmployee(scheduler, "AM");
 			Assert.fail();
@@ -50,6 +55,7 @@ public class AddNewEmployee {
 		} catch (IllegalCharException e){
 			Assert.fail();
 		}
+		
 	}
 	
 	@Test

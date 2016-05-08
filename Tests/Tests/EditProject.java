@@ -23,14 +23,15 @@ import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
 public class EditProject {
 	private Scheduler scheduler;
 	private Project project;
-	private static final String EMPLOYEE1 = "JSB";
-	private static final String EMPLOYEE2 = "ASB";
+	private static final String EMPLOYEE1 = "JSB"; //Greater evil
+	private static final String EMPLOYEE2 = "ASB"; //Lesser evil
 	private static final String START_PROJECT_NAME = "Kings of metal";
 	private static final String NEW_PROJECT_NAME = "Core";
 	private static final String START_COSTUMER_NAME = "ManoWar";
@@ -43,6 +44,8 @@ public class EditProject {
 	private static final String START_INITIALS_PROJECT_MANAGER = "DIO";
 	private static final String NEW_INITIALS_PROJECT_MANAGER = "JoJo";
 	private final TimePeriod START_TIME_PERIOD;	
+	private static final String PROJECT_MANAGER_NOT_LOGGED_IN_ERROR = "Either there needs to be no project manager for the project" + 
+	                                                                  " or the person needs to be logged in, for edits to be made";
 	
 	public EditProject() {
 		try {
@@ -54,18 +57,16 @@ public class EditProject {
 
 	}
 	
-	//add test where we add bugetted time and verify it fd
-	//add test where we add detailed text to project and verify it
-	//add test where the project name is set to null or empty or to a name that already xists
-	
 	@Before
 	public void setup(){
 		try {
 			scheduler = new Scheduler();
+
 			TestTools.login(scheduler);
 			scheduler.addEmployee(EMPLOYEE1);
 			scheduler.addEmployee(EMPLOYEE2);
 			scheduler.addEmployee(START_INITIALS_PROJECT_MANAGER);
+			scheduler.login(START_INITIALS_PROJECT_MANAGER);
 			employeesToAdd = new ArrayList<Employee>();
 			employeesToAdd.add(scheduler.getEmployeeFromInitials(EMPLOYEE1));
 			employeesToAdd.add(scheduler.getEmployeeFromInitials(EMPLOYEE2));
@@ -78,6 +79,14 @@ public class EditProject {
 		}		
 	}
 	
+	public void loginWithEmployeeNotProjectManager(){
+		try {
+			scheduler.login(EMPLOYEE1);
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
 	@Test
 	public void testChangeNameToNull(){
 		try {
@@ -88,6 +97,8 @@ public class EditProject {
 		} catch (MissingInformationException e) {
 			assertEquals("No name was specified",e.getMessage());
 			assertEquals(START_PROJECT_NAME, project.getName());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 	
@@ -101,6 +112,8 @@ public class EditProject {
 		} catch (MissingInformationException e) {
 			assertEquals("No name was specified",e.getMessage());
 			assertEquals(START_PROJECT_NAME, project.getName());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 	
@@ -121,6 +134,8 @@ public class EditProject {
 			assertEquals(START_PROJECT_NAME, project.getName());
 		} catch (MissingInformationException e) {
 			Assert.fail(e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 	
@@ -132,20 +147,30 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		} catch (MissingInformationException e) {
 			Assert.fail(e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 		assertEquals(NEW_PROJECT_NAME, project.getName());
 	}
 	
 	@Test
 	public void testChangeDetailedDescriptionToNewDetailedDescription(){
-		project.setDetailedText(NEW_DETAILED_DESCRIPTION);
+		try {
+			project.setDetailedText(NEW_DETAILED_DESCRIPTION);
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
+		}
 		assertEquals(NEW_DETAILED_DESCRIPTION, project.getDetailedText());
 	}
 	
 	@Test
 	public void testChangeCostumerToNewCostumer(){
-		project.setCostumerName(NEW_DETAILED_DESCRIPTION);
-		assertEquals(NEW_DETAILED_DESCRIPTION, project.getCostumerName());
+		try {
+			project.setCostumerName(NEW_COSTUMER_NAME);
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
+		}
+		assertEquals(NEW_COSTUMER_NAME, project.getCostumerName());
 	}
 	
 	@Test
@@ -156,6 +181,8 @@ public class EditProject {
 		} catch (InvalidInformationException e) {
 			assertEquals("Budgetted time can't be less than 0",e.getMessage());
 			assertEquals(START_BUDGETTED_TIME, project.getBudgettedTime());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 	
@@ -164,6 +191,8 @@ public class EditProject {
 		try {
 			project.setBudgettedTime(NEW_BUDGETTED_TIME);
 		} catch (InvalidInformationException e) {
+			Assert.fail(e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail(e.getMessage());
 		}
 		assertEquals(NEW_BUDGETTED_TIME, project.getBudgettedTime());
@@ -175,6 +204,8 @@ public class EditProject {
 			project.setProjectManager(null);
 		} catch (ProjectManagerNotPartOfEmployeesAdded e) {
 			Assert.fail(e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 		assertEquals(null, project.getProjectManager());
 	}
@@ -183,6 +214,8 @@ public class EditProject {
 	public void testChangeProjectManagerWithEmptyString(){
 		try {
 			project.setProjectManager("");
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		} catch (ProjectManagerNotPartOfEmployeesAdded e) {
 			Assert.fail(e.getMessage());
 		}
@@ -195,6 +228,8 @@ public class EditProject {
 		try {
 			project.setProjectManager(NEW_INITIALS_PROJECT_MANAGER);
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		} catch (ProjectManagerNotPartOfEmployeesAdded e) {
 			assertEquals("The project manager that is trying to be assignes, " + 
 			NEW_INITIALS_PROJECT_MANAGER + " is not part of the project", e.getMessage());
@@ -213,22 +248,40 @@ public class EditProject {
 		try {
 			project.setProjectManager(NEW_INITIALS_PROJECT_MANAGER);
 			assertEquals(NEW_INITIALS_PROJECT_MANAGER, project.getProjectManager().getInitials());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		} catch (ProjectManagerNotPartOfEmployeesAdded e) {
 			Assert.fail(e.getMessage());
 		}
 	}
 	
-	/*TODO Se paa TimePeriod efter ændringerne(*).
 	@Test
 	public void testChangeTimePeriodToNull(){
-			
+		try {
+			project.setTimePeriod(null);		
+			assertEquals(null, project.getTimePeriod());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}	
 	}
-	*/
+	
+	@Test
+	public void testChangeTimePeriodToNewTimePeriod(){
+		try {
+			project.setTimePeriod(new TimePeriod(new GregorianCalendar(201,12,2), new GregorianCalendar(2012,12,2)));		
+			assertEquals(new GregorianCalendar(201,12,2), project.getTimePeriod().getStartDate());
+			assertEquals(new GregorianCalendar(2012,12,2), project.getTimePeriod().getEndDate());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}	
+	}
 	
 	@Test
 	public void testChangeListOfEmployeesToNull(){
 		try {
 			project.setEmployees(null);
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		} catch (InvalidInformationException e) {
 			Assert.fail(e.getMessage());
 		}
@@ -239,6 +292,8 @@ public class EditProject {
 	public void testChangeListOfEmployeesToEmptyList(){
 		try {
 			project.setEmployees(new ArrayList<Employee>());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		} catch (InvalidInformationException e) {
 			Assert.fail(e.getMessage());
 		}
@@ -283,6 +338,95 @@ public class EditProject {
 			assertTrue(project.getEmployees().contains(scheduler.getEmployeeFromInitials(START_INITIALS_PROJECT_MANAGER)));
 			assertTrue(project.getEmployees().contains(scheduler.getEmployeeFromInitials(NEW_INITIALS_PROJECT_MANAGER)));
 		} catch (EmployeeNotFoundException e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testChangeNameToNewNameProjectManagerNotLoggedIn(){
+		loginWithEmployeeNotProjectManager();
+		try {
+			project.setName(NEW_PROJECT_NAME);
+			Assert.fail();
+		} catch (DuplicateNameException e) {
+			Assert.fail(e.getMessage());
+		} catch (MissingInformationException e) {
+			Assert.fail(e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
+		}
+	}
+
+	@Test
+	public void testChangeDetailedDescriptionToNewDetailedDescriptionProjectManagerNotLoggedIn(){
+		loginWithEmployeeNotProjectManager();
+		try {
+			project.setDetailedText(NEW_DETAILED_DESCRIPTION);
+			fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testChangeBudgettedTimeProjectManagerNotLoggedIn(){
+		loginWithEmployeeNotProjectManager();
+		try {
+			project.setBudgettedTime(NEW_BUDGETTED_TIME);
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		}
+	}	
+
+	@Test
+	public void testChangeProjectManagerToEmployeePartOfTheProjectProjectManagerNotLoggedIn(){
+		loginWithEmployeeNotProjectManager();
+		try {
+			scheduler.addEmployee(NEW_INITIALS_PROJECT_MANAGER);
+			project.addEmployee(NEW_INITIALS_PROJECT_MANAGER);
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+		try {
+			project.setProjectManager(NEW_INITIALS_PROJECT_MANAGER);
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
+		} catch (ProjectManagerNotPartOfEmployeesAdded e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testChangeListOfEmployeesToListContainingExistingEmployeesProjectManagerNotLoggedIn(){
+		loginWithEmployeeNotProjectManager();
+		try {
+			scheduler.addEmployee(NEW_INITIALS_PROJECT_MANAGER);
+			List<Employee> newEmployees = new ArrayList<Employee>();
+			newEmployees.add(scheduler.getEmployeeFromInitials(START_INITIALS_PROJECT_MANAGER));
+			newEmployees.add(scheduler.getEmployeeFromInitials(NEW_INITIALS_PROJECT_MANAGER));
+			project.setEmployees(newEmployees);
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+
+	@Test
+	public void testChangeTimePeriodToNewTimePeriodProjectManagerNotLoggedIn(){
+		loginWithEmployeeNotProjectManager();
+		try {
+			project.setTimePeriod(new TimePeriod(new GregorianCalendar(201,12,2), new GregorianCalendar(2012,12,2)));		
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
+		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
 	}

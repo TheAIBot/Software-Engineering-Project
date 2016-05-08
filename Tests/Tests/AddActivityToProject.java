@@ -1,6 +1,7 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +51,8 @@ public class AddActivityToProject {
 		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
+		
+		assertTrue(scheduler.doAllEmployeesExist(project.getEmployees()));
 	}
 	
 	@Test
@@ -93,7 +96,8 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
-			assertEquals(e.getMessage(),"Project manager is not logged in");
+			assertEquals(e.getMessage(),"Either there needs to be no project manager for the project" +
+	                " or the person needs to be logged in, for edits to be made");
 		}
 	}
 	
@@ -580,20 +584,9 @@ public class AddActivityToProject {
 		
 		try {
 			project.forceAddAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
+		} catch (Exception e) {
 			Assert.fail();
-		} catch (NullPointerException e) {
-			
-		} catch (EmployeeNotFoundException e) {
-			Assert.fail();
-		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (EmployeeMaxActivitiesReachedException e) {
-			Assert.fail();
-		} catch (ProjectManagerNotLoggedInException e) {
-			Assert.fail();
-		} catch (InvalidInformationException e) {
-			Assert.fail();
-		}
+		} 
 	}
 	
 	@Test

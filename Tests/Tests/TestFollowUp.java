@@ -17,6 +17,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
 /**
@@ -69,6 +70,8 @@ public class TestFollowUp {
 		try {
 			project.setProjectManager("AGC");
 		} catch (ProjectManagerNotPartOfEmployeesAdded e2) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		}
 		try {

@@ -259,9 +259,9 @@ public class CreateProject {
 	}
 	
 	@Test
-	public void createProjectEmployeesIsNull(){
-		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				null, BUDGETED_TIME, "", VALID_TIME_PERIOD)); //There can be no project manager, in this case
+	public void createProjectEmployeesIsNullActualProjectManager(){
+		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+				null, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
 	
 	@Test
