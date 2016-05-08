@@ -255,12 +255,26 @@ public class EditProject {
 		}
 	}
 	
-	/*TODO Se paa TimePeriod efter ændringerne(*).
 	@Test
 	public void testChangeTimePeriodToNull(){
-			
+		try {
+			project.setTimePeriod(null);		
+			assertEquals(null, project.getTimePeriod());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}	
 	}
-	*/
+	
+	@Test
+	public void testChangeTimePeriodToNewTimePeriod(){
+		try {
+			project.setTimePeriod(new TimePeriod(new GregorianCalendar(201,12,2), new GregorianCalendar(2012,12,2)));		
+			assertEquals(new GregorianCalendar(201,12,2), project.getTimePeriod().getStartDate());
+			assertEquals(new GregorianCalendar(2012,12,2), project.getTimePeriod().getEndDate());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}	
+	}
 	
 	@Test
 	public void testChangeListOfEmployeesToNull(){
@@ -329,7 +343,7 @@ public class EditProject {
 	}
 	
 	@Test
-	public void testChangeNameToNewNameProjectManagerNotLoggedInt(){
+	public void testChangeNameToNewNameProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
 		try {
 			project.setName(NEW_PROJECT_NAME);
@@ -344,7 +358,7 @@ public class EditProject {
 	}
 
 	@Test
-	public void testChangeDetailedDescriptionToNewDetailedDescriptionProjectManagerNotLoggedInt(){
+	public void testChangeDetailedDescriptionToNewDetailedDescriptionProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
 		try {
 			project.setDetailedText(NEW_DETAILED_DESCRIPTION);
@@ -355,7 +369,7 @@ public class EditProject {
 	}
 	
 	@Test
-	public void testChangeBudgettedTimeProjectManagerNotLoggedInt(){
+	public void testChangeBudgettedTimeProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
 		try {
 			project.setBudgettedTime(NEW_BUDGETTED_TIME);
@@ -368,7 +382,7 @@ public class EditProject {
 	}	
 
 	@Test
-	public void testChangeProjectManagerToEmployeePartOfTheProjectProjectManagerNotLoggedInt(){
+	public void testChangeProjectManagerToEmployeePartOfTheProjectProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
 		try {
 			scheduler.addEmployee(NEW_INITIALS_PROJECT_MANAGER);
@@ -387,7 +401,7 @@ public class EditProject {
 	}
 	
 	@Test
-	public void testChangeListOfEmployeesToListContainingExistingEmployeesProjectManagerNotLoggedInt(){
+	public void testChangeListOfEmployeesToListContainingExistingEmployeesProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
 		try {
 			scheduler.addEmployee(NEW_INITIALS_PROJECT_MANAGER);
@@ -395,6 +409,20 @@ public class EditProject {
 			newEmployees.add(scheduler.getEmployeeFromInitials(START_INITIALS_PROJECT_MANAGER));
 			newEmployees.add(scheduler.getEmployeeFromInitials(NEW_INITIALS_PROJECT_MANAGER));
 			project.setEmployees(newEmployees);
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+
+	@Test
+	public void testChangeTimePeriodToNewTimePeriodProjectManagerNotLoggedIn(){
+		loginWithEmployeeNotProjectManager();
+		try {
+			project.setTimePeriod(new TimePeriod(new GregorianCalendar(201,12,2), new GregorianCalendar(2012,12,2)));		
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
 			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());

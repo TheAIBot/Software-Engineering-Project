@@ -128,16 +128,7 @@ public class Project {
 			throw new InvalidInformationException("Budgetted time can't be negative");
 		} else	if(!isProperProjectManagerToAdd(scheduler,initialsProjectManager, employeesToAdd)){
 				throw new ProjectManagerNotPartOfEmployeesAdded("The given manager " + initialsProjectManager + " is not a part of the list of employees given." );
-		} else if (timePeriod != null &&
-		timePeriod.getStartDate() == null) {
-			throw new InvalidInformationException("Time periods start date is empty");
-		} else if (timePeriod != null &&
-		timePeriod.getEndDate() == null) {
-			throw new InvalidInformationException("Time periods end date is empty");
-		} else if (timePeriod != null &&
-		timePeriod.getStartDate().after(timePeriod.getEndDate())) {
-			throw new InvalidInformationException("Start date can't be after the end date");
-		} 
+		} //And the errors connected to a TimePeriod is handled by the class itself. 
 		
 	}
 	
@@ -215,11 +206,11 @@ public class Project {
 		if (Tools.containsActivity(openActivities, title)) {
 			throw new DuplicateNameException("An activity with that name already exists");
 		}	
-		if (isProjectManagerLoggedIn()) {
-			//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
-			//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
-			List<Employee> activityEmployees = new ArrayList<Employee>();
-			List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
+		hasPermissionToEdit(); //Throws an error if not true.
+		//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
+		List<Employee> activityEmployees = new ArrayList<Employee>();
+		List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
+		if (employeeInitials != null) {
 			for (String initials : employeeInitials) {
 				if (Tools.containsEmployee(employees, initials)) { //TODO (*) check here.
 					Employee currentEmployee = Tools.getEmployeeFromInitials(employees, initials);
@@ -233,17 +224,16 @@ public class Project {
 			if (employeesPastMaxActivity.size() != 0) {
 				throw new EmployeeMaxActivitiesReachedException(employeesPastMaxActivity, "The employees: ", " cannot work on more activities");
 			}
-			Activity activity;
-			if (useAbsenceActivity) {
-				activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
-			} else {
-				activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
-			}
-			openActivities.add(activity);
-		} else {
-			throw new ProjectManagerNotLoggedInException("Project manager is not logged in");
 		}
-	}
+		Activity activity;
+		if (useAbsenceActivity) {
+			activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
+		} else {
+			activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
+		}
+		openActivities.add(activity);
+	} 
+	
 
 	/** Adds employee to the project. Returns true if possible, but if an employee with those initials do not exist,
 	 *  or if the employee is already a part of the project, false is returned instead.
@@ -315,7 +305,7 @@ public class Project {
 			//There can only be one activity with a given name, for a given project.
 			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); 		
 		} catch (Exception e) {
-			throw new ActivityNotFoundException();
+			throw new ActivityNotFoundException("The open activity: " + activityName + " is not a part of the project: " + this.name);
 		}
 	}
 
@@ -392,7 +382,7 @@ public class Project {
 		try{
 			return openActivities.stream().filter(x -> x.getName().equals(name)).findAny().get();
 		} catch(Exception e){
-			throw new ActivityNotFoundException();
+			throw new ActivityNotFoundException("The activity: " + name + " is not a part of the project: " + this.name);
 		}
 		
 	}

@@ -11,11 +11,12 @@ import org.junit.Test;
 
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 
 public class CloseActivity {
 
 	@Test
-	public void closeActivitySuccessTest()
+	public void closeActivitySuccessTest() throws ActivityNotFoundException
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
