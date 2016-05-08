@@ -26,6 +26,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 public class AddEmployeesToProjectDialog extends JDialog {
 
@@ -133,7 +134,7 @@ public class AddEmployeesToProjectDialog extends JDialog {
 	}
 		
 	
-	private void tryAddEmployees() throws InvalidInformationException
+	private void tryAddEmployees() throws InvalidInformationException, ProjectManagerNotLoggedInException
 	{
 		int dialogResult = JOptionPane.showConfirmDialog(null, "Vil du foretage disse ændringer?");
 		if (dialogResult == JOptionPane.YES_OPTION) {
