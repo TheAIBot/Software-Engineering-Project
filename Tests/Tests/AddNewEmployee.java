@@ -39,6 +39,8 @@ public class AddNewEmployee {
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
+		
+		// Using TestTools to try adding employee duplicate with initials
 		try {
 			TestTools.addEmployee(scheduler, "AM");
 			Assert.fail();
@@ -53,6 +55,7 @@ public class AddNewEmployee {
 		} catch (IllegalCharException e){
 			Assert.fail();
 		}
+		
 	}
 	
 	@Test
