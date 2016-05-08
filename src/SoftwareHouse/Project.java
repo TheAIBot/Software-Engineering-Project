@@ -95,9 +95,9 @@ public class Project {
 			//It might happen that no manager is given, which would result in an error here. No will be assigned in this case.
 			this.projectManager = scheduler.getEmployeeFromInitials(initialsProjectManager); 
 		} catch (EmployeeNotFoundException e) {}
-		if (employeesToAdd != null) {
-			for (Employee employee : employeesToAdd) {
-				this.addEmployee(employee.getInitials());
+		if (employeesInitials != null) {
+			for (String employeeInitials : employeesInitials) {
+				this.addEmployee(employeeInitials);
 			}
 		} else employees = new ArrayList<Employee>();
 		this.projectNumber = Calendar.getInstance().get(Calendar.YEAR) + serialNumber;
@@ -126,12 +126,7 @@ public class Project {
 			throw new MissingInformationException("Missing project name");
 		} else if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be negative");
-		} else if (!Tools.isNullOrEmpty(initialsProjectManager) &&
-					employees != null &&
-					employees.contains(initialsProjectManager)) {
-			scheduler.getEmployeeFromInitials(initialsProjectManager);
-		}
-		if(!isProperProjectManagerToAdd(initialsProjectManager, employeesToAdd)){
+		} else	if(!isProperProjectManagerToAdd(scheduler,initialsProjectManager, employeesToAdd)){
 				throw new ProjectManagerNotPartOfEmployeesAdded("The given manager " + initialsProjectManager + " is not a part of the list of employees given." );
 		} else if (timePeriod != null &&
 		timePeriod.getStartDate() == null) {
@@ -146,8 +141,9 @@ public class Project {
 		
 	}
 	
-	public boolean isProperProjectManagerToAdd(String initialsProjectManager, List<Employee> employeesToAdd){
+	public boolean isProperProjectManagerToAdd(Scheduler scheduler,String initialsProjectManager, List<Employee> employeesToAdd) throws EmployeeNotFoundException{
 		if (!Tools.isNullOrEmpty(initialsProjectManager)) {
+			scheduler.getEmployeeFromInitials(initialsProjectManager); //Throws an error if the manager do not exist
 			if (employeesToAdd == null) {
 				return false;
 			} else return employeesToAdd.stream().anyMatch(x -> x.getInitials().equals(initialsProjectManager));
@@ -258,9 +254,17 @@ public class Project {
 	 */
 	public boolean addEmployee(String initials) throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
 		Employee employee = scheduler.getEmployeeFromInitials(initials);
-		if (employee.isAlreadyPartOfProject(this) || employees.contains(initials)) {
+		boolean employeeKnowsProject = employee.isAlreadyPartOfProject(this);
+		boolean projectKnowsEmployee = employees.stream().anyMatch(x -> x.getInitials().equals(initials));
+		//A little convoluted if statement, corresponding to an or between the non negated boolean function.
+		//Found neccesary to get extra code coverage
+		if (!(!employeeKnowsProject && !projectKnowsEmployee)) {
 			throw new EmployeeAlreadyAssignedException(initials + " is already a part of the project " + this.name);
-		} else	return (employee.addProject(this) && employees.add(employee)); 
+		} else	{
+			employee.addProject(this);
+			employees.add(employee);
+			return true;
+		}
 	}
 	
 	/**
@@ -347,8 +351,10 @@ public class Project {
 	 * @param name the name to set
 	 * @throws DuplicateNameException If a project with that name already exists.
 	 * @throws MissingInformationException If the name is null or empty/it is not "specified"
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setName(String name) throws DuplicateNameException, MissingInformationException {
+	public void setName(String name) throws DuplicateNameException, MissingInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		Project project = null;
 		try {
 			project = scheduler.getProject(name);
@@ -400,8 +406,10 @@ public class Project {
 	
 	/**
 	 * @param costumerName the costumerName to set
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setCostumerName(String costumerName) {
+	public void setCostumerName(String costumerName) throws ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		this.costumerName = costumerName;
 	}
 
@@ -410,8 +418,11 @@ public class Project {
 	 * an error is thrown
 	 * @param projectManager the projectManager to set
 	 * @throws ProjectManagerNotPartOfEmployeesAdded The new project manager needs to be a part of the project.
+	 * @throws ProjectManagerNotLoggedInException To change the project mangager, 
+	 *         one either needs to be the project manager, or there needs to be no project manager.
 	 */
-	public void setProjectManager(String initialProjecManager) throws ProjectManagerNotPartOfEmployeesAdded {
+	public void setProjectManager(String initialProjecManager) throws ProjectManagerNotPartOfEmployeesAdded, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		if (initialProjecManager == null || initialProjecManager == "" ) {
 			projectManager = null;			
 		} else {
@@ -425,8 +436,10 @@ public class Project {
 	/**
 	 * @param timePeriod the timePeriod to set
 	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setTimePeriod(TimePeriod timePeriod) throws InvalidInformationException {
+	public void setTimePeriod(TimePeriod timePeriod) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		this.timePeriod = timePeriod;
 	}
 
@@ -439,16 +452,20 @@ public class Project {
 
 	/**
 	 * @param detailedText the detailedText to set
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setDetailedText(String detailedText) {
+	public void setDetailedText(String detailedText) throws ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		this.detailedText = detailedText;
 	}
 
 	/**
 	 * @param employees the employees to set
 	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setEmployees(List<Employee> employees) throws InvalidInformationException {
+	public void setEmployees(List<Employee> employees) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		if (employees == null) {
 			this.employees = new ArrayList<Employee>();
 		} else {
@@ -460,7 +477,21 @@ public class Project {
 				}
 			}
 			this.employees = employees;
+			for (Employee employee : employees) {
+				if (!employee.isAlreadyPartOfProject(this)) {
+					employee.addProject(this);
+				}
+			}
 		}
+		
+	}
+	
+	public boolean hasPermissionToEdit() throws ProjectManagerNotLoggedInException{
+		if (isProjectManagerLoggedIn() || projectManager == null) {
+			return true;
+		} else throw new ProjectManagerNotLoggedInException("Either there needs to be no project manager for the project" +
+                " or the person needs to be logged in, for edits to be made");
+
 	}
 
 	public String getFilePath() {
@@ -480,8 +511,10 @@ public class Project {
 	/**
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setBudgettedTime(int budgetedTime) throws InvalidInformationException {
+	public void setBudgettedTime(int budgetedTime) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}

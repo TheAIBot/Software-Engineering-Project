@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
-import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 
 public class CloseActivity {
 
@@ -74,11 +73,7 @@ public class CloseActivity {
 		
 		assertEquals(project.getOpenActivities().size(), 1);
 		assertEquals(project.getClosedActivities().size(), 0);
-		try {
-			project.closeActivity(activityName);
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		}
+		project.closeActivity(activityName);
 		assertEquals(project.getOpenActivities().size(), 0);
 		assertEquals(project.getClosedActivities().size(), 1);
 	}
