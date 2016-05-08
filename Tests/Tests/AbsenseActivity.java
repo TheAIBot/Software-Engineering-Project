@@ -9,6 +9,7 @@ import SoftwareHouse.Employee;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 public class AbsenseActivity {
 	
@@ -77,4 +78,44 @@ public class AbsenseActivity {
 			Assert.fail(e.getMessage());
 		}
 	}
+	
+	@Test
+	public void AbsenseActivityCreateNewActivityNoPermision()
+	{
+		Scheduler scheduler = new Scheduler();
+		try {
+			scheduler.addEmployee("JSB");
+			scheduler.addEmployee("KING");
+			scheduler.getAbsenceProject().addEmployee("JSB");
+			scheduler.getAbsenceProject().addEmployee("KING");
+			scheduler.login("KING");
+			scheduler.getAbsenceProject().setProjectManager("JSB");
+			scheduler.getAbsenceProject().forceAddAcitivity("Saitama", "One punch", null, null, null, 0);
+			Assert.fail();
+		} catch(ProjectManagerNotLoggedInException e){ 
+			assertEquals("Either there needs to be no project manager for the project" +
+	                " or the person needs to be logged in, for edits to be made", e.getMessage());
+		} catch (Exception e) {
+			Assert.fail();
+		}		
+	}
+	
+	@Test
+	public void AbsenseActivityCreateNewActivityHasPermission()
+	{
+		Scheduler scheduler = new Scheduler();
+		try {
+			scheduler.addEmployee("JSB");
+			scheduler.addEmployee("KING");
+			scheduler.getAbsenceProject().addEmployee("JSB");
+			scheduler.getAbsenceProject().addEmployee("KING");
+			scheduler.login("JSB");
+			scheduler.getAbsenceProject().setProjectManager("JSB");
+			scheduler.getAbsenceProject().forceAddAcitivity("Saitama", "One punch", null, null, null, 0);
+		} catch (Exception e) {
+			Assert.fail();
+		}		
+	}
+
+
 }
