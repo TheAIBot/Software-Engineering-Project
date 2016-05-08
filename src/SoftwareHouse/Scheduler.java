@@ -270,9 +270,6 @@ public void createProject(String projectName) throws MissingInformationException
 		if(!initials.matches("\\p{L}+")){
 			throw new IllegalCharException("Only letters are allowed for initials");
 		}
-		if (employees.containsKey(initials)) {
-			throw new DuplicateNameException("An employee with those initial already exist");
-		}
 		return true;
 	}
 	
