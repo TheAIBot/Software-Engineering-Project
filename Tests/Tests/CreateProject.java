@@ -402,14 +402,20 @@ public class CreateProject {
 	 */
 	@Test
 	public void createProjecManagerNotPartOfUserAdded(){
+		loginIfNotLoggedIn();
 		try {
 			scheduler.addEmployee("LeLa");
 		} catch (MissingInformationException | DuplicateNameException | TooManyCharsException
 				| IllegalCharException e) {
 			Assert.fail(e.getMessage());
 		}
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
+		try {
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, BUDGETED_TIME, "ASB", VALID_TIME_PERIOD);
+			Assert.fail();
+		} catch (Exception e) {
+			assertEquals("No employee with those initials exists", e.getMessage());
+		}
 	}
 
 	/**

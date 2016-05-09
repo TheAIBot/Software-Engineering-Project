@@ -219,6 +219,11 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing title");
+			try {
+				project.forceAddAcitivity(null,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {
+				assertEquals(e.getMessage(), "Missing title");
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -263,6 +268,11 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing detailText");
+			try {
+				project.forceAddAcitivity(activityName,	null, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -307,6 +317,11 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing employees");
+			try {
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
+			} catch (Exception e2) {
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -351,6 +366,12 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing start date");
+			try {
+				//If one of the dates are null, it will simply ignore the dates.
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, null, endDate, expectedHours);
+			} catch (Exception e2) {	
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -395,6 +416,12 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing end date");
+			try {
+				//If one of the dates are null, it will simply ignore the dates.
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {	
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -441,6 +468,12 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
 			assertEquals(e.getMessage(), "End date has to start after start date");
+			//It ignores the data if it is wrong.
+			try {
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {	
+				Assert.fail();
+			}
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
