@@ -232,11 +232,16 @@ public class CreateActivityDialog extends JDialog {
 			projectNameTextField.makeBorderRed();
 		} else {
 			try {
-				scheduler.getProject(projectNameTextField.getText());
+				project.getActivity(projectNameTextField.getText());
 				projectNameTextField.makeBorderRed();
 				errorLabel.setText("A project with that name already exist");
 			} catch (Exception e) {
-				projectNameTextField.makeBorderGreen();
+				if (project.isNewValidActivityName(projectNameTextField.getText())) {
+					projectNameTextField.makeBorderGreen();
+				} else {
+					projectNameTextField.makeBorderRed();
+					errorLabel.setText("A project with that name already exist");
+				}
 			}
 		}
 	}

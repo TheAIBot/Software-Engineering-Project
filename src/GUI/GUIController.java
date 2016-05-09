@@ -39,29 +39,35 @@ public class GUIController {
 			Tests.TestTools.login(scheduler);
 			
 			Tests.TestTools.createProject(scheduler, "Do the things");
-			Tests.TestTools.createProject(scheduler, "for the lols");
+			Tests.TestTools.createProject(scheduler, "For the lols");
 			Tests.TestTools.createProject(scheduler, "Test project please ignore");
-			Tests.TestTools.createProject(scheduler, "zing", "ELL");
-			Tests.TestTools.createProject(scheduler, "lave pizza", Tests.TestTools.LOGIN_EMPLOYEE_INITIALS);
-			Tests.TestTools.createProject(scheduler, "få 12");
+			Tests.TestTools.createProject(scheduler, "Lave pizza");
+			Tests.TestTools.createProject(scheduler, "Få 12");
+			Tests.TestTools.createProject(scheduler, "Zing", "ELL");
+			Tests.TestTools.createProject(scheduler, "import AI.Skynet;");
+			Tests.TestTools.safeCloseProject(scheduler, "import AI.Skynet;");
 			
-			Tests.TestTools.addEmployeeToProject(scheduler, Tests.TestTools.LOGIN_EMPLOYEE_INITIALS, "zing");
-			Tests.TestTools.addEmployeeToProject(scheduler, Tests.TestTools.LOGIN_EMPLOYEE_INITIALS, "lave pizza");
-			Tests.TestTools.addEmployeeToProject(scheduler, Tests.TestTools.LOGIN_EMPLOYEE_INITIALS, "få 12");
+			Tests.TestTools.addEmployeeToProject(scheduler, Tests.TestTools.LOGIN_EMPLOYEE_INITIALS, "Zing");
+			Tests.TestTools.addEmployeeToProject(scheduler, Tests.TestTools.LOGIN_EMPLOYEE_INITIALS, "Lave pizza");
+			Tests.TestTools.addEmployeeToProject(scheduler, Tests.TestTools.LOGIN_EMPLOYEE_INITIALS, "Få 12");
 			
-			Tests.TestTools.addActivity(scheduler, "zing", "zang", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "zing", "ding", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "zing", "dong", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "zing", "pling", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "zing", "plong", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			scheduler.login("ELL");
+			Tests.TestTools.addActivity(scheduler, "Zing", "Zang", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Zing", "Ding", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Zing", "Dong", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Zing", "Pling", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Zing", "Plong", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			scheduler.login("LLLL");
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Ost", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Pepperoni", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Tomat", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Dej", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Skinke", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
 			
-			Tests.TestTools.addActivity(scheduler, "lave pizza", "ost", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "lave pizza", "pepperoni", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "lave pizza", "tomat", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "lave pizza", "dej", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			Tests.TestTools.addActivity(scheduler, "lave pizza", "skinke", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
-			
-		} catch (Exception e) {}
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 		
 		switchPage(loginPage);
 	}

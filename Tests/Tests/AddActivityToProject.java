@@ -1,6 +1,7 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
@@ -49,6 +51,108 @@ public class AddActivityToProject {
 		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
+		assertTrue(scheduler.doAllEmployeesExist(project.getEmployees()));
+	}
+	
+	@Test
+	public void AddActivityNotProjectManager(){
+		Scheduler scheduler2 = new Scheduler();
+		TestTools.login(scheduler2);
+		Project project2 = null;
+		try {
+			project2 = TestTools.createProject(scheduler2, "Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		TestTools.addEmployeeToProject(scheduler2, "NR", "Navision Stat");
+		
+		try {
+			scheduler2.login("NR");
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		}
+		
+		String[] employees = new String[1];
+		employees[0] = "NR";
+		try {
+			TestTools.addActivity(scheduler2, "Navision Stat", "Test activity", employees);
+			Assert.fail();
+		} catch (ProjectNotFoundException e) {
+			Assert.fail();
+		} catch (ActivityNotFoundException e) {
+			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(e.getMessage(),"Either there needs to be no project manager for the project" +
+	                " or the person needs to be logged in, for edits to be made");
+		}
+	}
+	
+	@Test
+	public void addActivityTooManyActivitiesAssigned()
+	{
+		Scheduler scheduler2 = new Scheduler();
+		TestTools.login(scheduler2);
+		Project project2 = null;
+		try {
+			project2 = TestTools.createProject(scheduler2, "Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		TestTools.addEmployeeToProject(scheduler2, "NR", "Navision Stat");
+		String[] employees = new String[1];
+		employees[0] = "NR";
+		
+		for(int i = 1; i <=20; i++){
+			try {
+				TestTools.addActivity(scheduler2, "Navision Stat", String.valueOf(i), employees);
+			} catch (Exception e){
+				Assert.fail();
+			}
+		}
+		
+		Activity activity = null;
+		try {
+			activity = scheduler2.getActivity("Navision Stat", String.valueOf(Employee.MAX_ACTIVITIES));
+		} catch (Exception e1) {
+			Assert.fail();
+		}
+		
+		try {
+			TestTools.addActivity(scheduler2, "Navision Stat", "Too many", employees);
+		} catch (ProjectNotFoundException e) {
+			Assert.fail();
+		} catch (ActivityNotFoundException e) {
+			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		} catch (EmployeeMaxActivitiesReachedException e) {
+			assertEquals(e.getMessage(), "The employees:  NR  cannot work on more activities");
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
+		}
+		
 	}
 	
 	@Test
@@ -403,6 +507,10 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
 		}
 		
 		//Test for adding an exisiting empoyee who is not part of the corresponding project. 
@@ -452,6 +560,10 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
 		}
 	}
 	
@@ -475,18 +587,9 @@ public class AddActivityToProject {
 		
 		try {
 			project.forceAddAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
+		} catch (Exception e) {
 			Assert.fail();
-		} catch (NullPointerException e) {
-			
-		} catch (EmployeeNotFoundException e) {
-			Assert.fail();
-		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (EmployeeMaxActivitiesReachedException e) {
-			Assert.fail();
-		} catch (ProjectManagerNotLoggedInException e) {
-			Assert.fail();
-		}
+		} 
 	}
 	
 	@Test
@@ -557,6 +660,10 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
 			Assert.fail();
 		}
 	}

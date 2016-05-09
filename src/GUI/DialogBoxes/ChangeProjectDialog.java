@@ -36,6 +36,8 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
 public class ChangeProjectDialog extends JDialog {
 
@@ -227,7 +229,6 @@ public class ChangeProjectDialog extends JDialog {
 	
 	private void checkCostumerName()
 	{
-		
 	}
 	
 	private void checkStartDate()
@@ -257,7 +258,7 @@ public class ChangeProjectDialog extends JDialog {
 	}
 		
 	
-	private void changeProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException
+	private void changeProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, ProjectManagerNotPartOfEmployeesAdded, ProjectManagerNotLoggedInException
 	{
 		String projectName = projectNameTextField.getText();
 		String costumerName = costumersNameTextField.getText();
@@ -283,8 +284,7 @@ public class ChangeProjectDialog extends JDialog {
 				project.setName(projectName);
 			}
 			if (!SoftwareHouse.Tools.isNullOrEmpty(projectManagerInitials)) {
-				Employee newProjectManager = scheduler.getEmployeeFromInitials(projectManagerInitials);
-				project.setProjectManager(newProjectManager);
+				project.setProjectManager(projectManagerInitials);
 			}
 			project.setCostumerName(costumerName);
 			project.setTimePeriod(timePeriod);

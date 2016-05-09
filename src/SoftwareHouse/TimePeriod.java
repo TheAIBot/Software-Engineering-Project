@@ -6,7 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 
+
+/**
+ * Class representing a period of time utilising the DateFormat class
+ */
 public class TimePeriod {
 	
 	public static final String DATE_FORMAT = "dd MM yyyy";
@@ -14,13 +19,16 @@ public class TimePeriod {
 	private final Calendar startDate;
 	private final Calendar endDate;
 	
-	public TimePeriod(Calendar startDate, Calendar endDate) {
+	public TimePeriod(Calendar startDate, Calendar endDate) throws InvalidInformationException {
+		if (startDate == null) {
+			throw new InvalidInformationException("Start date doesn't exist");
+		} else if (endDate == null) {
+			throw new InvalidInformationException("End date doesn't exist");
+		} else if (startDate.after(endDate)) {
+			throw new InvalidInformationException("End date has to start after start date");
+		}
 		this.startDate = startDate;
 		this.endDate = endDate;
-	}
-	
-	public boolean isValidTimePeriod(){
-		return (endDate != null && startDate != null && endDate.after(startDate));
 	}
 	
 	public static GregorianCalendar getCalendarFromString(String dateString) throws ParseException

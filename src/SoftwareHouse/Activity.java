@@ -22,14 +22,18 @@ public class Activity {
 	protected int budgettedTime;
 	protected final Project inProject;
 	
-	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
+	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException, InvalidInformationException {
 		this.name = name;
 		this.detailText = detailText;
-		this.assignedEmployees.addAll(employees);
-		for (Employee employee : employees) {
-			employee.addActivity(this);
+		if (employees != null) {
+			this.assignedEmployees.addAll(employees);
+			for (Employee employee : employees) {
+				employee.addActivity(this);
+			}
 		}
-		this.setTimePeriod(new TimePeriod(startDate, endDate));
+		if (startDate != null & endDate != null) {
+			this.setTimePeriod(new TimePeriod(startDate, endDate));
+		}
 		this.budgettedTime = budgettedTime;
 		this.inProject = inProject;
 	}
@@ -48,8 +52,7 @@ public class Activity {
 	public void setName(String name) throws MissingInformationException, DuplicateNameException {
 		if (Tools.isNullOrEmpty(name)) {
 			throw new MissingInformationException("Missing name");
-		}
-		if (Tools.containsActivity(inProject.getOpenActivities(), name)) {
+		} else if (!inProject.isNewValidActivityName(name) && !name.equals(getName())) {
 			throw new DuplicateNameException("An activity with the specified name already exists");
 		}
 		this.name = name;

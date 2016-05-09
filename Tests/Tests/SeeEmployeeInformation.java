@@ -16,6 +16,7 @@ import org.junit.Test;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
+import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
 
 public class SeeEmployeeInformation {
@@ -210,5 +211,13 @@ public class SeeEmployeeInformation {
 		//History employeesHistory = hopefullyArndt.getHistory(); 
 		//It is already checked that the history object works, so no need to check it again.			/TODO history tests	
 	}
+	
+	@Test
+	public void testNoEmployeeTime()
+	{
+		List<RegisteredTime> list = scheduler.getTimeVault().getEmployeeTime("DCAB");
+		assertEquals(0,list.size());
+	}
+	
 	
 }

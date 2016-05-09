@@ -13,22 +13,48 @@ import java.util.List;
 
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
+import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
+import SoftwareHouse.ExceptionTypes.DuplicateNameException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
+import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.IllegalCharException;
+import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
+import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
 /**
  * @author ELL
  */
-public class TestEditActivity {
+public class EditActivity {
 
 	Scheduler scheduler;
 
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
+		
+		// Test cannot fetch activities or projects without being logged in
+		assertFalse(scheduler.isAnyoneLoggedIn());
+		try {
+			scheduler.getActivity("sygdom", "sygdom");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		try {
+			scheduler.getProjectsContainingStringInName("sy");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		
+		// Login
 		TestTools.login(scheduler);
+		assertTrue(scheduler.isAnyoneLoggedIn());
 		
 		// Create employees
 		try {
@@ -217,6 +243,53 @@ public class TestEditActivity {
 			assertEquals("Brugerinterface", activityBrugerinterface.getName());
 		}
 	}
+	
+	@Test
+	public void testNoActivityTime()
+	{
+		try {
+			TestTools.addEmployee(scheduler, "bob");
+		} catch (Exception e){
+			Assert.fail();
+		}
+		String[] employees = new String[1];
+		employees[0] = "bob";
+		
+		TestTools.addEmployeeToProject(scheduler, "bob", "Navision Stat");
+		
+		try {
+			TestTools.addActivity(scheduler, "Navision Stat", "abde", employees);
+		} catch (Exception e){
+			Assert.fail();
+		}
+		
+		try {
+			List<RegisteredTime> list = scheduler.getTimeVault().getActivityTime("Navision Stat", "abde");
+			assertEquals(list.size(),0);
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+	}
+	
+	@Test
+	public void testGetNonExistingActivityOrProject()
+	{
+		try {
+			scheduler.getActivity("Navision Stat", "xxxx");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		
+		try {
+			scheduler.getActivity("xxxx", "Brugerinterface");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		
+	}
+	
+	
 
 
 }

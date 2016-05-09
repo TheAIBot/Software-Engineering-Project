@@ -6,6 +6,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+/**
+ * Used to highlight a text field depending on current input
+ */
 public class JBorderTextField extends JTextField implements ColoredBorder {
 
 	private final Border defaultBorder = getBorder();

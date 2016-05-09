@@ -13,7 +13,7 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
-public class TestRegisterTime {
+public class RegisterTime {
 
 	private Scheduler scheduler = null;
 
@@ -59,20 +59,6 @@ public class TestRegisterTime {
 		assertTrue(registeredTime == scheduler.getTimeVault().getActivityTime("Navision Stat", "Brugerinterface").get(0));
 	}
 	
-	//Totally wrong(*) TODO
-	//Gjort bedre end foer - men ret stadig
-	@Test
-	public void testRegisterTimeEmployeeNotAffiliatedWithProject() {
-		Employee employee = null;
-		try {
-			employee = scheduler.getEmployeeFromInitials("AGC");
-			employee.registerTime("Navision Stat", "Brugerinterface", "Gridbag layout f�rdigt sat op og justeret", 3);
-			Assert.fail();
-		} catch (Exception e) {
-			assertEquals("Employee not affiliated with project", e.getMessage());
-		}
-	}
-	
 	/**
 	 * Time is invalid if it is negative
 	 */
@@ -91,27 +77,6 @@ public class TestRegisterTime {
 			Assert.fail();
 		} catch (Exception e) {
 			assertEquals("Used time can't be less than 0", e.getMessage());
-		}
-	}
-	
-	/**
-	 * Text is invalid if it is empty
-	 */
-	@Test
-	public void testRegisterTimeInvalidText() {
-		Employee employee = null;
-		try {
-			TestTools.addActivity(scheduler, "Navision Stat", "Brugerinterface", new String[] { "AAAA" });
-			employee = scheduler.getEmployeeFromInitials("AAAA");
-		} catch (Exception e) {
-			Assert.fail();
-		}
-		
-		try {
-			employee.registerTime("Navision Stat", "Brugerinterface", "", 5); //TODO LAES Op.
-			Assert.fail();
-		} catch (Exception e) {
-			assertEquals("Invalid text", e.getMessage());
 		}
 	}
 	

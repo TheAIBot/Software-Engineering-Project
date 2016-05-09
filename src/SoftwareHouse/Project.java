@@ -1,14 +1,10 @@
 package SoftwareHouse;
 
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.junit.validator.PublicClassValidator;
 
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
@@ -16,15 +12,11 @@ import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
-import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
-import sun.net.www.content.audio.x_aiff;
-import sun.nio.cs.ext.TIS_620;
 
 /**
  * @author Jesper
@@ -41,7 +33,6 @@ public class Project {
 	private boolean isOpen = true;
 	private final String REPORTS_PATH = "res/reports/";
 	private final String FILE_EXTENTION = ".txt";
-	public int budgettedTime = 0;
 	private boolean useAbsenceActivity = false;
 	private String detailedText;
 	
@@ -104,18 +95,21 @@ public class Project {
 			//It might happen that no manager is given, which would result in an error here. No will be assigned in this case.
 			this.projectManager = scheduler.getEmployeeFromInitials(initialsProjectManager); 
 		} catch (EmployeeNotFoundException e) {}
-		if (employeesToAdd != null) {
-			for (Employee employee : employeesToAdd) {
-				this.addEmployee(employee.getInitials());
+		if (employeesInitials != null) {
+			for (String employeeInitials : employeesInitials) {
+				this.addEmployee(employeeInitials);
 			}
-		}
+		} else employees = new ArrayList<Employee>();
 		this.projectNumber = Calendar.getInstance().get(Calendar.YEAR) + serialNumber;
 		serialNumber++;
 	}
 	
-	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws InvalidProjectInitilizationInput, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded{
+	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded, EmployeeMaxActivitiesReachedException {
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
+		openActivities.add(new AbsenceActivity("sygdom", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("ferie", "", null, null, null, 0, this));
+		openActivities.add(new AbsenceActivity("kursus", "", null, null, null, 0, this));
 	}
 	
 	private void validateinformation(Scheduler scheduler, 
@@ -132,28 +126,15 @@ public class Project {
 			throw new MissingInformationException("Missing project name");
 		} else if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be negative");
-		} else if (!Tools.isNullOrEmpty(initialsProjectManager) &&
-					employees != null &&
-					employees.contains(initialsProjectManager)) {
-			scheduler.getEmployeeFromInitials(initialsProjectManager);
-		}
-		if(!isProperProjectManagerToAdd(initialsProjectManager, employeesToAdd)){
+		} else	if(!isProperProjectManagerToAdd(scheduler,initialsProjectManager, employeesToAdd)){
 				throw new ProjectManagerNotPartOfEmployeesAdded("The given manager " + initialsProjectManager + " is not a part of the list of employees given." );
-		} else if (timePeriod != null &&
-		timePeriod.getStartDate() == null) {
-			throw new InvalidInformationException("Time periods start date is empty");
-		} else if (timePeriod != null &&
-		timePeriod.getEndDate() == null) {
-			throw new InvalidInformationException("Time periods end date is empty");
-		} else if (timePeriod != null &&
-		timePeriod.getStartDate().after(timePeriod.getEndDate())) {
-			throw new InvalidInformationException("Start date can't be after the end date");
-		} 
+		} //And the errors connected to a TimePeriod is handled by the class itself. 
 		
 	}
 	
-	public boolean isProperProjectManagerToAdd(String initialsProjectManager, List<Employee> employeesToAdd){
+	public boolean isProperProjectManagerToAdd(Scheduler scheduler,String initialsProjectManager, List<Employee> employeesToAdd) throws EmployeeNotFoundException{
 		if (!Tools.isNullOrEmpty(initialsProjectManager)) {
+			scheduler.getEmployeeFromInitials(initialsProjectManager); //Throws an error if the manager do not exist
 			if (employeesToAdd == null) {
 				return false;
 			} else return employeesToAdd.stream().anyMatch(x -> x.getInitials().equals(initialsProjectManager));
@@ -220,16 +201,27 @@ public class Project {
 		return employeesMaxCapacityReached; 
 	}
 	
-	public void forceAddAcitivity(String title, String detailText, List<String> employeeInitials, Calendar startTime, Calendar endTime, int budgetedTime) 
-			throws EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException {
-		if (Tools.containsActivity(openActivities, title)) {
+	public void forceAddAcitivity(String title, 
+								  String detailText, 
+								  List<String> employeeInitials, 
+								  Calendar startTime, 
+								  Calendar endTime, 
+								  int budgetedTime) throws EmployeeNotFoundException, 
+														   DuplicateNameException, 
+														   EmployeeMaxActivitiesReachedException, 
+														   ProjectManagerNotLoggedInException, 
+														   InvalidInformationException, 
+														   MissingInformationException {	
+		if (Tools.isNullOrEmpty(title)) {
+			throw new MissingInformationException("Missing activity name");
+		} else if (!isNewValidActivityName(title)) {
 			throw new DuplicateNameException("An activity with that name already exists");
-		}	
-		if (isProjectManagerLoggedIn() || useAbsenceActivity) {
-			//not sure but i think it makes sense if it throws an nullpointerexception if employeeInitials isn't initialized
-			//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
-			List<Employee> activityEmployees = new ArrayList<Employee>();
-			List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
+		} 
+		hasPermissionToEdit(); //Throws an error if not true.
+		//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
+		List<Employee> activityEmployees = new ArrayList<Employee>();
+		List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
+		if (employeeInitials != null) {
 			for (String initials : employeeInitials) {
 				if (Tools.containsEmployee(employees, initials)) { //TODO (*) check here.
 					Employee currentEmployee = Tools.getEmployeeFromInitials(employees, initials);
@@ -243,17 +235,16 @@ public class Project {
 			if (employeesPastMaxActivity.size() != 0) {
 				throw new EmployeeMaxActivitiesReachedException(employeesPastMaxActivity, "The employees: ", " cannot work on more activities");
 			}
-			Activity activity;
-			if (useAbsenceActivity) {
-				activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
-			} else {
-				activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
-			}
-			openActivities.add(activity);
-		} else {
-			throw new ProjectManagerNotLoggedInException("Project manager is not logged in");
 		}
-	}
+		Activity activity;
+		if (useAbsenceActivity) {
+			activity = new AbsenceActivity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);	
+		} else {
+			activity = new Activity(title, detailText, activityEmployees, startTime, endTime, budgetedTime, this);
+		}
+		openActivities.add(activity);
+	} 
+	
 
 	/** Adds employee to the project. Returns true if possible, but if an employee with those initials do not exist,
 	 *  or if the employee is already a part of the project, false is returned instead.
@@ -264,9 +255,17 @@ public class Project {
 	 */
 	public boolean addEmployee(String initials) throws EmployeeNotFoundException, EmployeeAlreadyAssignedException {
 		Employee employee = scheduler.getEmployeeFromInitials(initials);
-		if (employee.isAlreadyPartOfProject(this) || employees.contains(initials)) {
+		boolean employeeKnowsProject = employee.isAlreadyPartOfProject(this);
+		boolean projectKnowsEmployee = employees.stream().anyMatch(x -> x.getInitials().equals(initials));
+		//A little convoluted if statement, corresponding to an or between the non negated boolean function.
+		//Found neccesary to get extra code coverage
+		if (!(!employeeKnowsProject && !projectKnowsEmployee)) {
 			throw new EmployeeAlreadyAssignedException(initials + " is already a part of the project " + this.name);
-		} else	return (employee.addProject(this) && employees.add(employee)); 
+		} else	{
+			employee.addProject(this);
+			employees.add(employee);
+			return true;
+		}
 	}
 	
 	/**
@@ -305,6 +304,14 @@ public class Project {
 		}
 	}
 
+	public boolean isNewValidActivityName(String activityName)
+	{
+		final String lowerCaseActivityName = activityName.toLowerCase().trim();
+		return !Tools.isNullOrEmpty(lowerCaseActivityName) && 
+				!openActivities.stream()
+						 	   .anyMatch(x -> x.getName().toLowerCase().trim().equals(lowerCaseActivityName));
+	}
+	
 	/**
 	 * @return the isOpen
 	 */
@@ -317,7 +324,7 @@ public class Project {
 			//There can only be one activity with a given name, for a given project.
 			return openActivities.stream().filter(x -> x.getName().equals(activityName)).findFirst().get(); 		
 		} catch (Exception e) {
-			throw new ActivityNotFoundException();
+			throw new ActivityNotFoundException("The open activity: " + activityName + " is not a part of the project: " + this.name);
 		}
 	}
 
@@ -348,20 +355,19 @@ public class Project {
 		return name;
 	}
 
-	/**
+	/** Sets the name of the project to a new given name. Throws an error in case of the new name being null, 
+	 *  an empty String or if there exist another project, with that name.
 	 * @param name the name to set
-	 * @throws DuplicateNameException 
-	 * @throws MissingInformationException 
+	 * @throws DuplicateNameException If a project with that name already exists.
+	 * @throws MissingInformationException If the name is null or empty/it is not "specified"
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setName(String name) throws DuplicateNameException, MissingInformationException {
-		Project project = null;
-		try {
-			project = scheduler.getProject(name);
-		} catch (Exception e) { }
-		if (project != null) {
-			throw new DuplicateNameException("A project with that name already exist");
-		} else if (Tools.isNullOrEmpty(name)) {
+	public void setName(String name) throws DuplicateNameException, MissingInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
+		if (Tools.isNullOrEmpty(name)) {
 			throw new MissingInformationException("No name was specified");
+		} else if (!scheduler.isNewValidProjectName(name) && !name.equals(getName())) {
+			throw new DuplicateNameException("A project with that name already exist");
 		}
 		this.name = name;
 	}
@@ -391,7 +397,7 @@ public class Project {
 		try{
 			return openActivities.stream().filter(x -> x.getName().equals(name)).findAny().get();
 		} catch(Exception e){
-			throw new ActivityNotFoundException();
+			throw new ActivityNotFoundException("The activity: " + name + " is not a part of the project: " + this.name);
 		}
 		
 	}
@@ -399,35 +405,46 @@ public class Project {
 	/**
 	 * @param isOpen the isOpen to set
 	 */
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
-	}
+//	public void setOpen(boolean isOpen) {
+//		this.isOpen = isOpen;
+//	}
 	
 	/**
 	 * @param costumerName the costumerName to set
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setCostumerName(String costumerName) {
+	public void setCostumerName(String costumerName) throws ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		this.costumerName = costumerName;
 	}
 
-	/**
-	 * @param budgetedTime the budgetedTime to set
-	 */
-	public void setBudgetedTime(int budgetedTime) {
-		this.budgetedTime = budgetedTime;
-	}
-
-	/**
+	/** Assigns a new project manager, based on the initials given. If the initials are null or empty, 
+	 * the project manager is set to null/no project manager is assigned, and if the new project manager is not part of the project,
+	 * an error is thrown
 	 * @param projectManager the projectManager to set
+	 * @throws ProjectManagerNotPartOfEmployeesAdded The new project manager needs to be a part of the project.
+	 * @throws ProjectManagerNotLoggedInException To change the project mangager, 
+	 *         one either needs to be the project manager, or there needs to be no project manager.
 	 */
-	public void setProjectManager(Employee projectManager) {
-		this.projectManager = projectManager;
+	public void setProjectManager(String initialProjecManager) throws ProjectManagerNotPartOfEmployeesAdded, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
+		if (initialProjecManager == null || initialProjecManager == "" ) {
+			projectManager = null;			
+		} else {
+			if (!employees.stream().anyMatch(x -> x.getInitials().equals(initialProjecManager))) {
+				throw new ProjectManagerNotPartOfEmployeesAdded("The project manager that is trying to be assignes, " + 
+			initialProjecManager + " is not part of the project");
+			} else	this.projectManager = employees.stream().filter(x -> x.getInitials().equals(initialProjecManager)).findFirst().get();
+		}
 	}
 
 	/**
 	 * @param timePeriod the timePeriod to set
+	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setTimePeriod(TimePeriod timePeriod) {
+	public void setTimePeriod(TimePeriod timePeriod) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		this.timePeriod = timePeriod;
 	}
 
@@ -440,20 +457,46 @@ public class Project {
 
 	/**
 	 * @param detailedText the detailedText to set
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setDetailedText(String detailedText) {
+	public void setDetailedText(String detailedText) throws ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		this.detailedText = detailedText;
 	}
 
 	/**
 	 * @param employees the employees to set
 	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setEmployees(List<Employee> employees) throws InvalidInformationException {
+	public void setEmployees(List<Employee> employees) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
 		if (employees == null) {
-			throw new InvalidInformationException("Employees can't be null");
+			this.employees = new ArrayList<Employee>();
+		} else {
+			for (Employee employee : employees) {
+				try {
+					scheduler.getEmployeeFromInitials(employee.getInitials());
+				} catch (EmployeeNotFoundException e) {
+					throw new InvalidInformationException("There cannot be added employees to a project, when some of them do not exist");
+				}
+			}
+			this.employees = employees;
+			for (Employee employee : employees) {
+				if (!employee.isAlreadyPartOfProject(this)) {
+					employee.addProject(this);
+				}
+			}
 		}
-		this.employees = employees;
+		
+	}
+	
+	public boolean hasPermissionToEdit() throws ProjectManagerNotLoggedInException{
+		if (isProjectManagerLoggedIn() || projectManager == null) {
+			return true;
+		} else throw new ProjectManagerNotLoggedInException("Either there needs to be no project manager for the project" +
+                " or the person needs to be logged in, for edits to be made");
+
 	}
 
 	public String getFilePath() {
@@ -467,18 +510,20 @@ public class Project {
 	 * @return the budgettedTime
 	 */
 	public int getBudgettedTime() {
-		return budgettedTime;
+		return budgetedTime;
 	}
 	
 	/**
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
-		if (budgettedTime < 0) {
+	public void setBudgettedTime(int budgetedTime) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
+		if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}
-		this.budgettedTime = budgettedTime;
+		this.budgetedTime = budgetedTime;
 	}
 	/** Gets the TimePeriod associated with this project.
 	 * @return
@@ -502,12 +547,10 @@ public class Project {
 		return costumerName;
 	}
 	
-
 	/**
 	 * @return the projectNumber
 	 */
 	public int getProjectNumber() {
 		return projectNumber;
 	}
-
 }
