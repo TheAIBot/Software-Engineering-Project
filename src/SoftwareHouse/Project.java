@@ -306,6 +306,7 @@ public class Project {
 
 	public boolean isNewValidActivityName(String activityName)
 	{
+		if (activityName == null) return false;
 		final String lowerCaseActivityName = activityName.toLowerCase().trim();
 		return !Tools.isNullOrEmpty(lowerCaseActivityName) && 
 				!openActivities.stream()

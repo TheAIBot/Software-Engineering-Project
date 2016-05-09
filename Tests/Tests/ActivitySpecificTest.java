@@ -17,6 +17,7 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.Tools;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.DuplicateNameException;
+import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
@@ -56,7 +57,8 @@ public class ActivitySpecificTest {
 		}
 		
 		try {
-			project.forceAddAcitivity("meh", "test", null, null, null, 0);
+			project.forceAddAcitivity("ZaMeh", "test", null, null, null, 0);
+			activity = project.getActivity("ZaMeh");
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		} 
@@ -93,6 +95,35 @@ public class ActivitySpecificTest {
 			assertEquals("Missing employees", e.getMessage());
 		}
 	}
+	
+	@Test
+	public void testIsValidProjectNameNameIsNull(){
+		assertFalse(project.isNewValidActivityName(null));
+	}
+	
+	@Test
+	public void testIsValidProjectSemiEmptyString(){
+		assertFalse(project.isNewValidActivityName("   "));
+	}
+	
+	@Test
+	public void testGetInProject(){
+		assertEquals(project.getName(), activity.getInProject().getName());
+	}
+	
+
+	@Test
+	public void addEmployeeAlreadyPartOfActivity(){
+		try {
+			activity.addEmployee("JSB");
+			activity.addEmployee("JSB");
+		} catch(EmployeeAlreadyAssignedException e){
+			assertEquals("JSB is already assigned to this activity", e.getMessage());
+		} catch (Exception e1) {
+			Assert.fail(e1.getMessage());
+		} 
+	}
+	
 	
 	
 	
