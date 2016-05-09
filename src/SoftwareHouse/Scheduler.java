@@ -86,9 +86,9 @@ public void createProject(String projectName) throws MissingInformationException
 							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		if (isAnyoneLoggedIn()) {
-			if (projectName == null) {
+			if (Tools.isNullOrEmpty(projectName)) {
 				throw new MissingInformationException("Missing project name");
-			} else if (Tools.containsProject(projects, projectName.trim())) {
+			} else if (!isNewValidProjectName(projectName)) {
 				throw new DuplicateNameException("A project with that title already exists");
 			} 
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
@@ -157,7 +157,15 @@ public void createProject(String projectName) throws MissingInformationException
 			throw new NotLoggedInException();
 		}
 	}
-
+	
+	public boolean isNewValidProjectName(String projectName)
+	{
+		final String lowerCaseProjectName = projectName.toLowerCase().trim();
+		return !Tools.isNullOrEmpty(lowerCaseProjectName) && 
+				!projects.stream()
+						 .anyMatch(x -> x.getName().toLowerCase().trim().equals(lowerCaseProjectName));
+	}
+	
 	/**
 	 * @param partOfProjectName
 	 * @return List<Project>
