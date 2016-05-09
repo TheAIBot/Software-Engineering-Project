@@ -1,5 +1,8 @@
 package SoftwareHouse.ExceptionTypes;
 
+/**
+ * @author Niklas
+ */
 public class IllegalCharException extends Exception{
 	/**
 	 * 

@@ -8,6 +8,7 @@ import javax.swing.border.Border;
 
 /**
  * Used to highlight a text field depending on current input
+ * Emil
  */
 public class JBorderTextField extends JTextField implements ColoredBorder {
 

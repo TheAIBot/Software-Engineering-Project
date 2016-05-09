@@ -6,6 +6,9 @@ import org.junit.Test;
 import GUI.GUIController;
 import SoftwareHouse.Scheduler;
 
+/**
+ * @author Andreas
+ */
 public class PreloadScheduler {
 	
 	public static void main(String[] args) {

@@ -12,8 +12,14 @@ import org.junit.Test;
 import SoftwareHouse.TimePeriod;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 
+/**
+ * @author Jesper
+ */
 public class TestTimePeriod {
 
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createTimePeriodSuccess()
 	{
@@ -43,7 +49,10 @@ public class TestTimePeriod {
 		assertEquals(startTime, timePeriod.getStartDate());
 		assertEquals(endTime, timePeriod.getEndDate());
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createTimePeriodMissingStartDate()
 	{
@@ -57,7 +66,10 @@ public class TestTimePeriod {
 			assertEquals("Start date doesn't exist", e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createTimePeriodMissingEndDate()
 	{
@@ -71,7 +83,10 @@ public class TestTimePeriod {
 			assertEquals("End date doesn't exist", e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createTimePeriodInvalidDates()
 	{

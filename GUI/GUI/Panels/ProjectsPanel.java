@@ -10,6 +10,9 @@ import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/**
+ * @author Andreas
+ */
 public class ProjectsPanel extends JPanel {
 	private JScrollPane openProjectsScrollBar;
 	private JButton createProjectButton;

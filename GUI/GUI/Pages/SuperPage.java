@@ -7,6 +7,10 @@ import javax.swing.JPanel;
 import GUI.GUIController;
 import SoftwareHouse.Scheduler;
 
+/**
+ * @author Andreas
+ * @param <T>
+ */
 public abstract class SuperPage<T> {
 	protected T page;
 	protected final Scheduler scheduler;

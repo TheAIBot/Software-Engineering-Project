@@ -1,5 +1,8 @@
 package SoftwareHouse.ExceptionTypes;
 
+/**
+ * @author Andreas
+ */
 public class MissingInformationException extends Exception {
 	/**
 	 * 

@@ -6,6 +6,9 @@ import GUI.Panels.FollowupPanel;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 
+/**
+ * @author Andreas
+ */
 public class FollowupPage extends SuperPage<FollowupPanel> {
 
 	private final Project project;

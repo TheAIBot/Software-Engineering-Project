@@ -14,10 +14,16 @@ import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
 import org.junit.Assert;
 
+/**
+ * @author Niklas
+ */
 public class AddNewEmployee {
 	
 	Scheduler scheduler = new Scheduler();
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void addEmployeeSuccessTest()
 	{
@@ -29,6 +35,9 @@ public class AddNewEmployee {
 		
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void addEmployeeDuplicateInitialsTest() 
 	{
@@ -58,6 +67,9 @@ public class AddNewEmployee {
 		
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void addEmployeeNoNameTest()
 	{
@@ -89,6 +101,9 @@ public class AddNewEmployee {
 		}
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void tooManyInitialsTest()
 	{
@@ -107,6 +122,9 @@ public class AddNewEmployee {
 		
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void illegalCharTest()
 	{

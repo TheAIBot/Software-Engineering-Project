@@ -5,6 +5,9 @@ import GUI.Tools;
 import GUI.Panels.AbsenseActivitiesPanel;
 import SoftwareHouse.Scheduler;
 
+/**
+ * @author Jesper
+ */
 public class AbsenseActivitiesPage extends SuperPage<AbsenseActivitiesPanel> {
 
 	public AbsenseActivitiesPage(GUIController controller, Scheduler scheduler) {
