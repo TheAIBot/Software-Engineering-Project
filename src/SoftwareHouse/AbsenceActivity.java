@@ -18,6 +18,9 @@ public class AbsenceActivity extends Activity {
 		super(name, detailText, employees, startDate, endDate, budgettedTime, inProject);
 	}
 	
+	/**
+	 * Andreas
+	 */
 	public void addEmployee(String initials) throws EmployeeMaxActivitiesReachedException, EmployeeNotFoundException, EmployeeAlreadyAssignedException {
 		if (Tools.containsEmployee(inProject.getEmployees(), initials)) {
 			if (!Tools.containsEmployee(assignedEmployees, initials)) {
