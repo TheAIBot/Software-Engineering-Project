@@ -11,8 +11,14 @@ import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Jesper
+ */
 public class AbsenseActivity {
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void AbsenseActivityAddEmployeeSuccess()
 	{
@@ -41,6 +47,9 @@ public class AbsenseActivity {
 		}	
 	}
 
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AbsenseActivityAddInvalidEmployee()
 	{
@@ -59,6 +68,9 @@ public class AbsenseActivity {
 		}
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void AbsenseActivityAddEmployeeTwice()
 	{
@@ -79,6 +91,9 @@ public class AbsenseActivity {
 		}
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void AbsenseActivityCreateNewActivityNoPermision()
 	{
@@ -100,6 +115,9 @@ public class AbsenseActivity {
 		}		
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void AbsenseActivityCreateNewActivityHasPermission()
 	{

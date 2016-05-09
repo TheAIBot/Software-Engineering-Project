@@ -20,6 +20,7 @@ import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
 /**
+ * @author ELL
  * The main part of the application layer
  */
 public class Scheduler {
@@ -32,13 +33,13 @@ public class Scheduler {
 	private final Project absenceProject;
 	
 	/**
+	 * Jesper
 	 * Creates the absence project used to recording absence activites
 	 */
 	public Scheduler() {
 		anyoneLoggedIn = true; //One needs to be logged in to make a project.
 		try {
 			this.absenceProject = new Project(this, "Frav�rs Project", true); 
-			//TODO test creation of absence project if it hasn't been done already
 		} catch (Exception e) { 
 			//Unreachable but necessary code for the compiler
 			throw new NullPointerException("Couldn't create the absense project");
@@ -47,6 +48,7 @@ public class Scheduler {
 	}
 
 	/**
+	 * Emil
 	 * Creates a blank project
 	 * It is valid only to specify the project name, but the other fields will need to be given before the project can be manipulated properly
 	 * @param projectName
@@ -63,6 +65,7 @@ public void createProject(String projectName) throws MissingInformationException
 	}
 	
 	/**
+	 * Emil
 	 * Creates a full project with all information specified
 	 * @param projectName
 	 * @param costumerName
@@ -106,6 +109,7 @@ public void createProject(String projectName) throws MissingInformationException
 	}
 	
 	/**
+	 * Niklas
 	 * @param initials
 	 * @return Employee
 	 * @throws EmployeeNotFoundException
@@ -120,6 +124,7 @@ public void createProject(String projectName) throws MissingInformationException
 	}
 	
 	/**
+	 * Andreas
 	 * @return the projects
 	 * @throws NotLoggedInException 
 	 */
@@ -131,7 +136,9 @@ public void createProject(String projectName) throws MissingInformationException
 		}
 	}
 
-	/** Return whether or not all the given employees exist. 
+	/**
+	 * Jesper
+	 * Return whether or not all the given employees exist. 
 	 * @param employees The employees
 	 * @return True if all exists, else false.
 	 */
@@ -140,6 +147,7 @@ public void createProject(String projectName) throws MissingInformationException
 	}
 	
 	/**
+	 * Emil
 	 * @param projectName
 	 * @return Project
 	 * @throws ProjectNotFoundException
@@ -159,6 +167,11 @@ public void createProject(String projectName) throws MissingInformationException
 		}
 	}
 	
+	/**
+	 * Niklas
+	 * @param projectName
+	 * @return
+	 */
 	public boolean isNewValidProjectName(String projectName)
 	{
 		final String lowerCaseProjectName = projectName.toLowerCase().trim();
@@ -168,6 +181,7 @@ public void createProject(String projectName) throws MissingInformationException
 	}
 	
 	/**
+	 * Andreas
 	 * @param partOfProjectName
 	 * @return List<Project>
 	 * @throws NotLoggedInException
@@ -185,6 +199,7 @@ public void createProject(String projectName) throws MissingInformationException
 	}
 	
  	/**
+ 	 * Emil
  	 * @param initials
  	 * @throws MissingInformationException
  	 * @throws DuplicateNameException
@@ -198,6 +213,7 @@ public void createProject(String projectName) throws MissingInformationException
 	}
 
 	/**
+	 * Niklas
 	 * @param projectName
 	 * @param activityName
 	 * @return Activity
@@ -226,15 +242,29 @@ public void createProject(String projectName) throws MissingInformationException
 		}
 	}
 	
+	/**
+	 * Jesper
+	 * @return
+	 */
 	public boolean isAnyoneLoggedIn() {
 		return anyoneLoggedIn;
 	}
 	
+	/**
+	 * Jesper
+	 * @param initials
+	 * @return
+	 */
 	public boolean doesEmployeeExist(String initials){
 		if (employees == null) return false; 
 		return employees.containsKey(initials);
 	}
 
+	/**
+	 * Andreas
+	 * @param initials
+	 * @throws EmployeeNotFoundException
+	 */
 	public void login(String initials) throws EmployeeNotFoundException {
 		if (doesEmployeeExist(initials)) {
 			Employee employee = employees.get(initials);
@@ -245,16 +275,25 @@ public void createProject(String projectName) throws MissingInformationException
 		}
 	}
 
+	/**
+	 * Emil
+	 * @return
+	 */
 	public Employee getLoggedInEmployee() {
 		return loggedInEmployee;
 	}
 
+	/**
+	 * Niklas
+	 * @return
+	 */
 	public TimeVault getTimeVault()
 	{
 		return timeVault;
 	}
 	
 	/**
+	 * Jesper
 	 * Helping method used in the process of adding employees in the internal system.
 	 * Tests that the initials are valid
 	 * @param initials
@@ -282,6 +321,10 @@ public void createProject(String projectName) throws MissingInformationException
 		return true;
 	}
 	
+	/**
+	 * Andreas
+	 * @return
+	 */
 	public Project getAbsenceProject() {
 		return absenceProject;
 	}

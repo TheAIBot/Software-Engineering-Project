@@ -1,6 +1,9 @@
 package SoftwareHouse.ExceptionTypes;
 
 
+/**
+ * @author Jesper
+ */
 public class ActivityNotFoundException extends Exception {
 
 	public ActivityNotFoundException(String message) {

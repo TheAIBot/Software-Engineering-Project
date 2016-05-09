@@ -35,6 +35,9 @@ public class EditActivity {
 
 	Scheduler scheduler;
 
+	/**
+	 * Emil
+	 */
 	@Before
 	public void setup() {
 		scheduler = new Scheduler();
@@ -102,6 +105,7 @@ public class EditActivity {
 	}
 
 	/**
+	 * Emil
 	 * Change name of acitivity "Brugerinterface" to "Test"
 	 */
 	@Test
@@ -124,6 +128,7 @@ public class EditActivity {
 	}
 
 	/**
+	 * Emil
 	 * Try to remove the title of the activity
 	 */
 	@Test
@@ -146,6 +151,7 @@ public class EditActivity {
 	}
 	
 	/**
+	 * Emil
 	 * Try to change the budgeted time to a negative value
 	 */
 	@Test
@@ -169,10 +175,12 @@ public class EditActivity {
 	}
 
 	/**
+	 * Emil
 	 * Try to remove the detailed text of the activity
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
 	@Test
-	public void testEditActivityRemoveDetailedText() {
+	public void testEditActivityRemoveDetailedText() throws ProjectManagerNotLoggedInException {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
@@ -193,6 +201,7 @@ public class EditActivity {
 	}
 	
 	/**
+	 * Emil
 	 * Change name of acitivity "Brugerinterface" to "Rendering", which is already taken 
 	 */
 	@Test
@@ -246,6 +255,9 @@ public class EditActivity {
 		}
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void testNoActivityTime()
 	{
@@ -274,6 +286,9 @@ public class EditActivity {
 		
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void testGetNonExistingActivityOrProject()
 	{

@@ -29,6 +29,9 @@ import SoftwareHouse.Employee;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
+/**
+ * @author Andreas
+ */
 public class LoginPage extends SuperPage<LoginPanel> {
 	
 	public LoginPage(GUIController controller, Scheduler scheduler) {

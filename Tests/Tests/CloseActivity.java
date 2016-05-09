@@ -13,8 +13,15 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 
+/**
+ * @author ELL
+ */
 public class CloseActivity {
 
+	/**
+	 * Emil
+	 * @throws ActivityNotFoundException
+	 */
 	@Test
 	public void closeActivitySuccessTest() throws ActivityNotFoundException
 	{
@@ -79,6 +86,9 @@ public class CloseActivity {
 		assertEquals(project.getClosedActivities().size(), 1);
 	}
 
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void closeActivityMissingActivitytest()
 	{

@@ -18,6 +18,9 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
+/**
+ * @author Jesper
+ */
 public class AddEmployeeToProject {
 	Scheduler scheduler;
 	private final String EMPLOYEE_1_INITIALS = "AM";
@@ -27,12 +30,9 @@ public class AddEmployeeToProject {
 	private Employee employee1;
 	private Employee employee2;
 	
-	//TODO (*) Change
-	// Add to different projects.
-	// (*) rewrite blackbox tests completly
-	//One cannot, by implementation, add an employee to an non-existing project. 
-	//The only way to add an employee to a project, is through the project.
-	
+	/**
+	 * Jesper
+	 */
 	@Before
 	public void setup(){
 		scheduler = new Scheduler();
@@ -53,6 +53,9 @@ public class AddEmployeeToProject {
 		}		
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void addEmployeeToProject1EmployeeExisting(){
 		try {
@@ -66,6 +69,9 @@ public class AddEmployeeToProject {
 		assertTrue(employee1.getProjects().get(0).getName().equals(PROJECT_NAME));
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void addEmployeeToProject1EmployeeNonExisting(){
 		try {
@@ -80,6 +86,9 @@ public class AddEmployeeToProject {
 		assertTrue(employee1.getProjects().size() == 0);
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void addEmployeeToProject1EmployeeAlreadyPart(){
 		try {
@@ -103,6 +112,9 @@ public class AddEmployeeToProject {
 		assertTrue(employee1.getProjects().get(0).getName().equals(PROJECT_NAME));
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void addEmployeeToProject2EmployeesExisting(){
 		try {
@@ -120,6 +132,9 @@ public class AddEmployeeToProject {
 		assertTrue(project1.getEmployees().contains(employee2));
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void addEmployeeToProject2EmployeesAlreadyPart(){
 		try {
@@ -153,6 +168,9 @@ public class AddEmployeeToProject {
 		assertTrue(project1.getEmployees().contains(employee2));
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void addEmployeeToProjectPartOfOtherProjects(){
 		try {
@@ -221,6 +239,9 @@ public class AddEmployeeToProject {
 		}
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void AddEmployeeSuccessTest()
 	{
@@ -261,6 +282,9 @@ public class AddEmployeeToProject {
 		assertEquals(employee.getProjects().get(0).getName(), "Derp");
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void AddEmployeeIncorrectInitialsTest()
 	{
@@ -287,6 +311,7 @@ public class AddEmployeeToProject {
 	
 	
 	/**
+	 * Andreas
 	 * Test case: Employee does not exists in the internal system
 	 * @throws EmployeeAlreadyAssignedException 
 	 * @throws EmployeeNotFoundException 

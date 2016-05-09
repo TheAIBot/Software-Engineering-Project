@@ -1,5 +1,8 @@
 package SoftwareHouse.ExceptionTypes;
 
+/**
+ * @author ELL
+ */
 public class TooManyCharsException extends Exception{
 	/**
 	 * 

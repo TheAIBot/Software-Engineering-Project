@@ -28,6 +28,9 @@ import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
+/**
+ * @author Jepser
+ */
 public class CreateProject {	
 	public static Scheduler scheduler;
 	private static final String PROJECT_NAME = "Navision Stat";
@@ -40,6 +43,9 @@ public class CreateProject {
 	private final TimePeriod VALID_TIME_PERIOD;
 	private static List<Employee> employeeListWithEmployees;
 	
+	/**
+	 * Jesper
+	 */
 	public CreateProject() {
 		try {
 			VALID_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012, 3, 20), new GregorianCalendar(2013, 4, 1));
@@ -48,7 +54,10 @@ public class CreateProject {
 			throw new NullPointerException("VALID_TIME_PERIOD is null");
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Before
 	public void setup(){
 		scheduler = new Scheduler();	
@@ -63,6 +72,9 @@ public class CreateProject {
 		}
 	}
 
+	/**
+	 * Jesper
+	 */
 	private void loginIfNotLoggedIn(){
 		if (!scheduler.isAnyoneLoggedIn()) {
 			try {
@@ -72,7 +84,10 @@ public class CreateProject {
 			}
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	private boolean testSuccesOnProjectCreation(String projectName, String customerName, String detailedText, 
 			                                          List<Employee> employeesToAdd, int budgettedTime, String initialsProjectManager, TimePeriod timePeriod){
 		loginIfNotLoggedIn();
@@ -84,7 +99,10 @@ public class CreateProject {
 		}
 		return true;
 	}
-		
+
+	/**
+	 * Jesper
+	 */	
 	@Test
 	public void accessProjectTest(){
 		TestTools.login(scheduler);
@@ -115,7 +133,10 @@ public class CreateProject {
 			Assert.fail();
 		} 
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectPermissionLoggedInTest(){
 		loginIfNotLoggedIn();
@@ -125,7 +146,10 @@ public class CreateProject {
 			Assert.fail();
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectPermissionNotLoggedInTest(){
 		try {
@@ -135,7 +159,10 @@ public class CreateProject {
 			assertEquals("To create a project, one needs to be logged in", e1.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectAllCorrectInformationAllFilledInTest()
 	{
@@ -160,7 +187,10 @@ public class CreateProject {
 			Assert.fail();
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectMissingNameNotNullNameTest(){
 		loginIfNotLoggedIn();
@@ -174,7 +204,10 @@ public class CreateProject {
 			Assert.fail(e.getMessage());	
 		}	
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNameIsNullNameTest(){
 		TestTools.login(scheduler);
@@ -188,7 +221,10 @@ public class CreateProject {
 			Assert.fail(e.getMessage());	
 		}		
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectDuplicateNameTest()
 	{
@@ -209,7 +245,10 @@ public class CreateProject {
 			Assert.fail(e.getMessage());	
 		}		
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNegativeBudgetedTime(){
 		loginIfNotLoggedIn();
@@ -223,7 +262,10 @@ public class CreateProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNonExistentEmployees(){
 		employeeListWithEmployees.add(new Employee(scheduler, "LeLa"));
@@ -238,43 +280,64 @@ public class CreateProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-		
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNoDetailedDescription(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, "", 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectDetailedDescriptionIsNull(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, null, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNoCostumerName(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, "", DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectCustomerNameIsNull(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, null, DETAILED_TEXT, 
 																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNoBudgetedTime(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  employeeListWithEmployees, 0, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNoEmployees(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 																													  EMPLOYEE_LIST_EMPTY, BUDGETED_TIME, "", VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectEmployeesIsNullActualProjectManager(){
 		loginIfNotLoggedIn();
@@ -288,25 +351,37 @@ public class CreateProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectTimePeriodIsNull(){ 
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, null));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectNoManagerInitials(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, "", VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjectManagerInitialsIsNull(){
 		assertTrue(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, null, VALID_TIME_PERIOD));
 	}
-		
+
+	/**
+	 * Jesper
+	 */	
 	@Test
 	public void createProjectNonexistentManagerInitials(){
 		loginIfNotLoggedIn();
@@ -321,7 +396,10 @@ public class CreateProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void createProjecManagerNotPartOfUserAdded(){
 		try {
@@ -333,7 +411,10 @@ public class CreateProject {
 		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
 				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
 	}
-	
+
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void testNoProjectTime()
 	{

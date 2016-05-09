@@ -27,6 +27,9 @@ import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
+/**
+ * @author Andreas
+ */
 public class EditProject {
 	private Scheduler scheduler;
 	private Project project;
@@ -46,7 +49,9 @@ public class EditProject {
 	private final TimePeriod START_TIME_PERIOD;	
 	private static final String PROJECT_MANAGER_NOT_LOGGED_IN_ERROR = "Either there needs to be no project manager for the project" + 
 	                                                                  " or the person needs to be logged in, for edits to be made";
-	
+	/**
+	 * Andreas
+	 */
 	public EditProject() {
 		try {
 			START_TIME_PERIOD = new TimePeriod(new GregorianCalendar(2012,2,10), new GregorianCalendar(2012,2,11));
@@ -57,6 +62,9 @@ public class EditProject {
 
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Before
 	public void setup(){
 		try {
@@ -78,7 +86,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}		
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	public void loginWithEmployeeNotProjectManager(){
 		try {
 			scheduler.login(EMPLOYEE1);
@@ -86,7 +97,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeNameToNull(){
 		try {
@@ -101,7 +115,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeNameToEmpty(){
 		try {
@@ -116,7 +133,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeNameToDuplicateName(){
 		try {
@@ -138,7 +158,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeNameToNewName(){
 		try {
@@ -152,7 +175,10 @@ public class EditProject {
 		}
 		assertEquals(NEW_PROJECT_NAME, project.getName());
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeDetailedDescriptionToNewDetailedDescription(){
 		try {
@@ -162,7 +188,10 @@ public class EditProject {
 		}
 		assertEquals(NEW_DETAILED_DESCRIPTION, project.getDetailedText());
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeCostumerToNewCostumer(){
 		try {
@@ -172,7 +201,10 @@ public class EditProject {
 		}
 		assertEquals(NEW_COSTUMER_NAME, project.getCostumerName());
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeBudgettedTimeToNegativeTime(){
 		try {
@@ -185,7 +217,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeBudgettedTimeToNewTime(){
 		try {
@@ -197,7 +232,10 @@ public class EditProject {
 		}
 		assertEquals(NEW_BUDGETTED_TIME, project.getBudgettedTime());
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeProjectManagerWithNull(){
 		try {
@@ -209,7 +247,10 @@ public class EditProject {
 		}
 		assertEquals(null, project.getProjectManager());
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeProjectManagerWithEmptyString(){
 		try {
@@ -221,7 +262,10 @@ public class EditProject {
 		}
 		assertEquals(null, project.getProjectManager());
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeProjectManagerToEmployeeNotPartOfTheProject(){
 		//It does not matter if the employee exists or not.
@@ -236,7 +280,10 @@ public class EditProject {
 			assertEquals(START_INITIALS_PROJECT_MANAGER, project.getProjectManager().getInitials());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeProjectManagerToEmployeePartOfTheProject(){
 		try {
@@ -254,7 +301,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeTimePeriodToNull(){
 		try {
@@ -264,7 +314,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}	
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeTimePeriodToNewTimePeriod(){
 		try {
@@ -275,7 +328,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}	
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeListOfEmployeesToNull(){
 		try {
@@ -287,7 +343,10 @@ public class EditProject {
 		}
 		assertTrue(project.getEmployees().size() == 0);
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeListOfEmployeesToEmptyList(){
 		try {
@@ -299,7 +358,10 @@ public class EditProject {
 		}
 		assertTrue(project.getEmployees().size() == 0);
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeListOfEmployeesToListContainingNonExistingEmployees(){
 		try {
@@ -321,7 +383,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeListOfEmployeesToListContainingExistingEmployees(){
 		try {
@@ -341,7 +406,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeNameToNewNameProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
@@ -357,6 +425,9 @@ public class EditProject {
 		}
 	}
 
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeDetailedDescriptionToNewDetailedDescriptionProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
@@ -367,7 +438,10 @@ public class EditProject {
 			assertEquals(PROJECT_MANAGER_NOT_LOGGED_IN_ERROR, e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeBudgettedTimeProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
@@ -381,6 +455,9 @@ public class EditProject {
 		}
 	}	
 
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeProjectManagerToEmployeePartOfTheProjectProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
@@ -399,7 +476,10 @@ public class EditProject {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeListOfEmployeesToListContainingExistingEmployeesProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();
@@ -418,6 +498,9 @@ public class EditProject {
 	}
 	
 
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testChangeTimePeriodToNewTimePeriodProjectManagerNotLoggedIn(){
 		loginWithEmployeeNotProjectManager();

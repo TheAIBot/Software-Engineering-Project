@@ -39,6 +39,9 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Andreas
+ */
 public class CreateActivityDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -283,7 +286,6 @@ public class CreateActivityDialog extends JDialog {
 			endDateTextField.getText().trim().length() != 0) {
 			startDate = TimePeriod.getCalendarFromString(startDateTextField.getText());
 			endDate = TimePeriod.getCalendarFromString(endDateTextField.getText());
-			//TODO fix this oddness that lombre mentioned
 		}
 		int budgettedTime = 0;
 		if (BudgettedTimeTextField.getText().trim().length() != 0) {
