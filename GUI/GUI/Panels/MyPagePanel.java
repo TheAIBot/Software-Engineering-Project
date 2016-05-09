@@ -7,6 +7,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
+/**
+ * @author Niklas
+ */
 public class MyPagePanel extends JPanel {
 	private JScrollPane projectsScrollPane;
 	private JScrollPane activitiesScrollPane;

@@ -1,5 +1,8 @@
 package SoftwareHouse.ExceptionTypes;
 
+/**
+ * @author Jesper
+ */
 public class ProjectAlreadyClosedException extends Exception {
 	/**
 	 * 

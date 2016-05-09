@@ -13,6 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
 
+/**
+ * @author Andreas
+ */
 public class LoginPanel extends JPanel {
 	private JTextField employeeSearchTextField;
 	private JLabel loggedInAsLabel;

@@ -23,8 +23,14 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author Niklas
+ */
 public class EmployeeSpecificTest {
-	
+
+	/**
+	 * Niklas
+	 */
 	private Scheduler scheduler = null;
 	@Before
 	public void setup()
@@ -45,7 +51,10 @@ public class EmployeeSpecificTest {
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testFailingEquals(){
 		Employee m = null;
@@ -64,7 +73,10 @@ public class EmployeeSpecificTest {
 		assertFalse(m.equals(s));
 		assertFalse(m.equals(null));
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testgetNumberOfprojects(){
 		Employee m = null;
@@ -75,7 +87,10 @@ public class EmployeeSpecificTest {
 		}
 		assertEquals(m.getNumberOfProjects(),1);
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testGetAbsenceActivities(){
 		Employee m = null;
@@ -87,7 +102,10 @@ public class EmployeeSpecificTest {
 		List<Activity> list = m.getAbsenceActivities();
 		assertEquals(list.size(),0);
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testAddAbsenceActivity(){
 		Employee m = null;

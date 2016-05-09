@@ -39,6 +39,9 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
+/**
+ * @author Niklas
+ */
 public class ChangeProjectDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

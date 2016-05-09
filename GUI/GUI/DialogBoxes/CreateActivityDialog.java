@@ -39,6 +39,9 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Andreas
+ */
 public class CreateActivityDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

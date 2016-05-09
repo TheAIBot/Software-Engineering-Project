@@ -36,6 +36,9 @@ import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
+/**
+ * @author Andreas
+ */
 public class CreateProjectDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

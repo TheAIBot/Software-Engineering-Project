@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 import SoftwareHouse.Employee;
 
+/**
+ * @author Jesper
+ */
 public class EmployeeMaxActivitiesReachedException extends Exception {
 
 	/**

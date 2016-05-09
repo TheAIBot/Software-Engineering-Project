@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+/**
+ * @author Andreas
+ */
 public class AbsenseActivitiesPanel extends JPanel {
 	private JScrollPane absenseActivitiesScrollPane;
 
