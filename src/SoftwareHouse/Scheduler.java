@@ -37,7 +37,7 @@ public class Scheduler {
 	public Scheduler() {
 		anyoneLoggedIn = true; //One needs to be logged in to make a project.
 		try {
-			this.absenceProject = new Project(this, "Fraværs Project", true); 
+			this.absenceProject = new Project(this, "Fravï¿½rs Project", true); 
 			//TODO test creation of absence project if it hasn't been done already
 		} catch (Exception e) { 
 			//Unreachable but necessary code for the compiler
@@ -94,7 +94,7 @@ public void createProject(String projectName) throws MissingInformationException
 			} 
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
 		} else {
-			throw new NotLoggedInException();
+			throw new NotLoggedInException("To create a project, one needs to be logged in");
 		}
 	}
 	

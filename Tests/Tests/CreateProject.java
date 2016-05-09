@@ -132,6 +132,7 @@ public class CreateProject {
 			scheduler.createProject(PROJECT_NAME);
 			Assert.fail();
 		} catch (Exception e1) {
+			assertEquals("To create a project, one needs to be logged in", e1.getMessage());
 		}
 	}
 	
@@ -211,15 +212,31 @@ public class CreateProject {
 	
 	@Test
 	public void createProjectNegativeBudgetedTime(){
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-																													  employeeListWithEmployees, -BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
+		loginIfNotLoggedIn();
+		try {
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, -BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
+			Assert.fail();
+		} catch (InvalidInformationException e1) {
+			assertEquals("Budgetted time can't be negative", e1.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 	}
 	
 	@Test
 	public void createProjectNonExistentEmployees(){
 		employeeListWithEmployees.add(new Employee(scheduler, "LeLa"));
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-																													  employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
+		loginIfNotLoggedIn();
+		try {
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
+			Assert.fail();
+		} catch (EmployeeNotFoundException e1) {
+			assertEquals("No employee with those initials exists", e1.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 	}
 		
 	@Test
@@ -260,8 +277,16 @@ public class CreateProject {
 	
 	@Test
 	public void createProjectEmployeesIsNullActualProjectManager(){
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				null, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD));
+		loginIfNotLoggedIn();
+		try {
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					null, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
+			Assert.fail();
+		} catch (ProjectManagerNotPartOfEmployeesAdded e1) {
+			assertEquals("The given manager JSB is not a part of the list of employees given.", e1.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 	}
 	
 	@Test
@@ -284,8 +309,17 @@ public class CreateProject {
 		
 	@Test
 	public void createProjectNonexistentManagerInitials(){
-		assertFalse(testSuccesOnProjectCreation(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
-				employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD));
+		loginIfNotLoggedIn();
+		try {
+			scheduler.addEmployee("LeLa");
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, BUDGETED_TIME, "LeLa", VALID_TIME_PERIOD);
+			Assert.fail();
+		} catch (ProjectManagerNotPartOfEmployeesAdded e1) {
+			assertEquals("The given manager LeLa is not a part of the list of employees given.", e1.getMessage());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 	}
 	
 	@Test

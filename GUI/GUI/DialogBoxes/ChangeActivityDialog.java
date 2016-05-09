@@ -37,6 +37,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 public class ChangeActivityDialog extends JDialog {
 
@@ -90,7 +91,7 @@ public class ChangeActivityDialog extends JDialog {
 		}
 		{
 			startDateTextField = new JBorderTextField();
-			startDateTextField.setBounds(140, 36, 209, 20);
+			startDateTextField.setBounds(140, 36, 209, 20); 
 			contentPanel.add(startDateTextField);
 			startDateTextField.setColumns(10);
 			startDateTextField.getDocument().addDocumentListener(new TextChangedListener() {
@@ -219,7 +220,7 @@ public class ChangeActivityDialog extends JDialog {
 	}
 		
 	
-	private void changeActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException 
+	private void changeActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException, ProjectManagerNotLoggedInException 
 	{
 		String activityName = projectNameTextField.getText();
 		TimePeriod timePeriod = null;
@@ -235,7 +236,7 @@ public class ChangeActivityDialog extends JDialog {
 			budgettedTime = Integer.parseUnsignedInt(BudgettedTimeTextField.getText());
 		}
 		String detailedDescription = detailedTextTextArea.getText();
-		int dialogResult = JOptionPane.showConfirmDialog(null, "Vil du foretage disse ændringer?");
+		int dialogResult = JOptionPane.showConfirmDialog(null, "Vil du foretage disse ï¿½ndringer?");
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			if (!activity.getName().equals(activityName)) {
 				activity.setName(activityName);

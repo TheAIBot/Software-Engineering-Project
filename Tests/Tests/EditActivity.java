@@ -187,6 +187,8 @@ public class EditActivity {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals("Missing detailed text", e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 	
