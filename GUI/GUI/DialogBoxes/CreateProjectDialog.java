@@ -109,6 +109,7 @@ public class CreateProjectDialog extends JDialog {
 						try {
 							Employee employee = scheduler.getEmployeeFromInitials(emplyeeInitials);
 							assignedEmployees.add(employee);
+							checkProjectManagerInitials();
 							loadInformation();
 						} catch (Exception e1) { }
 					}
@@ -127,6 +128,7 @@ public class CreateProjectDialog extends JDialog {
 						try {
 							Employee employee = scheduler.getEmployeeFromInitials(emplyeeInitials);
 							assignedEmployees.remove(employee);
+							checkProjectManagerInitials();
 							loadInformation();
 						} catch (EmployeeNotFoundException e1) { }
 					}
@@ -299,7 +301,14 @@ public class CreateProjectDialog extends JDialog {
 	
 	private void checkProjectManagerInitials()
 	{
-		Tools.changeBorder(projectManagerTextField, x -> scheduler.getEmployeeFromInitials(x)).length();
+		if (projectManagerTextField.getText().trim().length() == 0) {
+			projectManagerTextField.makeBorderDefaultColor();
+		}
+		if (assignedEmployees.stream().anyMatch(x -> x.getInitials().equals(projectManagerTextField.getText().trim()))) {
+			projectManagerTextField.makeBorderGreen();
+		} else {
+			projectManagerTextField.makeBorderRed();
+		}
 	}
 	
 	private void checkDetailedText()

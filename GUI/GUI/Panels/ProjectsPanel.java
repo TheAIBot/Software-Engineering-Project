@@ -10,9 +10,14 @@ import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+<<<<<<< HEAD
 /**
  * @author Andreas
  */
+=======
+import GUI.GUIController;
+
+>>>>>>> refs/remotes/origin/Andreas
 public class ProjectsPanel extends JPanel {
 	private JScrollPane openProjectsScrollBar;
 	private JButton createProjectButton;
@@ -22,13 +27,13 @@ public class ProjectsPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public ProjectsPanel() {
-		setMaximumSize(new Dimension(800, 600));
-		setMinimumSize(new Dimension(800, 600));
-		setPreferredSize(new Dimension(800, 600));
+		setMaximumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMinimumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setPreferredSize(GUIController.DEFAULT_PANEL_SIZE);
 		setLayout(null);
 		
 		openProjectsScrollBar = new JScrollPane();
-		openProjectsScrollBar.setBounds(10, 36, 387, 519);
+		openProjectsScrollBar.setBounds(408, 38, 387, 519);
 		add(openProjectsScrollBar);
 		
 		createProjectButton = new JButton("Opret projekt");
@@ -36,17 +41,17 @@ public class ProjectsPanel extends JPanel {
 		add(createProjectButton);	
 		
 		closedProjectsScrollPane = new JScrollPane();
-		closedProjectsScrollPane.setBounds(407, 36, 383, 519);
+		closedProjectsScrollPane.setBounds(805, 38, 383, 519);
 		add(closedProjectsScrollPane);
 		
 		JLabel lblNewLabel = new JLabel("\u00C5bne projekter");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(10, 11, 387, 14);
+		lblNewLabel.setBounds(408, 13, 387, 14);
 		add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Lukkede projekter");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(407, 11, 383, 14);
+		lblNewLabel_1.setBounds(805, 13, 383, 14);
 		add(lblNewLabel_1);
 	}
 

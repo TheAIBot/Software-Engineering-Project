@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -23,6 +25,7 @@ public class GUIController {
 	public final LoginPage loginPage;
 	public final ProjectsPage projectPage;
 	public final MyPagePage myPagePage;
+	public static final Dimension DEFAULT_PANEL_SIZE = new Dimension(1200, 600);
 	
  	public GUIController()
 	{
@@ -39,7 +42,7 @@ public class GUIController {
  		
 		this.frame = new JFrame("👁 Big Brother");
 		this.frame.add(mainPage.getPage(this));
-		this.frame.setSize(1010, 640); 
+		this.frame.setSize(210 + (int)DEFAULT_PANEL_SIZE.getWidth(), (int)DEFAULT_PANEL_SIZE.getHeight() + 40); 
 	}
 	
 	public void show()
