@@ -204,9 +204,8 @@ public class TestTools {
 		try {
 			Assert.assertTrue(project.addEmployee(employeeName));
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
-		//TODO add asserts here to check that the employee was added
+		
 		return employee;
 	}
 

@@ -71,7 +71,6 @@ public class SeeEmployeeInformation {
 		List<Employee> employeesFound = scheduler.getEmployeesContainingString("A");
 		assertTrue(employeesFound.size() == 2);
 		assertTrue(employeesFound.stream().anyMatch(x -> x.getInitials() == user1Initials));
-		//TODO Burde lave det sådan saa at man tjekker om personerne er praecist dem man forventede, men gider ikke.
 		assertTrue(employeesFound.stream().allMatch(x -> x.getInitials().contains("A"))); 
 		//Every employee has an unique string of initials associated with them.
 		Employee hopefullyArndt = employeesFound.stream().filter(x -> x.getInitials().equals(user1Initials)).findAny().get();		
@@ -84,7 +83,7 @@ public class SeeEmployeeInformation {
 																				.filter(x -> x.getInitials().equals(user1Initials))
 																				.findFirst()
 																				.get();		
-		//Checking if the project and activities information is correct - it does not take into account... /TODO
+		//Checking if the project and activities information is correct
 		List<Project> employeesProjects =  Arndt.getProjects();
 		assertTrue(employeesProjects.size() == 1);
 		assertTrue(employeesProjects.get(0).getName() == project1Name);
@@ -92,8 +91,6 @@ public class SeeEmployeeInformation {
 		assertTrue(employeesActivities.size() == 1);
 		assertTrue(employeesActivities.get(0).getName() == activity1Name);		
 		
-		//History employeesHistory = hopefullyArndt.getHistory(); //TODO history checks
-		//It is already checked that the history object works, so no need to check it again.		
 	}
 	
 	@Test
@@ -116,7 +113,7 @@ public class SeeEmployeeInformation {
 				 .stream()
 				 .filter(x -> x.getInitials().equals(user1Initials))
 				 .toArray()[0];		
-		//Checking if the project and activities information is correct - it does not take into account... /TODO
+		//Checking if the project and activities information is correct
 		List<Project> employeesProjects =  Arndt.getProjects();
 		assertTrue(employeesProjects.size() == 2);
 		assertTrue(employeesProjects.stream().allMatch(x -> (x.getName() == project1Name || x.getName() == project2Name)));
@@ -124,8 +121,6 @@ public class SeeEmployeeInformation {
 		assertTrue(employeesActivities.size() == 2);
 		assertTrue(employeesActivities.stream().allMatch(x -> (x.getName() == activity1Name && x.getProjectName() == project1Name) ||
 						                      				  (x.getName() == activity2Name && x.getProjectName() == project2Name)));
-		//History employeesHistory = hopefullyArndt.getHistory(); 
-		//It is already checked that the history object works, so no need to check it again.			/TODO history tests	
 	}
 	
 	public static boolean meg(List<String> projects, List<String> activities, Employee employee, String employeeInitials){
@@ -164,7 +159,7 @@ public class SeeEmployeeInformation {
 				 .stream()
 				 .filter(x -> x.getInitials().equals(user1Initials))
 				 .toArray()[0];		
-		//Checking if the project and activities information is correct - it does not take into account... /TODO
+		//Checking if the project and activities information is correct
 		List<Project> employeesProjects =  Arndt.getProjects();
 		assertTrue(employeesProjects.size() == 1);
 		assertTrue(employeesProjects.stream().allMatch(x -> (x.getName() == project1Name)));
@@ -172,8 +167,6 @@ public class SeeEmployeeInformation {
 		assertTrue(employeesActivities.size() == 2);	
 		assertTrue(employeesActivities.stream().allMatch(x -> (x.getName() == activity1Name || x.getName() == activity2Name)));
 		
-		//History employeesHistory = hopefullyArndt.getHistory(); 
-		//It is already checked that the history object works, so no need to check it again.			TODO history tests	
 	}
 
 	@Test
@@ -198,7 +191,7 @@ public class SeeEmployeeInformation {
 				 .stream()
 				 .filter(x -> x.getInitials().equals(user1Initials))
 				 .toArray()[0];		
-		//Checking if the project and activities information is correct - it does not take into account... /TODO
+		//Checking if the project and activities information is correct
 		List<Project> employeesProjects =  Arndt.getProjects();
 		assertTrue(employeesProjects.size() == 2);
 		assertTrue(employeesProjects.stream().allMatch(x -> (x.getName() == project1Name || x.getName() == project2Name)));
@@ -208,8 +201,6 @@ public class SeeEmployeeInformation {
 																																						(x.getName() == activity2Name && x.getProjectName() == project1Name) ||
 																																						(x.getName() == activity3Name && x.getProjectName() == project2Name) ||
 																																						(x.getName() == activity4Name && x.getProjectName() == project2Name)));
-		//History employeesHistory = hopefullyArndt.getHistory(); 
-		//It is already checked that the history object works, so no need to check it again.			/TODO history tests	
 	}
 	
 	@Test

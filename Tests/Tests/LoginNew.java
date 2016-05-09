@@ -11,9 +11,15 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.AlreadyLoggedInException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
+/**
+ * @author Andreas
+ */
 public class LoginNew {
 Scheduler scheduler;
 	
+	/**
+	 * Andreas
+	 */
 	@Before
 	public void setup(){
 		scheduler = new Scheduler();
@@ -28,6 +34,9 @@ Scheduler scheduler;
 		}
 	}
 
+	/**
+	 * Andreas
+	 */
 	private void addLeLa(){
 		try {
 			scheduler.addEmployee("LeLa");
@@ -37,7 +46,10 @@ Scheduler scheduler;
 		
 	}
 	
-	private void loginAM(){ //TODO (*) Fails are not registrated outside the method.
+	/**
+	 * Andreas
+	 */
+	private void loginAM() {
 		try {
 			scheduler.login("AM");
 		} catch (EmployeeNotFoundException e) {
@@ -46,6 +58,9 @@ Scheduler scheduler;
 	}
 	
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void loginNotLoggedInExistingUser()
 	{
@@ -60,6 +75,9 @@ Scheduler scheduler;
 		assertEquals(scheduler.getLoggedInEmployee().getInitials(), "LeLa");
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void loginNotLoggedInNonExistingUser()
 	{
@@ -74,6 +92,9 @@ Scheduler scheduler;
 		} 		
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void loginLoggedInExistingUser()
 	{
@@ -89,6 +110,9 @@ Scheduler scheduler;
 		assertEquals(scheduler.getLoggedInEmployee().getInitials(), "LeLa");
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void loginLoggedInNonExistingUser()
 	{		

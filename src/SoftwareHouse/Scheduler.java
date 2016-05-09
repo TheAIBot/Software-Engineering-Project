@@ -40,7 +40,6 @@ public class Scheduler {
 		anyoneLoggedIn = true; //One needs to be logged in to make a project.
 		try {
 			this.absenceProject = new Project(this, "Fraværs Project", true); 
-			//TODO test creation of absence project if it hasn't been done already
 		} catch (Exception e) { 
 			//Unreachable but necessary code for the compiler
 			throw new NullPointerException("Couldn't create the absense project");

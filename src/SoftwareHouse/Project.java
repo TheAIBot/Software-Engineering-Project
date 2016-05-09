@@ -218,7 +218,6 @@ public class Project {
 		} else if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		} else if (!allEmployeesCanWorkOnMoreActivities(employeeInitials)){
-			//TODO Check here(*)
 		}
 		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgetedTime);
 	}
@@ -295,7 +294,7 @@ public class Project {
 		List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
 		if (employeeInitials != null) {
 			for (String initials : employeeInitials) {
-				if (Tools.containsEmployee(employees, initials)) { //TODO (*) check here.
+				if (Tools.containsEmployee(employees, initials)) {
 					Employee currentEmployee = Tools.getEmployeeFromInitials(employees, initials);
 					if (currentEmployee.canContainMoreActivities()) {
 						activityEmployees.add(Tools.getEmployeeFromInitials(employees, initials));
