@@ -35,5 +35,8 @@ public class MyPagePage extends SuperPage<MyPagePanel> {
 		page.getInitialsLabel().setText(employee.getInitials());
 		page.getProjectsScrollPane().setViewportView(Tools.createTableOfProjects(employee.getProjects(), controller, scheduler));
 		page.getActivitiesScrollPane().setViewportView(Tools.createTableOfActivities(employee.getActivities(), controller, scheduler));
+		try {
+			page.getRegisteredTimeScrollPane().setViewportView(Tools.createTableOfRegisteredTimes(scheduler.getTimeVault().getEmployeeTime(employee.getInitials())));
+		} catch (Exception e) {	}
 	}
 }

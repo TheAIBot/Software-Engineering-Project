@@ -24,6 +24,9 @@ public class FollowupPage extends SuperPage<FollowupPanel> {
 	public void loadInformation() {
 		page.getOpenActivitiesScrollPane().setViewportView(Tools.createTableOfActivities(project.getOpenActivities(), controller, scheduler));
 		page.getClosedActivitiesScrollPane().setViewportView(Tools.createTableOfActivities(project.getClosedActivities(), controller, scheduler));
+		try {
+			page.getRegisteredTimeScrollPane().setViewportView(Tools.createTableOfRegisteredTimes(scheduler.getTimeVault().getProjectTime(project.getName())));
+		} catch (Exception e) {	}
 	}
 
 }

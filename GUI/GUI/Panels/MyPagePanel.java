@@ -4,6 +4,9 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+
+import GUI.GUIController;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
@@ -12,22 +15,23 @@ public class MyPagePanel extends JPanel {
 	private JScrollPane activitiesScrollPane;
 	private JLabel initialsLabel;
 	private JButton absenseActivitiesButton;
+	private JScrollPane registeredTimeScrollPane;
 
 	/**
 	 * Create the panel.
 	 */
 	public MyPagePanel() {
-		setMaximumSize(new Dimension(800, 600));
-		setMinimumSize(new Dimension(800, 600));
-		setPreferredSize(new Dimension(800, 600));
+		setMaximumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMinimumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setPreferredSize(GUIController.DEFAULT_PANEL_SIZE);
 		setLayout(null);
 		
 		projectsScrollPane = new JScrollPane();
-		projectsScrollPane.setBounds(165, 11, 270, 576);
+		projectsScrollPane.setBounds(563, 11, 270, 576);
 		add(projectsScrollPane);
 		
 		activitiesScrollPane = new JScrollPane();
-		activitiesScrollPane.setBounds(447, 11, 343, 576);
+		activitiesScrollPane.setBounds(845, 11, 343, 576);
 		add(activitiesScrollPane);
 		
 		JLabel lblInitials = new JLabel("Initials:");
@@ -41,6 +45,10 @@ public class MyPagePanel extends JPanel {
 		absenseActivitiesButton = new JButton("Frav\u00E6rsaktiviteter");
 		absenseActivitiesButton.setBounds(12, 536, 141, 51);
 		add(absenseActivitiesButton);
+		
+		registeredTimeScrollPane = new JScrollPane();
+		registeredTimeScrollPane.setBounds(299, 13, 250, 574);
+		add(registeredTimeScrollPane);
 
 	}
 
@@ -70,5 +78,12 @@ public class MyPagePanel extends JPanel {
 	 */
 	public JButton getAbsenseActivitiesButton() {
 		return absenseActivitiesButton;
+	}
+
+	/**
+	 * @return the registeredTimeScrollPane
+	 */
+	public JScrollPane getRegisteredTimeScrollPane() {
+		return registeredTimeScrollPane;
 	}
 }

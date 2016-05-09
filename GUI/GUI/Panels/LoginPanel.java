@@ -11,6 +11,9 @@ import javax.swing.JTextField;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import GUI.GUIController;
+
 import java.awt.Color;
 
 public class LoginPanel extends JPanel {
@@ -25,18 +28,18 @@ public class LoginPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public LoginPanel() {
-		setPreferredSize(new Dimension(800, 600));
-		setMinimumSize(new Dimension(800, 600));
-		setMaximumSize(new Dimension(800, 600));
+		setPreferredSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMinimumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMaximumSize(GUIController.DEFAULT_PANEL_SIZE);
 		setLayout(null);
 		
 		employeeSearchTextField = new JTextField();
-		employeeSearchTextField.setBounds(662, 11, 128, 20);
+		employeeSearchTextField.setBounds(1060, 14, 128, 20);
 		add(employeeSearchTextField);
 		employeeSearchTextField.setColumns(10);
 		
 		loginButton = new JButton("Skift til bruger");
-		loginButton.setBounds(662, 566, 128, 23);
+		loginButton.setBounds(1060, 566, 128, 23);
 		add(loginButton);
 		
 		JLabel lblCurrentlyLoggedIn = new JLabel("Currently logged in as:");
@@ -48,7 +51,7 @@ public class LoginPanel extends JPanel {
 		add(loggedInAsLabel);
 		
 		employeeList = new JScrollPane();
-		employeeList.setBounds(662, 42, 128, 513);
+		employeeList.setBounds(1060, 45, 128, 513);
 		add(employeeList);
 		
 		loginErrorLabel = new JLabel("");
@@ -59,7 +62,7 @@ public class LoginPanel extends JPanel {
 		add(loginErrorLabel);
 		
 		createNewEmployeeButton = new JButton("Opret ny bruger");
-		createNewEmployeeButton.setBounds(524, 566, 128, 23);
+		createNewEmployeeButton.setBounds(920, 566, 128, 23);
 		add(createNewEmployeeButton);
 
 	}

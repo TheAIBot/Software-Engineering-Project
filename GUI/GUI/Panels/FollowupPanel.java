@@ -7,36 +7,49 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import GUI.GUIController;
+
 public class FollowupPanel extends JPanel {
 	private JScrollPane openActivitiesScrollPane;
 	private JScrollPane closedActivitiesScrollPane;
+	private JScrollPane registeredTimeScrollPane;
+	private JLabel lblRegistreretTid;
 
 	/**
 	 * Create the panel.
 	 */
 	public FollowupPanel() {
-		setMaximumSize(new Dimension(800, 600));
-		setMinimumSize(new Dimension(800, 600));
-		setPreferredSize(new Dimension(800, 600));
+		setMaximumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMinimumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setPreferredSize(GUIController.DEFAULT_PANEL_SIZE);
 		setLayout(null);
 		
 		closedActivitiesScrollPane = new JScrollPane();
-		closedActivitiesScrollPane.setBounds(438, 39, 350, 548);
+		closedActivitiesScrollPane.setBounds(850, 42, 350, 548);
 		add(closedActivitiesScrollPane);
 		
 		openActivitiesScrollPane = new JScrollPane();
-		openActivitiesScrollPane.setBounds(12, 39, 363, 548);
+		openActivitiesScrollPane.setBounds(475, 42, 363, 548);
 		add(openActivitiesScrollPane);
 		
 		JLabel lblbneAktiviteter = new JLabel("\u00C5bne aktiviteter");
 		lblbneAktiviteter.setHorizontalAlignment(SwingConstants.CENTER);
-		lblbneAktiviteter.setBounds(12, 10, 363, 16);
+		lblbneAktiviteter.setBounds(475, 13, 363, 16);
 		add(lblbneAktiviteter);
 		
 		JLabel lblLukkedeAktiviteter = new JLabel("Lukkede aktiviteter");
 		lblLukkedeAktiviteter.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLukkedeAktiviteter.setBounds(438, 10, 350, 16);
+		lblLukkedeAktiviteter.setBounds(850, 13, 350, 16);
 		add(lblLukkedeAktiviteter);
+		
+		registeredTimeScrollPane = new JScrollPane();
+		registeredTimeScrollPane.setBounds(187, 42, 276, 545);
+		add(registeredTimeScrollPane);
+		
+		lblRegistreretTid = new JLabel("Registreret tid");
+		lblRegistreretTid.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRegistreretTid.setBounds(187, 13, 276, 16);
+		add(lblRegistreretTid);
 	}
 
 	/**
@@ -51,5 +64,12 @@ public class FollowupPanel extends JPanel {
 	 */
 	public JScrollPane getClosedActivitiesScrollPane() {
 		return closedActivitiesScrollPane;
+	}
+
+	/**
+	 * @return the registeredTimeScrollPane
+	 */
+	public JScrollPane getRegisteredTimeScrollPane() {
+		return registeredTimeScrollPane;
 	}
 }

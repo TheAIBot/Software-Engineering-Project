@@ -100,7 +100,8 @@ public class Project {
 				this.addEmployee(employeeInitials);
 			}
 		} else employees = new ArrayList<Employee>();
-		this.projectNumber = Calendar.getInstance().get(Calendar.YEAR) + serialNumber;
+		//adds a project number to the project that is a mix of the current year and a serialnumber
+		this.projectNumber = (int)Math.pow(Calendar.getInstance().get(Calendar.YEAR),Math.log10(serialNumber) + 1) + serialNumber;
 		serialNumber++;
 	}
 	

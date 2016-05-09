@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import GUI.GUIController;
+
 public class AbsenseActivitiesPanel extends JPanel {
 	private JScrollPane absenseActivitiesScrollPane;
 
@@ -12,13 +14,13 @@ public class AbsenseActivitiesPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public AbsenseActivitiesPanel() {
-		setMaximumSize(new Dimension(800, 600));
-		setMinimumSize(new Dimension(800, 600));
-		setPreferredSize(new Dimension(800, 600));
+		setMaximumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMinimumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setPreferredSize(GUIController.DEFAULT_PANEL_SIZE);
 		setLayout(null);
 		
 		absenseActivitiesScrollPane = new JScrollPane();
-		absenseActivitiesScrollPane.setBounds(396, 13, 392, 574);
+		absenseActivitiesScrollPane.setBounds(796, 13, 392, 574);
 		add(absenseActivitiesScrollPane);
 	}
 

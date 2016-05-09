@@ -120,6 +120,9 @@ public class ProjectPage extends SuperPage<ProjectPanel> {
 		page.getCostumerNameLabel().setText(project.getCostumerName());
 		page.getBudgettedTimeLabel().setText(String.valueOf(project.getBudgetedTime()));
 		page.getStatusLabel().setText((project.isOpen()) ? "Åben" : "Lukket");
+		page.getProjectNumberLabel().setText(String.valueOf(project.getProjectNumber()));
+		try {
+			page.getRegisteredTimeScrollPane().setViewportView(Tools.createTableOfRegisteredTimes(scheduler.getTimeVault().getProjectTime(project.getName())));
+		} catch (Exception e) {	}
 	}
-
 }

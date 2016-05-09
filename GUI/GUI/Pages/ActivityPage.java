@@ -101,5 +101,8 @@ public class ActivityPage extends SuperPage<ActivityPanel> {
 		page.getActivityNameLabel().setText(activity.getName());
 		page.getBudgettedTimeLabel().setText(String.valueOf(activity.getBudgettedTime()));
 		page.getInProjectLabel().setText(activity.getInProject().getName());
+		try {
+			page.getRegisteredTimeScrollPane().setViewportView(Tools.createTableOfRegisteredTimes(scheduler.getTimeVault().getActivityTime(activity.getInProject().getName(), activity.getName())));
+		} catch (Exception e) {	}
 	}	
 }

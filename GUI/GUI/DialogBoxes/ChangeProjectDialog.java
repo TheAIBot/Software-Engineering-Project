@@ -250,7 +250,14 @@ public class ChangeProjectDialog extends JDialog {
 	
 	private void checkProjectManagerInitials()
 	{
-		Tools.changeBorder(projectManagerTextField, x -> scheduler.getEmployeeFromInitials(x)).length();
+		if (projectManagerTextField.getText().trim().length() == 0) {
+			projectManagerTextField.makeBorderDefaultColor();
+		}
+		if (project.getEmployees().stream().anyMatch(x -> x.getInitials().equals(projectManagerTextField.getText().trim()))) {
+			projectManagerTextField.makeBorderGreen();
+		} else {
+			projectManagerTextField.makeBorderRed();
+		}
 	}
 	
 	private void checkDetailedText()
