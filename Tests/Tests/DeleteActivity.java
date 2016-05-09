@@ -15,8 +15,14 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
+/**
+ * @author ELL
+ */
 public class DeleteActivity {
 
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void deleteActivitySuccessTest()
 	{
@@ -82,7 +88,10 @@ public class DeleteActivity {
 		assertEquals(project.getOpenActivities().size(), 0);
 		assertEquals(project.getDeletedActivities().size(), 1);
 	}
-
+	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void deleteActivityMissingActivitytest()
 	{

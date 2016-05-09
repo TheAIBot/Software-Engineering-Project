@@ -12,6 +12,7 @@ import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
 
 /**
+ * @author Jesper
  * Helping class to handle time manipulation operations
  */
 public class TimeVault {
@@ -27,6 +28,16 @@ public class TimeVault {
 		this.scheduler = scheduler;
 	}
 	
+	/**
+	 * Emil
+	 * @param projectName
+	 * @param activityName
+	 * @param employeeInitials
+	 * @param registeredTime
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 * @throws ActivityNotFoundException
+	 */
 	public void addTime(String projectName, String activityName, String employeeInitials, RegisteredTime registeredTime) throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException
 	{
 		int timeIndex = times.size();
@@ -35,6 +46,11 @@ public class TimeVault {
 		addTimeIndexToProjectTimes(projectName, activityName, timeIndex);
 	}
 	
+	/**
+	 * Niklas
+	 * @param employeeInitials
+	 * @param timeIndex
+	 */
 	private void addTimeIndexToEmployeeTime(String employeeInitials, int timeIndex)
 	{
 		if (!employeeTimes.containsKey(employeeInitials)) {
@@ -43,6 +59,15 @@ public class TimeVault {
 		employeeTimes.get(employeeInitials).add(timeIndex);
 	}
 
+	/**
+	 * Jesper
+	 * @param projectName
+	 * @param activityName
+	 * @param timeIndex
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 * @throws ActivityNotFoundException
+	 */
 	private void addTimeIndexToProjectTimes(String projectName, String activityName, int timeIndex) throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException
 	{
 		Project project = scheduler.getProject(projectName);
@@ -56,6 +81,11 @@ public class TimeVault {
 		projectTimes.get(project).get(activity).add(timeIndex);
 	}
 
+	/**
+	 * Jesper
+	 * @param employeeInitials
+	 * @return
+	 */
 	public List<RegisteredTime> getEmployeeTime(String employeeInitials)
 	{
 		if (employeeTimes.containsKey(employeeInitials)) {
@@ -67,6 +97,13 @@ public class TimeVault {
 		}
 	}
 
+	/**
+	 * Emil
+	 * @param projectName
+	 * @return
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 */
 	public List<RegisteredTime> getProjectTime(String projectName) throws ProjectNotFoundException, NotLoggedInException
 	{
 		Project project = scheduler.getProject(projectName);
@@ -81,6 +118,15 @@ public class TimeVault {
 		}
 	}
 	
+	/**
+	 * Niklas
+	 * @param projectName
+	 * @param activityName
+	 * @return
+	 * @throws ProjectNotFoundException
+	 * @throws NotLoggedInException
+	 * @throws ActivityNotFoundException
+	 */
 	public List<RegisteredTime> getActivityTime(String projectName, String activityName) throws ProjectNotFoundException, NotLoggedInException, ActivityNotFoundException
 	{
 		Project project = scheduler.getProject(projectName);

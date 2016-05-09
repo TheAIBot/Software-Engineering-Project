@@ -11,8 +11,12 @@ import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import sun.net.www.content.audio.x_aiff;
 
+/**
+ * @author Andreas
+ */
 public class Activity {
 	
 	protected String name;
@@ -22,40 +26,60 @@ public class Activity {
 	protected int budgettedTime;
 	protected final Project inProject;
 	
-	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException {
+	/**
+	 * Jesper
+	 * @param name
+	 * @param detailText
+	 * @param employees
+	 * @param startDate
+	 * @param endDate
+	 * @param budgettedTime
+	 * @param inProject
+	 * @throws EmployeeMaxActivitiesReachedException
+	 * @throws InvalidInformationException
+	 */
+	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException, InvalidInformationException {
 		this.name = name;
 		this.detailText = detailText;
-		this.assignedEmployees.addAll(employees);
-		for (Employee employee : employees) {
-			employee.addActivity(this);
+		if (employees != null) {
+			this.assignedEmployees.addAll(employees);
+			for (Employee employee : employees) {
+				employee.addActivity(this);
+			}
 		}
-		this.setTimePeriod(new TimePeriod(startDate, endDate));
+		if (startDate != null & endDate != null) {
+			this.timePeriod = new TimePeriod(startDate, endDate);
+		}
 		this.budgettedTime = budgettedTime;
 		this.inProject = inProject;
 	}
 
 	/**
 	 * @return the title
+	 * Andreas
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * Emil
 	 * @param title the title to set
 	 * @throws MissingInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setName(String name) throws MissingInformationException, DuplicateNameException {
+	public void setName(String name) throws MissingInformationException, DuplicateNameException, ProjectManagerNotLoggedInException {
+		inProject.hasPermissionToEdit(); //Throws an error if one (the logged in user) does not have permission to edit.
 		if (Tools.isNullOrEmpty(name)) {
 			throw new MissingInformationException("Missing name");
-		}
-		if (Tools.containsActivity(inProject.getOpenActivities(), name)) {
+		} else if (!inProject.isNewValidActivityName(name) && !name.equals(getName())) {
 			throw new DuplicateNameException("An activity with the specified name already exists");
 		}
 		this.name = name;
 	}
 
 	/**
+	 * Jesper
 	 * @return the detailText
 	 */
 	public String getDetailText() {
@@ -63,16 +87,17 @@ public class Activity {
 	}
 
 	/**
+	 * Niklas
 	 * @param detailText the detailText to set
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setDetailText(String detailText) throws MissingInformationException {
-		if (Tools.isNullOrEmpty(detailText)) {
-			throw new MissingInformationException("Missing detailed text");
-		}
+	public void setDetailText(String detailText) throws MissingInformationException, ProjectManagerNotLoggedInException {
+		inProject.hasPermissionToEdit(); //Throws an error if one (the logged in user) does not have permission to edit.
 		this.detailText = detailText;
 	}
 
 	/**
+	 * Andreas
 	 * @return the budgettedTime
 	 */
 	public int getBudgettedTime() {
@@ -80,10 +105,13 @@ public class Activity {
 	}
 
 	/**
+	 * Emil
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException {
+	public void setBudgettedTime(int budgettedTime) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		inProject.hasPermissionToEdit(); //Throws an error if one (the logged in user) does not have permission to edit.
 		if (budgettedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		}
@@ -91,6 +119,7 @@ public class Activity {
 	}
 
 	/**
+	 * Andreas
 	 * @return the assignedEmployees
 	 */
 	public List<Employee> getAssignedEmployees() {
@@ -98,6 +127,7 @@ public class Activity {
 	}
 
 	/**
+	 * Emil
 	 * @return the timePeriod
 	 */
 	public TimePeriod getTimePeriod() {
@@ -105,13 +135,24 @@ public class Activity {
 	}
 
 	/**
+	 * Niklas
 	 * @param timePeriod the timePeriod to set
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setTimePeriod(TimePeriod timePeriod) {
-		this.timePeriod = timePeriod;
+	public void setTimePeriod(TimePeriod timePeriod) throws ProjectManagerNotLoggedInException {
+		inProject.hasPermissionToEdit(); //Throws an error if one (the logged in user) does not have permission to edit.
+		this.timePeriod = timePeriod; //The timeperiod itself handles possible errors.
 	}
 
-	public void addEmployee(String initials) throws EmployeeMaxActivitiesReachedException, EmployeeNotFoundException, EmployeeAlreadyAssignedException {
+	/**
+	 * Niklas
+	 * @param initials
+	 * @throws EmployeeMaxActivitiesReachedException
+	 * @throws EmployeeNotFoundException
+	 * @throws EmployeeAlreadyAssignedException
+	 */
+	public void addEmployee(String initials) throws EmployeeMaxActivitiesReachedException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotLoggedInException {
+		inProject.hasPermissionToEdit();
 		if (Tools.containsEmployee(inProject.getEmployees(), initials)) {
 			if (!Tools.containsEmployee(assignedEmployees, initials)) {
 				Employee employee = Tools.getEmployeeFromInitials(inProject.getEmployees(), initials);
@@ -125,11 +166,16 @@ public class Activity {
 		}
 	}
 
+	/**
+	 * Niklas
+	 * @return
+	 */
 	public String getProjectName() {
 		return inProject.getName();
 	}
 
 	/**
+	 * Jesper
 	 * @return the inProject
 	 */
 	public Project getInProject() {
@@ -137,16 +183,21 @@ public class Activity {
 	}
 
 	/**
+	 * Emil
 	 * @param assignedEmployees the assignedEmployees to set
 	 * @throws InvalidInformationException 
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
-	public void setAssignedEmployees(List<Employee> assignedEmployees) throws InvalidInformationException {
+	public void setAssignedEmployees(List<Employee> assignedEmployees) throws InvalidInformationException, ProjectManagerNotLoggedInException {
+		inProject.hasPermissionToEdit(); //Throws an error if one (the logged in user) does not have permission to edit.
 		if (assignedEmployees == null) {
-			throw new InvalidInformationException("Assigned employees can't be null");
-		}
-		this.assignedEmployees = assignedEmployees;
+			this.assignedEmployees = new ArrayList<Employee>();
+		} else this.assignedEmployees = assignedEmployees;
 	}
 	
+	/**
+	 * Andreas
+	 */
 	public String toString()
 	{
 		StringBuilder sBuilder = new StringBuilder();

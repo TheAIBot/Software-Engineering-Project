@@ -13,15 +13,24 @@ import org.junit.Test;
 
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
+import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author Andreas
+ */
 public class CloseProject {
 	private Scheduler scheduler;
 	
+	/**
+	 * Andreas
+	 */
 	@Before
 	public void setup()
 	{
 		scheduler = new Scheduler();
+		
 		TestTools.login(scheduler);
 		try {
 			TestTools.createProject(scheduler,"Navision Stat");
@@ -33,13 +42,16 @@ public class CloseProject {
 		addActivity("Add more cake");
 	}
 	
-	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void CloseProjectSuccessTest()
 	{
 		Project project = null;
 		try {
-			project = scheduler.getProject("Navision Stat");
+			assertEquals(1,scheduler.getProjectsContainingStringInName("Navision Stat").size());
+			project = scheduler.getProjectsContainingStringInName("Navision Stat").get(0);
 		} catch (Exception e) {
 			Assert.fail();
 		}
@@ -55,7 +67,9 @@ public class CloseProject {
 		assertEquals(project.getClosedActivities().size(), 3);
 		
 	}
-	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void CloseProjectAlreadyClosed()
 	{
@@ -82,7 +96,9 @@ public class CloseProject {
 		assertEquals(project.getOpenActivities().size(), 0);
 		assertEquals(project.getClosedActivities().size(), 3);
 	}
-	
+	/**
+	 * Andreas
+	 */
 	private void addActivity(String activityName)
 	{
 		Project project = null;

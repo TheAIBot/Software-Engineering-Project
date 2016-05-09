@@ -1,7 +1,8 @@
 package SoftwareHouse.ThrowingLambdaInterfaces;
 
-import java.util.function.Consumer;
-
+/**
+ * @author Andreas
+ */
 public interface ThrowingConsumer<T> {
 	void accept(T t) throws Exception;
 }

@@ -13,10 +13,17 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 
+/**
+ * @author ELL
+ */
 public class CloseActivity {
 
+	/**
+	 * Emil
+	 * @throws ActivityNotFoundException
+	 */
 	@Test
-	public void closeActivitySuccessTest()
+	public void closeActivitySuccessTest() throws ActivityNotFoundException
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
@@ -74,15 +81,14 @@ public class CloseActivity {
 		
 		assertEquals(project.getOpenActivities().size(), 1);
 		assertEquals(project.getClosedActivities().size(), 0);
-		try {
-			project.closeActivity(activityName);
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		}
+		project.closeActivity(activityName);
 		assertEquals(project.getOpenActivities().size(), 0);
 		assertEquals(project.getClosedActivities().size(), 1);
 	}
 
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void closeActivityMissingActivitytest()
 	{

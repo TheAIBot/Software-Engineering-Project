@@ -1,6 +1,7 @@
 package Tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
@@ -25,11 +27,15 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author Niklas
+ */
 public class AddActivityToProject {
 	
 	private Scheduler scheduler = null;
 	
 	/**
+	 * Niklas
 	 * Setup the test environment by initializing the scheduler, login, creating a sample project and staff it with employees 
 	 */
 	@Before
@@ -49,8 +55,119 @@ public class AddActivityToProject {
 		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
+		assertTrue(scheduler.doAllEmployeesExist(project.getEmployees()));
 	}
 	
+	/**
+	 * Niklas
+	 */
+	@Test
+	public void AddActivityNotProjectManager(){
+		Scheduler scheduler2 = new Scheduler();
+		TestTools.login(scheduler2);
+		Project project2 = null;
+		try {
+			project2 = TestTools.createProject(scheduler2, "Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		TestTools.addEmployeeToProject(scheduler2, "NR", "Navision Stat");
+		
+		try {
+			scheduler2.login("NR");
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		}
+		
+		String[] employees = new String[1];
+		employees[0] = "NR";
+		try {
+			TestTools.addActivity(scheduler2, "Navision Stat", "Test activity", employees);
+			Assert.fail();
+		} catch (ProjectNotFoundException e) {
+			Assert.fail();
+		} catch (ActivityNotFoundException e) {
+			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		} catch (EmployeeMaxActivitiesReachedException e) {
+			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			assertEquals(e.getMessage(),"Either there needs to be no project manager for the project" +
+	                " or the person needs to be logged in, for edits to be made");
+		}
+	}
+	
+	/**
+	 * Jesper
+	 */
+	@Test
+	public void addActivityTooManyActivitiesAssigned()
+	{
+		Scheduler scheduler2 = new Scheduler();
+		TestTools.login(scheduler2);
+		Project project2 = null;
+		try {
+			project2 = TestTools.createProject(scheduler2, "Navision Stat");
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		
+		TestTools.addEmployeeToProject(scheduler2, "NR", "Navision Stat");
+		String[] employees = new String[1];
+		employees[0] = "NR";
+		
+		for(int i = 1; i <=20; i++){
+			try {
+				TestTools.addActivity(scheduler2, "Navision Stat", String.valueOf(i), employees);
+			} catch (Exception e){
+				Assert.fail();
+			}
+		}
+		
+		Activity activity = null;
+		try {
+			activity = scheduler2.getActivity("Navision Stat", String.valueOf(Employee.MAX_ACTIVITIES));
+		} catch (Exception e1) {
+			Assert.fail();
+		}
+		
+		try {
+			TestTools.addActivity(scheduler2, "Navision Stat", "Too many", employees);
+		} catch (ProjectNotFoundException e) {
+			Assert.fail();
+		} catch (ActivityNotFoundException e) {
+			Assert.fail();
+		} catch (NotLoggedInException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (EmployeeNotFoundException e) {
+			Assert.fail();
+		} catch (DuplicateNameException e) {
+			Assert.fail();
+		} catch (EmployeeMaxActivitiesReachedException e) {
+			assertEquals(e.getMessage(), "The employees:  NR  cannot work on more activities");
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
+		}
+		
+	}
+	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AddActivitySuccessTest() {	
 		try {
@@ -71,6 +188,9 @@ public class AddActivityToProject {
 		}		
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void TestMissingTitle()
 	{
@@ -99,6 +219,11 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing title");
+			try {
+				project.forceAddAcitivity(null,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {
+				assertEquals(e.getMessage(), "Missing title");
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -112,6 +237,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void TestMissingDetailedText()
 	{
@@ -140,6 +268,11 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing detailText");
+			try {
+				project.forceAddAcitivity(activityName,	null, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -153,6 +286,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void TestMissingEmployee()
 	{
@@ -181,6 +317,11 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing employees");
+			try {
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
+			} catch (Exception e2) {
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -194,6 +335,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void TestMissingStartDate()
 	{
@@ -222,6 +366,12 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing start date");
+			try {
+				//If one of the dates are null, it will simply ignore the dates.
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, null, endDate, expectedHours);
+			} catch (Exception e2) {	
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -235,6 +385,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void TestMissingEndDate()
 	{
@@ -263,6 +416,12 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals(e.getMessage(), "Missing end date");
+			try {
+				//If one of the dates are null, it will simply ignore the dates.
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {	
+				Assert.fail();
+			}
 		} catch (InvalidInformationException e) {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
@@ -276,6 +435,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void TestEndDateBeforeStartDate()
 	{
@@ -306,6 +468,12 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
 			assertEquals(e.getMessage(), "End date has to start after start date");
+			//It ignores the data if it is wrong.
+			try {
+				project.forceAddAcitivity(activityName,	activityDetailedDescription, employeeInitials, startDate, endDate, expectedHours);
+			} catch (Exception e2) {	
+				Assert.fail();
+			}
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
 		} catch (DuplicateNameException e) {
@@ -317,6 +485,9 @@ public class AddActivityToProject {
 		}
 	}
 
+	/**
+	 * Emil
+	 */
 	@Test
 	public void TestNegativeBudgettedTime()
 	{
@@ -358,6 +529,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void AddActivityEmployeeNotFoundTest()
 	{	
@@ -402,6 +576,10 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
 			Assert.fail();
 		}
 		
@@ -452,9 +630,16 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
 		}
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void AddActivityForceAddNoEmployeesTest()
 	{
@@ -475,20 +660,14 @@ public class AddActivityToProject {
 		
 		try {
 			project.forceAddAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
+		} catch (Exception e) {
 			Assert.fail();
-		} catch (NullPointerException e) {
-			
-		} catch (EmployeeNotFoundException e) {
-			Assert.fail();
-		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (EmployeeMaxActivitiesReachedException e) {
-			Assert.fail();
-		} catch (ProjectManagerNotLoggedInException e) {
-			Assert.fail();
-		}
+		} 
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void AddActivityDuplicateNameTest()
 	{
@@ -558,10 +737,15 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
+		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
 		}
 	}
 	
 	/**
+	 * Jesper
 	 * Test case: Employee does not exists in the internal system
 	 * @throws EmployeeAlreadyAssignedException 
 	 * @throws EmployeeNotFoundException 

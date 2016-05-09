@@ -18,13 +18,16 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Andreas
+ */
 public class AddEmployeeToActivity {
 	Scheduler scheduler = null;
 
-	// TODO Needs to check i user also has the list of activities
-
 	/**
+	 * Andreas
 	 * Setup the test environment by initialising the schduler, login, creating
 	 * a sample project and staff it with employees. Further, add an activity to
 	 * the project
@@ -83,6 +86,9 @@ public class AddEmployeeToActivity {
 		}
 	}
 
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void AddEmployeeToActivitySuccessTest() {
 		// Get the activity and employee
@@ -113,6 +119,9 @@ public class AddEmployeeToActivity {
 		assertTrue(employee.isAlreadyPartOfActivity(activity));
 	}
 
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AddEmployeeToActivityEmployeeNotAssignedToProjectTest() {
 		Activity activity = null;
@@ -138,9 +147,14 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		} catch (EmployeeAlreadyAssignedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void AddEmployeeToActivityEmployeeNotFoundTest() {
 
@@ -158,12 +172,17 @@ public class AddEmployeeToActivity {
 		} catch (EmployeeNotFoundException e) {
 			assertEquals(e.getMessage(), "Employee does not exists or is not part of this project");
 		} catch (EmployeeMaxActivitiesReachedException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (EmployeeAlreadyAssignedException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 
+	/**
+	 * Emil
+	 */
 	@Test
 	public void AddEmployeeToActivityEmployeeAssignedTooManyActivitiesTest() {
 		for (int i = 1; i < Employee.MAX_ACTIVITIES + 1; i++) {
@@ -197,10 +216,16 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		} catch (EmployeeAlreadyAssignedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 
 	}
 
+	/**
+	 * Emil
+	 * @param activityName
+	 */
 	private void addActivity(String activityName) {
 		Project project = null;
 		try {
@@ -223,6 +248,9 @@ public class AddEmployeeToActivity {
 		}
 	}
 
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AddEmployeeToSameActivityTwiceTest() {
 		Activity activity = null;
@@ -240,6 +268,8 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 }

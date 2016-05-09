@@ -38,6 +38,18 @@ public class Login {
 	}
 	
 	private void loginAM(){ 
+		// Verify that cannot retrieve projects without being logged in
+		try {
+			scheduler.getProject("sygdom");
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		try {
+			scheduler.getProjects();
+			Assert.fail();
+		} catch (Exception e) {
+		}
+		
 		try {
 			scheduler.login("AM");
 		} catch (EmployeeNotFoundException e) {
