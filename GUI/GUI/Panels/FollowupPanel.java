@@ -9,6 +9,9 @@ import javax.swing.SwingConstants;
 
 import GUI.GUIController;
 
+/**
+ * @author Niklas
+ */
 public class FollowupPanel extends JPanel {
 	private JScrollPane openActivitiesScrollPane;
 	private JScrollPane closedActivitiesScrollPane;

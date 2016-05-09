@@ -30,6 +30,9 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+/**
+ * @author ELL
+ */
 public class CreateUserDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

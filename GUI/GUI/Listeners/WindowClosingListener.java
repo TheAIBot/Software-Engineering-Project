@@ -3,6 +3,9 @@ package GUI.Listeners;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+/**
+ * @author Jesper
+ */
 public interface WindowClosingListener extends WindowListener {
 	
 	@Override

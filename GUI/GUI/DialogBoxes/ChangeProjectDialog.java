@@ -39,6 +39,9 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
+/**
+ * @author Niklas
+ */
 public class ChangeProjectDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -275,7 +278,6 @@ public class ChangeProjectDialog extends JDialog {
 			GregorianCalendar startDate = TimePeriod.getCalendarFromString(startDateTextField.getText());
 			GregorianCalendar endDate = TimePeriod.getCalendarFromString(endDateTextField.getText());
 			timePeriod = new TimePeriod(startDate, endDate);
-			//TODO fix this oddness that lombre mentioned
 		}
 		int budgettedTime = 0;
 		if (BudgettedTimeTextField.getText().trim().length() != 0) {

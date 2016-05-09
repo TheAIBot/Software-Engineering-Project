@@ -27,11 +27,15 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author Niklas
+ */
 public class AddActivityToProject {
 	
 	private Scheduler scheduler = null;
 	
 	/**
+	 * Niklas
 	 * Setup the test environment by initializing the scheduler, login, creating a sample project and staff it with employees 
 	 */
 	@Before
@@ -54,6 +58,9 @@ public class AddActivityToProject {
 		assertTrue(scheduler.doAllEmployeesExist(project.getEmployees()));
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AddActivityNotProjectManager(){
 		Scheduler scheduler2 = new Scheduler();
@@ -100,6 +107,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void addActivityTooManyActivitiesAssigned()
 	{
@@ -155,6 +165,9 @@ public class AddActivityToProject {
 		
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AddActivitySuccessTest() {	
 		try {
@@ -175,6 +188,9 @@ public class AddActivityToProject {
 		}		
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void TestMissingTitle()
 	{
@@ -216,6 +232,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void TestMissingDetailedText()
 	{
@@ -257,6 +276,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void TestMissingEmployee()
 	{
@@ -298,6 +320,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void TestMissingStartDate()
 	{
@@ -339,6 +364,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void TestMissingEndDate()
 	{
@@ -380,6 +408,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void TestEndDateBeforeStartDate()
 	{
@@ -421,6 +452,9 @@ public class AddActivityToProject {
 		}
 	}
 
+	/**
+	 * Emil
+	 */
 	@Test
 	public void TestNegativeBudgettedTime()
 	{
@@ -462,6 +496,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void AddActivityEmployeeNotFoundTest()
 	{	
@@ -567,6 +604,9 @@ public class AddActivityToProject {
 		}
 	}
 	
+	/**
+	 * Emil
+	 */
 	@Test
 	public void AddActivityForceAddNoEmployeesTest()
 	{
@@ -592,6 +632,9 @@ public class AddActivityToProject {
 		} 
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void AddActivityDuplicateNameTest()
 	{
@@ -669,6 +712,7 @@ public class AddActivityToProject {
 	}
 	
 	/**
+	 * Jesper
 	 * Test case: Employee does not exists in the internal system
 	 * @throws EmployeeAlreadyAssignedException 
 	 * @throws EmployeeNotFoundException 

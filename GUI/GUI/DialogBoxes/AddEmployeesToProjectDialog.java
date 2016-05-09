@@ -28,6 +28,9 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Emil
+ */
 public class AddEmployeesToProjectDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

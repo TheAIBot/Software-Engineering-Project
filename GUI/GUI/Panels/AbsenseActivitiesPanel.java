@@ -7,6 +7,10 @@ import javax.swing.JScrollPane;
 
 import GUI.GUIController;
 
+/**
+ * @author Andreas
+ */
+
 public class AbsenseActivitiesPanel extends JPanel {
 	private JScrollPane absenseActivitiesScrollPane;
 

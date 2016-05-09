@@ -21,6 +21,9 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Jesper
+ */
 public class ActivityPage extends SuperPage<ActivityPanel> {
 
 	private final Activity activity;

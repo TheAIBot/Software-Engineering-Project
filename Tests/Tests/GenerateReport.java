@@ -26,6 +26,7 @@ public class GenerateReport {
 	Scheduler scheduler;
 	
 	/**
+	 * Emil
 	 * Setup the test environment
 	 */
 	@Before
@@ -97,6 +98,9 @@ public class GenerateReport {
 		}
 	}
 
+	/**
+	 * Emil
+	 */
 	@Test
 	public void testGenerateReportSucces() {
 		Project project = null;

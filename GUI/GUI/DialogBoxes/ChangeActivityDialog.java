@@ -37,7 +37,11 @@ import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Jesper
+ */
 public class ChangeActivityDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -219,7 +223,7 @@ public class ChangeActivityDialog extends JDialog {
 	}
 		
 	
-	private void changeActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException 
+	private void changeActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException, ProjectManagerNotLoggedInException 
 	{
 		String activityName = projectNameTextField.getText();
 		TimePeriod timePeriod = null;
@@ -228,7 +232,6 @@ public class ChangeActivityDialog extends JDialog {
 			GregorianCalendar startDate = TimePeriod.getCalendarFromString(startDateTextField.getText());
 			GregorianCalendar endDate = TimePeriod.getCalendarFromString(endDateTextField.getText());
 			timePeriod = new TimePeriod(startDate, endDate);
-			//TODO fix this oddness that lombre mentioned
 		}
 		int budgettedTime = 0;
 		if (BudgettedTimeTextField.getText().trim().length() != 0) {

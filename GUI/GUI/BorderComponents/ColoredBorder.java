@@ -1,5 +1,8 @@
 package GUI.BorderComponents;
 
+/**
+ * @author Niklas
+ */
 public interface ColoredBorder {
 	
 	public void makeBorderRed();

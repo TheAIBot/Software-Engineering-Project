@@ -17,6 +17,10 @@ import GUI.Tools;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
+/**
+ * @author Andreas
+ *
+ */
 public class MainPage extends SuperPage<JPanel> {
 
 	private JPanel showPagePanel = new JPanel(new BorderLayout());

@@ -33,6 +33,9 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.TimePeriod;
 import SoftwareHouse.ThrowingLambdaInterfaces.ThrowingConsumer;
 
+/**
+ * @author Andreas
+ */
 public class Tools {
 
 	// The following two method are copied from an earlier project made by all

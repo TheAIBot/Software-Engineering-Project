@@ -9,6 +9,9 @@ import GUI.Panels.MyPagePanel;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Scheduler;
 
+/**
+ * @author Niklas
+ */
 public class MyPagePage extends SuperPage<MyPagePanel> {
 
 	public MyPagePage(GUIController controller, Scheduler scheduler) {

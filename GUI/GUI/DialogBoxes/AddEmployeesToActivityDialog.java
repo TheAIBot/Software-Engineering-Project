@@ -35,7 +35,11 @@ import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author Andreas
+ */
 public class AddEmployeesToActivityDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -142,7 +146,7 @@ public class AddEmployeesToActivityDialog extends JDialog {
 	}
 		
 	
-	private void tryAddEmployees() throws InvalidInformationException
+	private void tryAddEmployees() throws InvalidInformationException, ProjectManagerNotLoggedInException
 	{
 		int dialogResult = JOptionPane.showConfirmDialog(null, "Vil du foretage disse ændringer?");
 		if (dialogResult == JOptionPane.YES_OPTION) {

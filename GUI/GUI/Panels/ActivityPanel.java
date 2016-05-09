@@ -12,6 +12,9 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author Jesper
+ */
 public class ActivityPanel extends JPanel {
 	private JLabel activityNameLabel;
 	private JLabel budgettedTimeLabel;

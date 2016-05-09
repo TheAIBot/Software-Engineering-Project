@@ -42,7 +42,9 @@ public class Project {
 	private List<Employee> employees = new ArrayList<Employee>();
 	
 	
-	/** Creates a new project from the given parameters. Throws an InvalidProjectInitilizationInput if the input is not valid, 
+	/**
+	 * Jesper
+	 * Creates a new project from the given parameters. Throws an InvalidProjectInitilizationInput if the input is not valid, 
 	 *  which's message contains what is wrong. Must be logged in to create a new project.
 	 * @param scheduler The scheduler to attach the project. Must not be null.
 	 * @param projectName The project name. Must be unique for the scheduler, not null or "".
@@ -105,14 +107,42 @@ public class Project {
 		serialNumber++;
 	}
 	
+	/**
+	 * Jesper
+	 * @param scheduler
+	 * @param name
+	 * @param isAbsenceProject
+	 * @throws NotLoggedInException
+	 * @throws MissingInformationException
+	 * @throws InvalidInformationException
+	 * @throws EmployeeNotFoundException
+	 * @throws EmployeeAlreadyAssignedException
+	 * @throws ProjectManagerNotPartOfEmployeesAdded
+	 * @throws EmployeeMaxActivitiesReachedException
+	 */
 	public Project(Scheduler scheduler, String name, boolean isAbsenceProject) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded, EmployeeMaxActivitiesReachedException {
 		this(scheduler,name,"","",new ArrayList<Employee>(),0,"",null);
 		this.useAbsenceActivity = isAbsenceProject;
+		
 		openActivities.add(new AbsenceActivity("sygdom", "", null, null, null, 0, this));
 		openActivities.add(new AbsenceActivity("ferie", "", null, null, null, 0, this));
 		openActivities.add(new AbsenceActivity("kursus", "", null, null, null, 0, this));
 	}
 	
+	/**
+	 * Andreas
+	 * @param scheduler
+	 * @param projectName
+	 * @param budgetedTime
+	 * @param initialsProjectManager
+	 * @param timePeriod
+	 * @param employeesToAdd
+	 * @param employees
+	 * @throws MissingInformationException
+	 * @throws InvalidInformationException
+	 * @throws EmployeeNotFoundException
+	 * @throws ProjectManagerNotPartOfEmployeesAdded
+	 */
 	private void validateinformation(Scheduler scheduler, 
 			String projectName,
 		   	int budgetedTime, 
@@ -133,15 +163,38 @@ public class Project {
 		
 	}
 	
+	/**
+	 * Emil
+	 * @param scheduler
+	 * @param initialsProjectManager
+	 * @param employeesToAdd
+	 * @return
+	 * @throws EmployeeNotFoundException
+	 */
 	public boolean isProperProjectManagerToAdd(Scheduler scheduler,String initialsProjectManager, List<Employee> employeesToAdd) throws EmployeeNotFoundException{
 		if (!Tools.isNullOrEmpty(initialsProjectManager)) {
-			scheduler.getEmployeeFromInitials(initialsProjectManager); //Throws an error if the manager do not exist
+			scheduler.getEmployeeFromInitials(initialsProjectManager); //Throws an error if the manager does not exist
 			if (employeesToAdd == null) {
 				return false;
 			} else return employeesToAdd.stream().anyMatch(x -> x.getInitials().equals(initialsProjectManager));
 		} else return true;
 	}
 		
+	/**
+	 * Niklas
+	 * @param title
+	 * @param detailText
+	 * @param employeeInitials
+	 * @param startTime
+	 * @param endTime
+	 * @param budgetedTime
+	 * @throws MissingInformationException
+	 * @throws InvalidInformationException
+	 * @throws EmployeeNotFoundException
+	 * @throws DuplicateNameException
+	 * @throws EmployeeMaxActivitiesReachedException
+	 * @throws ProjectManagerNotLoggedInException
+	 */
 	public void addAcitivity(String title, 
 							 String detailText, 
 							 List<String> employeeInitials, 
@@ -166,12 +219,13 @@ public class Project {
 		} else if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		} else if (!allEmployeesCanWorkOnMoreActivities(employeeInitials)){
-			//TODO Check here(*)
 		}
 		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgetedTime);
 	}
 	
-	/** Returns whether or not there are any employees that can work on more activities 
+	/**
+	 * Jesper
+	 * Returns whether or not there are any employees that can work on more activities 
 	 *  (ie. if there is an employee that has reached the maximum number of activites that the person can handle).
 	 *  If there is an employee amongst the list, that does not exist in the system, false is returned
 	 * @param employeeInitials List of initials of emplyees that needs to be checked
@@ -185,7 +239,9 @@ public class Project {
 		} 
 	}
 
-	/** Returns a list of employees from a given list of employees, no able to work on more projects. The limit is 20 activities concurrently.
+	/**
+	 * Andreas
+	 * Returns a list of employees from a given list of employees, no able to work on more projects. The limit is 20 activities concurrently.
 	 *  The employees in the list need to exist.
 	 * @param employeeInitials
 	 * @return
@@ -202,6 +258,21 @@ public class Project {
 		return employeesMaxCapacityReached; 
 	}
 	
+	/**
+	 * Jesper
+	 * @param title
+	 * @param detailText
+	 * @param employeeInitials
+	 * @param startTime
+	 * @param endTime
+	 * @param budgetedTime
+	 * @throws EmployeeNotFoundException
+	 * @throws DuplicateNameException
+	 * @throws EmployeeMaxActivitiesReachedException
+	 * @throws ProjectManagerNotLoggedInException
+	 * @throws InvalidInformationException
+	 * @throws MissingInformationException
+	 */
 	public void forceAddAcitivity(String title, 
 								  String detailText, 
 								  List<String> employeeInitials, 
@@ -224,7 +295,7 @@ public class Project {
 		List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
 		if (employeeInitials != null) {
 			for (String initials : employeeInitials) {
-				if (Tools.containsEmployee(employees, initials)) { //TODO (*) check here.
+				if (Tools.containsEmployee(employees, initials)) {
 					Employee currentEmployee = Tools.getEmployeeFromInitials(employees, initials);
 					if (currentEmployee.canContainMoreActivities()) {
 						activityEmployees.add(Tools.getEmployeeFromInitials(employees, initials));
@@ -247,7 +318,9 @@ public class Project {
 	} 
 	
 
-	/** Adds employee to the project. Returns true if possible, but if an employee with those initials do not exist,
+	/**
+	 * Niklas
+	 * Adds employee to the project. Returns true if possible, but if an employee with those initials do not exist,
 	 *  or if the employee is already a part of the project, false is returned instead.
 	 * @param initials
 	 * @return True if the employee exist, and is added to the project, else false.
@@ -270,12 +343,18 @@ public class Project {
 	}
 	
 	/**
+	 * Andreas
 	 * @return the employees
 	 */
 	public List<Employee> getEmployees() {
 		return employees;
 	}
 
+	/**
+	 * Niklas
+	 * @param activityName
+	 * @throws ActivityNotFoundException
+	 */
 	public void deleteActivity(String activityName) throws ActivityNotFoundException {
 		if (!Tools.containsActivity(openActivities, activityName)) {
 			throw new ActivityNotFoundException();
@@ -285,6 +364,11 @@ public class Project {
 		deletedActivities.add(activity);		
 	}
 
+	/**
+	 * Emil
+	 * @param activityName
+	 * @throws ActivityNotFoundException
+	 */
 	public void closeActivity(String activityName) throws ActivityNotFoundException {
 		if (!Tools.containsActivity(openActivities, activityName)) {
 			throw new ActivityNotFoundException();
@@ -294,6 +378,10 @@ public class Project {
 		closedActivities.add(activity);
 	}
 	
+	/**
+	 * Andreas
+	 * @throws ProjectAlreadyClosedException
+	 */
 	public void close() throws ProjectAlreadyClosedException {
 		if (isOpen) {
 			isOpen = false;			
@@ -305,8 +393,14 @@ public class Project {
 		}
 	}
 
+	/**
+	 * Emil
+	 * @param activityName
+	 * @return
+	 */
 	public boolean isNewValidActivityName(String activityName)
 	{
+		if (activityName == null) return false;
 		final String lowerCaseActivityName = activityName.toLowerCase().trim();
 		return !Tools.isNullOrEmpty(lowerCaseActivityName) && 
 				!openActivities.stream()
@@ -314,12 +408,19 @@ public class Project {
 	}
 	
 	/**
+	 * Andreass
 	 * @return the isOpen
 	 */
 	public boolean isOpen() {
 		return isOpen;
 	}
 	
+	/**
+	 * Niklas
+	 * @param activityName
+	 * @return
+	 * @throws ActivityNotFoundException
+	 */
 	public Activity getOpenActivityFromName(String activityName) throws ActivityNotFoundException{
 		try {
 			//There can only be one activity with a given name, for a given project.
@@ -329,6 +430,9 @@ public class Project {
 		}
 	}
 
+	/**
+	 * Emil
+	 */
 	public void generateReport() {
 		String fileName = getFilePath();
 		try (PrintWriter writer = new PrintWriter(fileName, "UTF-8"))
@@ -339,6 +443,10 @@ public class Project {
 		} catch (Exception e) {	}
 	}
 
+	/**
+	 * Jesper
+	 * @return
+	 */
 	public boolean isProjectManagerLoggedIn()
 	{
 		if (projectManager == null) {
@@ -350,13 +458,16 @@ public class Project {
 
 	
 	/**
+	 * Jesper
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
 
-	/** Sets the name of the project to a new given name. Throws an error in case of the new name being null, 
+	/**
+	 * Jesper
+	 * Sets the name of the project to a new given name. Throws an error in case of the new name being null, 
 	 *  an empty String or if there exist another project, with that name.
 	 * @param name the name to set
 	 * @throws DuplicateNameException If a project with that name already exists.
@@ -374,6 +485,7 @@ public class Project {
 	}
 
 	/**
+	 * Niklas
 	 * @return the openActivities
 	 */
 	public List<Activity> getOpenActivities() {
@@ -381,6 +493,7 @@ public class Project {
 	}
 
 	/**
+	 * Niklas
 	 * @return the closedActivities
 	 */
 	public List<Activity> getClosedActivities() {
@@ -388,12 +501,19 @@ public class Project {
 	}
 
 	/**
+	 * Andreas
 	 * @return the deletedActivities
 	 */
 	public List<Activity> getDeletedActivities() {
 		return deletedActivities;
 	}
 	
+	/**
+	 * Andreas
+	 * @param name
+	 * @return
+	 * @throws ActivityNotFoundException
+	 */
 	public Activity getActivity(String name) throws ActivityNotFoundException{
 		try{
 			return openActivities.stream().filter(x -> x.getName().equals(name)).findAny().get();
@@ -411,6 +531,7 @@ public class Project {
 //	}
 	
 	/**
+	 * Jesper
 	 * @param costumerName the costumerName to set
 	 * @throws ProjectManagerNotLoggedInException 
 	 */
@@ -419,7 +540,9 @@ public class Project {
 		this.costumerName = costumerName;
 	}
 
-	/** Assigns a new project manager, based on the initials given. If the initials are null or empty, 
+	/**
+	 * Emil
+	 * Assigns a new project manager, based on the initials given. If the initials are null or empty, 
 	 * the project manager is set to null/no project manager is assigned, and if the new project manager is not part of the project,
 	 * an error is thrown
 	 * @param projectManager the projectManager to set
@@ -440,6 +563,7 @@ public class Project {
 	}
 
 	/**
+	 * Andreas
 	 * @param timePeriod the timePeriod to set
 	 * @throws InvalidInformationException 
 	 * @throws ProjectManagerNotLoggedInException 
@@ -450,6 +574,7 @@ public class Project {
 	}
 
 	/**
+	 * Andreas
 	 * @return the detailedText
 	 */
 	public String getDetailedText() {
@@ -457,6 +582,7 @@ public class Project {
 	}
 
 	/**
+	 * Andreas
 	 * @param detailedText the detailedText to set
 	 * @throws ProjectManagerNotLoggedInException 
 	 */
@@ -466,6 +592,7 @@ public class Project {
 	}
 
 	/**
+	 * Jesper
 	 * @param employees the employees to set
 	 * @throws InvalidInformationException 
 	 * @throws ProjectManagerNotLoggedInException 
@@ -492,6 +619,11 @@ public class Project {
 		
 	}
 	
+	/**
+	 * Niklas
+	 * @return
+	 * @throws ProjectManagerNotLoggedInException
+	 */
 	public boolean hasPermissionToEdit() throws ProjectManagerNotLoggedInException{
 		if (isProjectManagerLoggedIn() || projectManager == null) {
 			return true;
@@ -500,6 +632,10 @@ public class Project {
 
 	}
 
+	/**
+	 * Emil
+	 * @return
+	 */
 	public String getFilePath() {
 		String fileName = name.replaceAll("\\s", "_");
 		fileName = fileName.replaceAll("[^\\w.-]", "");
@@ -508,6 +644,7 @@ public class Project {
 	}
 
 	/**
+	 * Emil
 	 * @return the budgettedTime
 	 */
 	public int getBudgettedTime() {
@@ -515,6 +652,7 @@ public class Project {
 	}
 	
 	/**
+	 * Andreas
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
 	 * @throws ProjectManagerNotLoggedInException 
@@ -526,29 +664,42 @@ public class Project {
 		}
 		this.budgetedTime = budgetedTime;
 	}
-	/** Gets the TimePeriod associated with this project.
+	/**
+	 * Jesper
+	 * Gets the TimePeriod associated with this project.
 	 * @return
 	 */
 	public TimePeriod getTimePeriod() {
 		return timePeriod;
 	}
 
-	/** Gets the project manager associated with this project.
+	/**
+	 * Andreas
+	 * Gets the project manager associated with this project.
 	 * @return
 	 */
 	public Employee getProjectManager() {
 		return projectManager;
 	}
 
+	/**
+	 * Emil
+	 * @return
+	 */
 	public int getBudgetedTime() {
 		return budgetedTime;
 	}
 
+	/**
+	 * Niklas
+	 * @return
+	 */
 	public String getCostumerName() {
 		return costumerName;
 	}
 	
 	/**
+	 * Niklas
 	 * @return the projectNumber
 	 */
 	public int getProjectNumber() {
