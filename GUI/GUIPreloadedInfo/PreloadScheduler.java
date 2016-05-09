@@ -1,36 +1,17 @@
-package GUI;
+package GUIPreloadedInfo;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import org.junit.Assert;
+import org.junit.Test;
 
-import GUI.Pages.LoginPage;
-import GUI.Pages.MainPage;
-import GUI.Pages.MyPagePage;
-import GUI.Pages.ProjectsPage;
-import GUI.Pages.SuperPage;
-import SoftwareHouse.Employee;
-import SoftwareHouse.Project;
+import GUI.GUIController;
 import SoftwareHouse.Scheduler;
-import junit.framework.Test;
 
-public class GUIController {
-	private JFrame frame;
-	private final Scheduler scheduler = new Scheduler();
-	private final MainPage mainPage = new MainPage(this, scheduler);
-	public final LoginPage loginPage = new LoginPage(this, scheduler);
-	public final ProjectsPage projectPage = new ProjectsPage(this, scheduler);
-	public final MyPagePage myPagePage = new MyPagePage(this, scheduler);
+public class PreloadScheduler {
 	
- 	public GUIController()
-	{
-		frame = new JFrame("herp a derp");
-		frame.add(mainPage.getPage(this));
-		frame.setSize(1010, 640); 
-	}
-	
-	public void show()
-	{
+	public static void main(String[] args) {
 		try {
+			Scheduler scheduler = new Scheduler();
+			
 			Tests.TestTools.addEmployee(scheduler, "AGC");
 			Tests.TestTools.addEmployee(scheduler, "JSB");
 			Tests.TestTools.addEmployee(scheduler, "NR");
@@ -63,19 +44,13 @@ public class GUIController {
 			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Tomat", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
 			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Dej", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
 			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Skinke", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Pølse", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Bacon", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Salat", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Pomfritter", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Småkager", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
 			
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		switchPage(loginPage);
-	}
-	
-	public <T extends JPanel> void switchPage(SuperPage<T> page)
-	{
-		mainPage.showPage(page.getPage(this));
-		page.loadInformation();
-		frame.setVisible(true);
+			new GUIController(scheduler).show();		
+		} catch (Exception e) {	}
 	}
 }

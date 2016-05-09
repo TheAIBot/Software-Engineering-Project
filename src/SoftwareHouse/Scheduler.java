@@ -40,6 +40,7 @@ public class Scheduler {
 			this.absenceProject = new Project(this, "Fraværs Project", true); 
 			//TODO test creation of absence project if it hasn't been done already
 		} catch (Exception e) { 
+			//Unreachable but necessary code for the compiler
 			throw new NullPointerException("Couldn't create the absense project");
 		}
 		anyoneLoggedIn = false;
@@ -151,7 +152,7 @@ public void createProject(String projectName) throws MissingInformationException
 			} else if (Tools.containsProject(java.util.Collections.singletonList(absenceProject), projectName)) {
 				return Tools.getProjectFromName(java.util.Collections.singletonList(absenceProject), projectName);
 			}else {
-				throw new ProjectNotFoundException();
+				throw new ProjectNotFoundException("Project was not found");
 			}
 		} else {
 			throw new NotLoggedInException();
@@ -218,7 +219,7 @@ public void createProject(String projectName) throws MissingInformationException
 					throw new ActivityNotFoundException();
 				}
 			} else {
-				throw new ProjectNotFoundException();
+				throw new ProjectNotFoundException("Project was not found");
 			}
 		} else {
 			throw new NotLoggedInException();
