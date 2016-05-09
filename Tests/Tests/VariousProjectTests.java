@@ -129,6 +129,57 @@ public class VariousProjectTests {
 	}
 	
 	
+	/**
+	 * Niklas
+	 */
+	@Test
+	public void testValidatePermissionNameIsNull(){
+		try {
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
+			scheduler.login(PROJECT_MANAGER_INITIALS);
+			scheduler.getProject(PROJECT_NAME).validateinformation(scheduler, "", BUDGETED_TIME, null, 
+																																								VALID_TIME_PERIOD, new ArrayList<Employee>(), new ArrayList<String>());
+		} catch(MissingInformationException e){
+			assertEquals("Missing project name", e.getMessage());
+		} catch (Exception e) {		
+			Assert.fail();
+		} 
+	}
+	
+	/**
+	 * Niklas
+	 */
+	@Test
+	public void testGetProjectNumber(){
+		try {
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
+			scheduler.login(PROJECT_MANAGER_INITIALS);
+			scheduler.getProject(PROJECT_NAME).getProjectNumber();
+			} catch(MissingInformationException e){
+			assertEquals("Missing project name", e.getMessage());
+		} catch (Exception e) {		
+			Assert.fail();
+		} 
+	}
+	
+	/**
+	 * Niklas
+	 */
+	@Test
+	public void testChangeProjectNameSame(){
+		try {
+			scheduler.createProject(PROJECT_NAME, COMPANY_NAME, DETAILED_TEXT, 
+					employeeListWithEmployees, BUDGETED_TIME, PROJECT_MANAGER_INITIALS, VALID_TIME_PERIOD);
+			scheduler.login(PROJECT_MANAGER_INITIALS);
+			scheduler.getProject(PROJECT_NAME).setName(PROJECT_NAME);;
+			} catch (Exception e) {		
+			Assert.fail();
+		} 
+	}
+	
+	
 	
 	
 }

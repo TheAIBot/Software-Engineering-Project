@@ -192,11 +192,9 @@ public class EditActivity {
 		assertEquals(activity.getName(), "Brugerinterface");
 		try {
 			activity.setDetailText("");
-			Assert.fail();
+			assertEquals("", activity.getDetailText());
 		} catch (MissingInformationException e) {
-			assertEquals("Missing detailed text", e.getMessage());
-		} catch (ProjectManagerNotLoggedInException e) {
-			Assert.fail(e.getMessage());
+			Assert.fail();
 		}
 	}
 	

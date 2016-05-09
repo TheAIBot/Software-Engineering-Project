@@ -143,7 +143,7 @@ public class Project {
 	 * @throws EmployeeNotFoundException
 	 * @throws ProjectManagerNotPartOfEmployeesAdded
 	 */
-	private void validateinformation(Scheduler scheduler, 
+	public void validateinformation(Scheduler scheduler, 
 			String projectName,
 		   	int budgetedTime, 
 		   	String initialsProjectManager, 
@@ -440,7 +440,7 @@ public class Project {
 			StringBuilder sBuilder = new StringBuilder();
 			openActivities.stream().forEach(x -> sBuilder.append(x.toString()));
 			writer.println(sBuilder.toString());
-		} catch (Exception e) {	}
+		} catch (Exception e) { } //Pretty much impossible
 	}
 
 	/**
