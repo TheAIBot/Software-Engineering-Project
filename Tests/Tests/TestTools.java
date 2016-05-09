@@ -19,7 +19,6 @@ import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.IllegalCharException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
-import SoftwareHouse.ExceptionTypes.InvalidProjectInitilizationInput;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
@@ -106,7 +105,7 @@ public class TestTools {
 	
 	
 	
-	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException
+	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException, MissingInformationException
 	{
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
 		int expectedHours = 200;
@@ -132,7 +131,7 @@ public class TestTools {
 			   								int expectedHours,
 			   								Calendar startDate,
 			   								Calendar endDate,
-			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException
+			   								String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException, MissingInformationException
 	{
 		Project project = null;
 		try {
@@ -224,5 +223,15 @@ public class TestTools {
 			Assert.fail();
 		}
 		return employee;
+	}
+	
+	public static void safeCloseProject(Scheduler scheduler, String projectName)
+	{
+		try {
+			Project projectToClose = scheduler.getProject(projectName);
+			projectToClose.close();
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 	}
 }

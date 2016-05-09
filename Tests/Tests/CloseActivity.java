@@ -16,7 +16,7 @@ import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
 public class CloseActivity {
 
 	@Test
-	public void closeActivitySuccessTest()
+	public void closeActivitySuccessTest() throws ActivityNotFoundException
 	{
 		Scheduler scheduler = new Scheduler();
 		TestTools.login(scheduler);
@@ -74,11 +74,7 @@ public class CloseActivity {
 		
 		assertEquals(project.getOpenActivities().size(), 1);
 		assertEquals(project.getClosedActivities().size(), 0);
-		try {
-			project.closeActivity(activityName);
-		} catch (ActivityNotFoundException e) {
-			Assert.fail();
-		}
+		project.closeActivity(activityName);
 		assertEquals(project.getOpenActivities().size(), 0);
 		assertEquals(project.getClosedActivities().size(), 1);
 	}

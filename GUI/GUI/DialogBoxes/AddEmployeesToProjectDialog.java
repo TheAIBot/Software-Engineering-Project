@@ -26,6 +26,7 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 public class AddEmployeesToProjectDialog extends JDialog {
 
@@ -133,7 +134,7 @@ public class AddEmployeesToProjectDialog extends JDialog {
 	}
 		
 	
-	private void tryAddEmployees() throws InvalidInformationException
+	private void tryAddEmployees() throws InvalidInformationException, ProjectManagerNotLoggedInException
 	{
 		int dialogResult = JOptionPane.showConfirmDialog(null, "Vil du foretage disse ændringer?");
 		if (dialogResult == JOptionPane.YES_OPTION) {
@@ -144,12 +145,12 @@ public class AddEmployeesToProjectDialog extends JDialog {
 	public void loadInformation()
 	{	
 		assignedEmployees = project.getEmployees();
-		assignedEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(assignedEmployees));
+		assignedEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(assignedEmployees, (a, b) -> b.getActivities().size() - a.getActivities().size()));
 		
 		List<Employee> employees = scheduler.getEmployeesContainingString("");
 		employees = employees.stream()
 							 .filter(x -> !assignedEmployees.contains(x))
 							 .collect(Collectors.toList());
-		allEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(employees));
+		allEmployeesScrollBar.setViewportView(Tools.createTableOfEmployees(employees, (a, b) -> b.getActivities().size() - a.getActivities().size()));
 	}
 }

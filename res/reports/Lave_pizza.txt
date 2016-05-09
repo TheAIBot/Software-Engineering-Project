@@ -1,0 +1,26 @@
+Activity name: Ost
+Bugeted time: 200
+Detailed text: oprettelsen af et brugerinterface for programmet
+Employee initials: LLLL
+
+Activity name: Pepperoni
+Bugeted time: 200
+Detailed text: oprettelsen af et brugerinterface for programmet
+Employee initials: LLLL
+
+Activity name: Tomat
+Bugeted time: 200
+Detailed text: oprettelsen af et brugerinterface for programmet
+Employee initials: LLLL
+
+Activity name: Dej
+Bugeted time: 200
+Detailed text: oprettelsen af et brugerinterface for programmet
+Employee initials: LLLL
+
+Activity name: Skinke
+Bugeted time: 200
+Detailed text: oprettelsen af et brugerinterface for programmet
+Employee initials: LLLL
+
+

@@ -86,9 +86,9 @@ public void createProject(String projectName) throws MissingInformationException
 							  TimePeriod timePeriod) throws NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		if (isAnyoneLoggedIn()) {
-			if (projectName == null) {
+			if (Tools.isNullOrEmpty(projectName)) {
 				throw new MissingInformationException("Missing project name");
-			} else if (Tools.containsProject(projects, projectName.trim())) {
+			} else if (!isNewValidProjectName(projectName)) {
 				throw new DuplicateNameException("A project with that title already exists");
 			} 
 			projects.add(new Project(this, projectName,  costumerName, detailedText, employeesToAdd, budgettedTime, initialsProjectManager, timePeriod));
@@ -130,16 +130,12 @@ public void createProject(String projectName) throws MissingInformationException
 		}
 	}
 
-	/** Return whether or not all the given employees exist. If the list is null, it returns true. 
+	/** Return whether or not all the given employees exist. 
 	 * @param employees The employees
 	 * @return True if all exists, else false.
 	 */
 	public boolean doAllEmployeesExist(List<Employee> employees) {
-		if (employees != null) {
-			return (employees.stream().allMatch(x -> this.doesEmployeeExist(x.getInitials())));			
-		} else {
-			return true;
-		}
+		return (employees.stream().allMatch(x -> this.doesEmployeeExist(x.getInitials())));			
 	}
 	
 	/**
@@ -161,7 +157,15 @@ public void createProject(String projectName) throws MissingInformationException
 			throw new NotLoggedInException();
 		}
 	}
-
+	
+	public boolean isNewValidProjectName(String projectName)
+	{
+		final String lowerCaseProjectName = projectName.toLowerCase().trim();
+		return !Tools.isNullOrEmpty(lowerCaseProjectName) && 
+				!projects.stream()
+						 .anyMatch(x -> x.getName().toLowerCase().trim().equals(lowerCaseProjectName));
+	}
+	
 	/**
 	 * @param partOfProjectName
 	 * @return List<Project>
@@ -273,9 +277,6 @@ public void createProject(String projectName) throws MissingInformationException
 		//match all unicode characters that are part of a alphabet and the initials has atleast 1 character in it
 		if(!initials.matches("\\p{L}+")){
 			throw new IllegalCharException("Only letters are allowed for initials");
-		}
-		if (employees.containsKey(initials)) {
-			throw new DuplicateNameException("An employee with those initial already exist");
 		}
 		return true;
 	}

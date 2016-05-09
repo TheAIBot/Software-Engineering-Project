@@ -47,12 +47,10 @@ public class AddActivityToProject {
 		}
 		assertEquals(project.getOpenActivities().size(), 0);
 		
-		
 		TestTools.addEmployeeToProject(scheduler, "JBS", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
-		
 		assertTrue(scheduler.doAllEmployeesExist(project.getEmployees()));
 	}
 	
@@ -97,7 +95,8 @@ public class AddActivityToProject {
 		} catch (EmployeeMaxActivitiesReachedException e) {
 			Assert.fail();
 		} catch (ProjectManagerNotLoggedInException e) {
-			assertEquals(e.getMessage(),"Project manager is not logged in");
+			assertEquals(e.getMessage(),"Either there needs to be no project manager for the project" +
+	                " or the person needs to be logged in, for edits to be made");
 		}
 	}
 	
@@ -510,6 +509,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
 			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
 		}
 		
 		//Test for adding an exisiting empoyee who is not part of the corresponding project. 
@@ -561,6 +562,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
 			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
 		}
 	}
 	
@@ -584,20 +587,9 @@ public class AddActivityToProject {
 		
 		try {
 			project.forceAddAcitivity(activityName,	activityDetailedDescription, null, startDate, endDate, expectedHours);
+		} catch (Exception e) {
 			Assert.fail();
-		} catch (NullPointerException e) {
-			
-		} catch (EmployeeNotFoundException e) {
-			Assert.fail();
-		} catch (DuplicateNameException e) {
-			Assert.fail();
-		} catch (EmployeeMaxActivitiesReachedException e) {
-			Assert.fail();
-		} catch (ProjectManagerNotLoggedInException e) {
-			Assert.fail();
-		} catch (InvalidInformationException e) {
-			Assert.fail();
-		}
+		} 
 	}
 	
 	@Test
@@ -670,6 +662,8 @@ public class AddActivityToProject {
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
 			Assert.fail();
 		}
 	}

@@ -52,8 +52,7 @@ public class Activity {
 	public void setName(String name) throws MissingInformationException, DuplicateNameException {
 		if (Tools.isNullOrEmpty(name)) {
 			throw new MissingInformationException("Missing name");
-		}
-		if (Tools.containsActivity(inProject.getOpenActivities(), name)) {
+		} else if (!inProject.isNewValidActivityName(name) && !name.equals(getName())) {
 			throw new DuplicateNameException("An activity with the specified name already exists");
 		}
 		this.name = name;
