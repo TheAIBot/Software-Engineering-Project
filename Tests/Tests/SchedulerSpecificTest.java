@@ -47,5 +47,20 @@ public class SchedulerSpecificTest {
 			Assert.fail();
 		}
 	}
+	
+	
+	@Test
+	public void testIsNewValidProjectNameNull()
+	{
+		assertEquals(false,scheduler.isNewValidProjectName(""));
+	}
+	
+	@Test
+	public void testDoesEmployeeExist()
+	{
+		assertEquals( false, scheduler.doesEmployeeExist(null));
+	}
+	
+	
 
 }

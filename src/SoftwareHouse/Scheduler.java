@@ -25,11 +25,11 @@ import SoftwareHouse.ExceptionTypes.TooManyCharsException;
  */
 public class Scheduler {
 
-	private List<Project> projects = new ArrayList<Project>();
-	private Map<String, Employee> employees = new HashMap<String, Employee>();
+	private final List<Project> projects = new ArrayList<Project>();
+	private final Map<String, Employee> employees = new HashMap<String, Employee>();
 	private boolean anyoneLoggedIn = false;
 	private Employee loggedInEmployee = null;
-	private TimeVault timeVault = new TimeVault(this);	
+	private final TimeVault timeVault = new TimeVault(this);	
 	private final Project absenceProject;
 	
 	/**
@@ -256,7 +256,6 @@ public void createProject(String projectName) throws MissingInformationException
 	 * @return
 	 */
 	public boolean doesEmployeeExist(String initials){
-		if (employees == null) return false; 
 		return employees.containsKey(initials);
 	}
 
