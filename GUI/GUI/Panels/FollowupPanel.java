@@ -7,14 +7,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-<<<<<<< HEAD
+import GUI.GUIController;
+
 /**
  * @author Niklas
  */
-=======
-import GUI.GUIController;
-
->>>>>>> refs/remotes/origin/Andreas
 public class FollowupPanel extends JPanel {
 	private JScrollPane openActivitiesScrollPane;
 	private JScrollPane closedActivitiesScrollPane;

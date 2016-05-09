@@ -10,14 +10,12 @@ import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-<<<<<<< HEAD
+import GUI.GUIController;
+
+
 /**
  * @author Andreas
  */
-=======
-import GUI.GUIController;
-
->>>>>>> refs/remotes/origin/Andreas
 public class ProjectsPanel extends JPanel {
 	private JScrollPane openProjectsScrollBar;
 	private JButton createProjectButton;

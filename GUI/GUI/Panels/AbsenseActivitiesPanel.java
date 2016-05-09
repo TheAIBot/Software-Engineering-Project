@@ -5,14 +5,12 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-<<<<<<< HEAD
+import GUI.GUIController;
+
 /**
  * @author Andreas
  */
-=======
-import GUI.GUIController;
 
->>>>>>> refs/remotes/origin/Andreas
 public class AbsenseActivitiesPanel extends JPanel {
 	private JScrollPane absenseActivitiesScrollPane;
 
