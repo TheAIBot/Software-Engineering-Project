@@ -26,10 +26,16 @@ import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
+/**
+ * @author Andreas
+ */
 public class TestTools {
 	
 	public static final String LOGIN_EMPLOYEE_INITIALS = "LLLL";
 	
+	/**
+	 * Andreas
+	 */
 	public static Employee addEmployee(Scheduler scheduler, String name) throws EmployeeNotFoundException, MissingInformationException, DuplicateNameException, TooManyCharsException, IllegalCharException
 	{
 		scheduler.addEmployee(name);
@@ -38,6 +44,9 @@ public class TestTools {
 		return employee;
 	}
 	
+	/**
+	 * Andreas
+	 */
 	public static Activity addActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException
 	{		
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
@@ -56,7 +65,10 @@ public class TestTools {
 						   endDate, 
 						   toAddEmployeeInitials);
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	public static Activity addActivity(Scheduler scheduler, 
 									   String projectName, 
 									   String activityName,
@@ -104,7 +116,10 @@ public class TestTools {
 	
 	
 	
-	
+
+	/**
+	 * Andreas
+	 */
 	public static Activity forceAddActivity(Scheduler scheduler, String projectName, String activityName, String[] toAddEmployeeInitials) throws ProjectNotFoundException, ActivityNotFoundException, NotLoggedInException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException, MissingInformationException
 	{
 		String activityDetailedDescription = "oprettelsen af et brugerinterface for programmet";
@@ -123,7 +138,10 @@ public class TestTools {
 						   endDate, 
 						   toAddEmployeeInitials);
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	public static Activity forceAddActivity(Scheduler scheduler, 
 			   								String projectName, 
 			   								String activityName,
@@ -159,7 +177,10 @@ public class TestTools {
 		
 		return activity;
 	}
-		
+
+	/**
+	 * Andreas
+	 */
 	public static Employee addEmployeeToProject(Scheduler scheduler, String employeeName, String projectName)
 	{
 		Employee employee = null;
@@ -189,11 +210,17 @@ public class TestTools {
 		return employee;
 	}
 
+	/**
+	 * Andreas
+	 */
 	public static Project createProject(Scheduler scheduler,String projectName) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		return createProject(scheduler, projectName, LOGIN_EMPLOYEE_INITIALS);
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	public static Project createProject(Scheduler scheduler,String projectName, String projectManagerInitial) throws MissingInformationException, DuplicateNameException, NotLoggedInException, InvalidInformationException, EmployeeNotFoundException, EmployeeAlreadyAssignedException, ProjectManagerNotPartOfEmployeesAdded
 	{
 		int currentNumberOfProjects = scheduler.getProjects().size();
@@ -213,6 +240,9 @@ public class TestTools {
 		return project;
 	}
 
+	/**
+	 * Andreas
+	 */
 	public static Employee login(Scheduler scheduler)
 	{
 		Employee employee = null;
@@ -224,7 +254,10 @@ public class TestTools {
 		}
 		return employee;
 	}
-	
+
+	/**
+	 * Andreas
+	 */
 	public static void safeCloseProject(Scheduler scheduler, String projectName)
 	{
 		try {

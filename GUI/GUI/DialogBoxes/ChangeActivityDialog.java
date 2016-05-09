@@ -37,6 +37,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 /**
  * @author Jesper
@@ -222,7 +223,7 @@ public class ChangeActivityDialog extends JDialog {
 	}
 		
 	
-	private void changeActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException 
+	private void changeActivity() throws ParseException, EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, MissingInformationException, InvalidInformationException, ProjectManagerNotLoggedInException 
 	{
 		String activityName = projectNameTextField.getText();
 		TimePeriod timePeriod = null;

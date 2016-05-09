@@ -17,9 +17,15 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author Andreas
+ */
 public class CloseProject {
 	private Scheduler scheduler;
 	
+	/**
+	 * Andreas
+	 */
 	@Before
 	public void setup()
 	{
@@ -36,7 +42,9 @@ public class CloseProject {
 		addActivity("Add more cake");
 	}
 	
-	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void CloseProjectSuccessTest()
 	{
@@ -59,7 +67,9 @@ public class CloseProject {
 		assertEquals(project.getClosedActivities().size(), 3);
 		
 	}
-	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void CloseProjectAlreadyClosed()
 	{
@@ -86,7 +96,9 @@ public class CloseProject {
 		assertEquals(project.getOpenActivities().size(), 0);
 		assertEquals(project.getClosedActivities().size(), 3);
 	}
-	
+	/**
+	 * Andreas
+	 */
 	private void addActivity(String activityName)
 	{
 		Project project = null;
