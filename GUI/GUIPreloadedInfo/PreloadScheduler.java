@@ -44,6 +44,11 @@ public class PreloadScheduler {
 			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Tomat", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
 			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Dej", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
 			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Skinke", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Pølse", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Bacon", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Salat", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Pomfritter", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
+			Tests.TestTools.addActivity(scheduler, "Lave pizza", "Småkager", new String[] {Tests.TestTools.LOGIN_EMPLOYEE_INITIALS});
 			
 			new GUIController(scheduler).show();		
 		} catch (Exception e) {	}
