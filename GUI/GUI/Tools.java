@@ -28,6 +28,7 @@ import GUI.Pages.ProjectPage;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Employee;
 import SoftwareHouse.Project;
+import SoftwareHouse.RegisteredTime;
 import SoftwareHouse.Scheduler;
 import SoftwareHouse.TimePeriod;
 import SoftwareHouse.ThrowingLambdaInterfaces.ThrowingConsumer;
@@ -76,6 +77,17 @@ public class Tools {
 		final Object[][] employeesAsATable = new Object[employees.size()][1];
 		for (int i = employees.size() - 1; i >= 0; i--) {
 			employeesAsATable[employeesAsATable.length - 1 - i][0] = employees.get(i).getInitials();
+		}
+
+		return new JTable(employeesAsATable, columnNames);
+	}
+	
+	public static JTable createTableOfRegisteredTimes(List<RegisteredTime> registeredTimes) {
+		final String[] columnNames = { "Employee", "Registered time" };
+		final Object[][] employeesAsATable = new Object[registeredTimes.size()][2];
+		for (int i = registeredTimes.size() - 1; i >= 0; i--) {
+			employeesAsATable[employeesAsATable.length - 1 - i][0] = registeredTimes.get(i).getEmployee().getInitials();
+			employeesAsATable[employeesAsATable.length - 1 - i][1] = registeredTimes.get(i).getTime();
 		}
 
 		return new JTable(employeesAsATable, columnNames);

@@ -39,7 +39,7 @@ public class MainPage extends SuperPage<JPanel> {
 		page.add(employeesPageButton, Tools.createConstraint(0, 0, 1, 1, GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 0, 5));
 		page.add(myPageButton,        Tools.createConstraint(0, 1, 1, 1, GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 0, 5));
 		page.add(projectsPageButton,  Tools.createConstraint(0, 2, 1, 1, GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 0, 5));
-		page.add(derpPageButton,      Tools.createConstraint(0, 3, 1, 1, GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 0, 5));
+		//page.add(derpPageButton,      Tools.createConstraint(0, 3, 1, 1, GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 0, 5));
 		page.add(showPagePanel,       Tools.createConstraint(1, 0, 2, 4, GridBagConstraints.CENTER, GridBagConstraints.BOTH, 0, 100));
 		
 		employeesPageButton.addActionListener(new ActionListener() {

@@ -30,12 +30,6 @@ public class AddEmployeeToProject {
 	private Employee employee1;
 	private Employee employee2;
 	
-	//TODO (*) Change
-	// Add to different projects.
-	// (*) rewrite blackbox tests completly
-	//One cannot, by implementation, add an employee to an non-existing project. 
-	//The only way to add an employee to a project, is through the project.
-	
 	/**
 	 * Jesper
 	 */

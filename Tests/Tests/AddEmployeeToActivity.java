@@ -26,8 +26,6 @@ import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 public class AddEmployeeToActivity {
 	Scheduler scheduler = null;
 
-	// TODO Needs to check i user also has the list of activities
-
 	/**
 	 * Andreas
 	 * Setup the test environment by initialising the schduler, login, creating

@@ -177,9 +177,10 @@ public class EditActivity {
 	/**
 	 * Emil
 	 * Try to remove the detailed text of the activity
+	 * @throws ProjectManagerNotLoggedInException 
 	 */
 	@Test
-	public void testEditActivityRemoveDetailedText() {
+	public void testEditActivityRemoveDetailedText() throws ProjectManagerNotLoggedInException {
 		Activity activity = null;
 		try {
 			activity = scheduler.getActivity("Navision Stat", "Brugerinterface");
@@ -194,6 +195,8 @@ public class EditActivity {
 			Assert.fail();
 		} catch (MissingInformationException e) {
 			assertEquals("Missing detailed text", e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 	

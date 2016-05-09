@@ -4,6 +4,9 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import GUI.GUIController;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
@@ -21,11 +24,12 @@ public class ActivityPanel extends JPanel {
 	private JLabel inProjectLabel;
 	private JButton registerTimeButton;
 	private JButton deleteActivityButton;
+	private JScrollPane registeredTimeScrollPane;
 	
 	public ActivityPanel() {
-		setMaximumSize(new Dimension(800, 600));
-		setMinimumSize(new Dimension(800, 600));
-		setPreferredSize(new Dimension(800, 600));
+		setMaximumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMinimumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setPreferredSize(GUIController.DEFAULT_PANEL_SIZE);
 		setLayout(null);
 		
 		addEmployeesButton = new JButton("Tilf\u00F8j medarbejdere");
@@ -51,7 +55,7 @@ public class ActivityPanel extends JPanel {
 		add(lblNewLabel);
 		
 		employeesScrollPane = new JScrollPane();
-		employeesScrollPane.setBounds(521, 11, 269, 578);
+		employeesScrollPane.setBounds(919, 11, 269, 578);
 		add(employeesScrollPane);
 		
 		JLabel lblNewLabel_1 = new JLabel("Budgetteret tid:");
@@ -78,6 +82,10 @@ public class ActivityPanel extends JPanel {
 		deleteActivityButton.setEnabled(false);
 		deleteActivityButton.setBounds(392, 474, 119, 52);
 		add(deleteActivityButton);
+		
+		registeredTimeScrollPane = new JScrollPane();
+		registeredTimeScrollPane.setBounds(618, 11, 289, 578);
+		add(registeredTimeScrollPane);
 	}
 
 	/**
@@ -134,5 +142,12 @@ public class ActivityPanel extends JPanel {
 	 */
 	public JButton getDeleteActivityButton() {
 		return deleteActivityButton;
+	}
+
+	/**
+	 * @return the registeredTimeScrollPane
+	 */
+	public JScrollPane getRegisteredTimeScrollPane() {
+		return registeredTimeScrollPane;
 	}
 }

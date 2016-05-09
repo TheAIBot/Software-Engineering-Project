@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import GUI.GUIController;
+
 import javax.swing.JButton;
 
 /**
@@ -23,15 +26,17 @@ public class ProjectPanel extends JPanel {
 	private JButton closeProjectButton;
 	private JLabel statusLabel;
 	private JButton generateReportButton;
+	private JLabel projectNumberLabel;
+	private JScrollPane registeredTimeScrollPane;
 
 	public ProjectPanel() {
-		setMaximumSize(new Dimension(800, 600));
-		setMinimumSize(new Dimension(800, 600));
-		setPreferredSize(new Dimension(800, 600));
+		setMaximumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setMinimumSize(GUIController.DEFAULT_PANEL_SIZE);
+		setPreferredSize(GUIController.DEFAULT_PANEL_SIZE);
 		setLayout(null);
 		
 		activitiesScrollPane = new JScrollPane();
-		activitiesScrollPane.setBounds(439, 11, 351, 578);
+		activitiesScrollPane.setBounds(837, 11, 351, 578);
 		add(activitiesScrollPane);
 		
 		JLabel lblProjektNavn = new JLabel("Projekt navn:");
@@ -103,6 +108,18 @@ public class ProjectPanel extends JPanel {
 		generateReportButton.setEnabled(false);
 		generateReportButton.setBounds(10, 472, 156, 52);
 		add(generateReportButton);
+		
+		JLabel lblPojektnummer = new JLabel("Pojektnummer:");
+		lblPojektnummer.setBounds(10, 138, 105, 16);
+		add(lblPojektnummer);
+		
+		projectNumberLabel = new JLabel("");
+		projectNumberLabel.setBounds(125, 138, 151, 16);
+		add(projectNumberLabel);
+		
+		registeredTimeScrollPane = new JScrollPane();
+		registeredTimeScrollPane.setBounds(600, 11, 225, 578);
+		add(registeredTimeScrollPane);
 	}
 
 	/**
@@ -187,5 +204,19 @@ public class ProjectPanel extends JPanel {
 	 */
 	public JButton getGenerateReportButton() {
 		return generateReportButton;
+	}
+
+	/**
+	 * @return the projectNumberLabel
+	 */
+	public JLabel getProjectNumberLabel() {
+		return projectNumberLabel;
+	}
+
+	/**
+	 * @return the registeredTimeScrollPane
+	 */
+	public JScrollPane getRegisteredTimeScrollPane() {
+		return registeredTimeScrollPane;
 	}
 }

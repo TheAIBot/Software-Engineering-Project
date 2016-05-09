@@ -102,7 +102,8 @@ public class Project {
 				this.addEmployee(employeeInitials);
 			}
 		} else employees = new ArrayList<Employee>();
-		this.projectNumber = Calendar.getInstance().get(Calendar.YEAR) + serialNumber;
+		//adds a project number to the project that is a mix of the current year and a serialnumber
+		this.projectNumber = (int)Math.pow(Calendar.getInstance().get(Calendar.YEAR),Math.log10(serialNumber) + 1) + serialNumber;
 		serialNumber++;
 	}
 	
@@ -218,7 +219,6 @@ public class Project {
 		} else if (budgetedTime < 0) {
 			throw new InvalidInformationException("Budgetted time can't be less than 0");
 		} else if (!allEmployeesCanWorkOnMoreActivities(employeeInitials)){
-			//TODO Check here(*)
 		}
 		forceAddAcitivity(title, detailText, employeeInitials, startTime, endTime, budgetedTime);
 	}
@@ -295,7 +295,7 @@ public class Project {
 		List<Employee> employeesPastMaxActivity = new ArrayList<Employee>();
 		if (employeeInitials != null) {
 			for (String initials : employeeInitials) {
-				if (Tools.containsEmployee(employees, initials)) { //TODO (*) check here.
+				if (Tools.containsEmployee(employees, initials)) {
 					Employee currentEmployee = Tools.getEmployeeFromInitials(employees, initials);
 					if (currentEmployee.canContainMoreActivities()) {
 						activityEmployees.add(Tools.getEmployeeFromInitials(employees, initials));
