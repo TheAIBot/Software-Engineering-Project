@@ -13,6 +13,9 @@ import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import sun.net.www.content.audio.x_aiff;
 
+/**
+ * @author Andreas
+ */
 public class Activity {
 	
 	protected String name;
@@ -22,6 +25,18 @@ public class Activity {
 	protected int budgettedTime;
 	protected final Project inProject;
 	
+	/**
+	 * Jesper
+	 * @param name
+	 * @param detailText
+	 * @param employees
+	 * @param startDate
+	 * @param endDate
+	 * @param budgettedTime
+	 * @param inProject
+	 * @throws EmployeeMaxActivitiesReachedException
+	 * @throws InvalidInformationException
+	 */
 	public Activity(String name, String detailText, List<Employee> employees, Calendar startDate, Calendar endDate, int budgettedTime, Project inProject) throws EmployeeMaxActivitiesReachedException, InvalidInformationException {
 		this.name = name;
 		this.detailText = detailText;
@@ -40,12 +55,14 @@ public class Activity {
 
 	/**
 	 * @return the title
+	 * Andreas
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * Emil
 	 * @param title the title to set
 	 * @throws MissingInformationException 
 	 */
@@ -59,6 +76,7 @@ public class Activity {
 	}
 
 	/**
+	 * Jesper
 	 * @return the detailText
 	 */
 	public String getDetailText() {
@@ -66,6 +84,7 @@ public class Activity {
 	}
 
 	/**
+	 * Niklas
 	 * @param detailText the detailText to set
 	 */
 	public void setDetailText(String detailText) throws MissingInformationException {
@@ -76,6 +95,7 @@ public class Activity {
 	}
 
 	/**
+	 * Andreas
 	 * @return the budgettedTime
 	 */
 	public int getBudgettedTime() {
@@ -83,6 +103,7 @@ public class Activity {
 	}
 
 	/**
+	 * Emil
 	 * @param budgettedTime the budgettedTime to set
 	 * @throws InvalidInformationException 
 	 */
@@ -94,6 +115,7 @@ public class Activity {
 	}
 
 	/**
+	 * Andreas
 	 * @return the assignedEmployees
 	 */
 	public List<Employee> getAssignedEmployees() {
@@ -101,6 +123,7 @@ public class Activity {
 	}
 
 	/**
+	 * Emil
 	 * @return the timePeriod
 	 */
 	public TimePeriod getTimePeriod() {
@@ -108,12 +131,20 @@ public class Activity {
 	}
 
 	/**
+	 * Niklas
 	 * @param timePeriod the timePeriod to set
 	 */
 	public void setTimePeriod(TimePeriod timePeriod) {
 		this.timePeriod = timePeriod;
 	}
 
+	/**
+	 * Niklas
+	 * @param initials
+	 * @throws EmployeeMaxActivitiesReachedException
+	 * @throws EmployeeNotFoundException
+	 * @throws EmployeeAlreadyAssignedException
+	 */
 	public void addEmployee(String initials) throws EmployeeMaxActivitiesReachedException, EmployeeNotFoundException, EmployeeAlreadyAssignedException {
 		if (Tools.containsEmployee(inProject.getEmployees(), initials)) {
 			if (!Tools.containsEmployee(assignedEmployees, initials)) {
@@ -128,11 +159,16 @@ public class Activity {
 		}
 	}
 
+	/**
+	 * Niklas
+	 * @return
+	 */
 	public String getProjectName() {
 		return inProject.getName();
 	}
 
 	/**
+	 * Jesper
 	 * @return the inProject
 	 */
 	public Project getInProject() {
@@ -140,6 +176,7 @@ public class Activity {
 	}
 
 	/**
+	 * Emil
 	 * @param assignedEmployees the assignedEmployees to set
 	 * @throws InvalidInformationException 
 	 */
@@ -150,6 +187,9 @@ public class Activity {
 		this.assignedEmployees = assignedEmployees;
 	}
 	
+	/**
+	 * Andreas
+	 */
 	public String toString()
 	{
 		StringBuilder sBuilder = new StringBuilder();

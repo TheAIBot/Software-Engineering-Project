@@ -19,6 +19,9 @@ import GUI.Panels.ProjectsPanel;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 
+/**
+ * @author Niklas
+ */
 public class ProjectsPage extends SuperPage<ProjectsPanel> {
 
 	public ProjectsPage(GUIController controller, Scheduler scheduler) {

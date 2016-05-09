@@ -27,6 +27,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+/**
+ * @author Niklas
+ */
 public class RegisterTimeDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

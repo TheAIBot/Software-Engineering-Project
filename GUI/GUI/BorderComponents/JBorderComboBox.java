@@ -8,6 +8,7 @@ import javax.swing.border.Border;
 
 /**
  * Used to highlight a text combo box depending on current input
+ * Jesper
  */
 public class JBorderComboBox extends JComboBox<String> implements ColoredBorder {
 

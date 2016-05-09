@@ -7,6 +7,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/**
+ * @author Niklas
+ */
 public class FollowupPanel extends JPanel {
 	private JScrollPane openActivitiesScrollPane;
 	private JScrollPane closedActivitiesScrollPane;

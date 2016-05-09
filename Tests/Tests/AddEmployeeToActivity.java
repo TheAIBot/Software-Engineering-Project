@@ -19,12 +19,16 @@ import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 
+/**
+ * @author Andreas
+ */
 public class AddEmployeeToActivity {
 	Scheduler scheduler = null;
 
 	// TODO Needs to check i user also has the list of activities
 
 	/**
+	 * Andreas
 	 * Setup the test environment by initialising the schduler, login, creating
 	 * a sample project and staff it with employees. Further, add an activity to
 	 * the project
@@ -83,6 +87,9 @@ public class AddEmployeeToActivity {
 		}
 	}
 
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void AddEmployeeToActivitySuccessTest() {
 		// Get the activity and employee
@@ -113,6 +120,9 @@ public class AddEmployeeToActivity {
 		assertTrue(employee.isAlreadyPartOfActivity(activity));
 	}
 
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AddEmployeeToActivityEmployeeNotAssignedToProjectTest() {
 		Activity activity = null;
@@ -141,6 +151,9 @@ public class AddEmployeeToActivity {
 		}
 	}
 
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void AddEmployeeToActivityEmployeeNotFoundTest() {
 
@@ -164,6 +177,9 @@ public class AddEmployeeToActivity {
 		}
 	}
 
+	/**
+	 * Emil
+	 */
 	@Test
 	public void AddEmployeeToActivityEmployeeAssignedTooManyActivitiesTest() {
 		for (int i = 1; i < Employee.MAX_ACTIVITIES + 1; i++) {
@@ -201,6 +217,10 @@ public class AddEmployeeToActivity {
 
 	}
 
+	/**
+	 * Emil
+	 * @param activityName
+	 */
 	private void addActivity(String activityName) {
 		Project project = null;
 		try {
@@ -223,6 +243,9 @@ public class AddEmployeeToActivity {
 		}
 	}
 
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void AddEmployeeToSameActivityTwiceTest() {
 		Activity activity = null;

@@ -21,6 +21,9 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.ProjectAlreadyClosedException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
+/**
+ * @author ELL
+ */
 public class ProjectPage extends SuperPage<ProjectPanel> {
 
 	private final Project project;

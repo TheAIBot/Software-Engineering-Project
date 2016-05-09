@@ -25,6 +25,9 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 import SoftwareHouse.ExceptionTypes.TooManyCharsException;
 
+/**
+ * @author Niklas
+ */
 public class VariousProjectTests {
 
 	public static Scheduler scheduler;
@@ -38,6 +41,10 @@ public class VariousProjectTests {
 	private TimePeriod VALID_TIME_PERIOD ;
 	private static List<Employee> employeeListWithEmployees;
 	
+
+	/**
+	 * Niklas
+	 */
 	@Before
 	public void setup(){
 		scheduler = new Scheduler();	
@@ -58,7 +65,10 @@ public class VariousProjectTests {
 			Assert.fail();
 		}
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testValidateInformationSchedulerIsNull(){
 		try {
@@ -67,7 +77,10 @@ public class VariousProjectTests {
 			assertEquals("Scheduler can't be null",e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testProperProjectManagerEmployeesIsNull(){
 		try {
@@ -78,7 +91,10 @@ public class VariousProjectTests {
 			assertEquals("The given manager JSB is not a part of the list of employees given.",e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testAddEmployee(){
 		try {
@@ -95,7 +111,10 @@ public class VariousProjectTests {
 			assertEquals("DIO" + " is already a part of the project " + "Navision Stat",e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Niklas
+	 */
 	@Test
 	public void testHasPermissiontoEditProjectManagerIsNull(){
 		try {

@@ -25,12 +25,18 @@ import SoftwareHouse.ExceptionTypes.NotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectNotFoundException;
 
+/**
+ * @author Andreas
+ */
 public class ActivitySpecificTest {
 
 	private Scheduler scheduler = null;
 	private Project project;
 	private Activity activity = null;
 	
+	/**
+	 * Andreas
+	 */
 	@Before
 	public void setup()
 	{
@@ -65,9 +71,11 @@ public class ActivitySpecificTest {
 	
 	@Test
 	public void testSetBudgettedTime(){
-		
 	}
 	
+	/**
+	 * Jesper
+	 */
 	@Test
 	public void testGetOpenActivitiesActivityNotExisting(){
 		try {
@@ -84,6 +92,9 @@ public class ActivitySpecificTest {
 		}
 	}
 	
+	/**
+	 * Andreas
+	 */
 	@Test
 	public void testAddActivityEmptyListOfEmployees(){
 		try {

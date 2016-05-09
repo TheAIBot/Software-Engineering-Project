@@ -13,6 +13,9 @@ import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 import junit.framework.Test;
 
+/**
+ * @author Andreas
+ */
 public class GUIController {
 	private JFrame frame;
 	private final Scheduler scheduler;

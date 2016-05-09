@@ -3,6 +3,9 @@ package GUI.Listeners;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * @author Niklas
+ */
 public interface TextChangedListener extends DocumentListener {
 
 	@Override

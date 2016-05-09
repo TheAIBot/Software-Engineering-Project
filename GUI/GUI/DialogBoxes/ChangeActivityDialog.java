@@ -38,6 +38,9 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 
+/**
+ * @author Jesper
+ */
 public class ChangeActivityDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
