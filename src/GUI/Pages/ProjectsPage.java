@@ -7,6 +7,7 @@ import java.awt.event.WindowListener;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JTable;
 
@@ -15,6 +16,7 @@ import GUI.Tools;
 import GUI.DialogBoxes.CreateProjectDialog;
 import GUI.Listeners.WindowClosingListener;
 import GUI.Panels.ProjectsPanel;
+import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
 
 public class ProjectsPage extends SuperPage<ProjectsPanel> {
@@ -47,7 +49,14 @@ public class ProjectsPage extends SuperPage<ProjectsPanel> {
 	@Override
 	public void loadInformation() {
 		try {
-			page.getProjectsScrollBar().setViewportView(Tools.createTableOfProjects(scheduler.getProjects(), controller, scheduler));
+			List<Project> openProjects = scheduler.getProjects().stream()
+																.filter(x -> x.isOpen())
+																.collect(Collectors.toList());
+			List<Project> closedProjects = scheduler.getProjects().stream()
+																  .filter(x -> !x.isOpen())
+																  .collect(Collectors.toList());
+			page.getProjectsScrollBar().setViewportView(Tools.createTableOfProjects(openProjects, controller, scheduler));
+			page.getClosedProjectsScrollPane().setViewportView(Tools.createTableOfProjects(closedProjects, controller, scheduler));
 		} catch (Exception e) { }
 		
 	}

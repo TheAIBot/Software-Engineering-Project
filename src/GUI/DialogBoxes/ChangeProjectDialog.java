@@ -36,6 +36,7 @@ import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
 import SoftwareHouse.ExceptionTypes.InvalidInformationException;
 import SoftwareHouse.ExceptionTypes.MissingInformationException;
 import SoftwareHouse.ExceptionTypes.NotLoggedInException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 import SoftwareHouse.ExceptionTypes.ProjectManagerNotPartOfEmployeesAdded;
 
 public class ChangeProjectDialog extends JDialog {
@@ -257,7 +258,7 @@ public class ChangeProjectDialog extends JDialog {
 	}
 		
 	
-	private void changeProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, ProjectManagerNotPartOfEmployeesAdded
+	private void changeProject() throws ParseException, NotLoggedInException, MissingInformationException, InvalidInformationException, EmployeeNotFoundException, DuplicateNameException, ProjectManagerNotPartOfEmployeesAdded, ProjectManagerNotLoggedInException
 	{
 		String projectName = projectNameTextField.getText();
 		String costumerName = costumersNameTextField.getText();

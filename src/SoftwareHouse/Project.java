@@ -201,11 +201,22 @@ public class Project {
 		return employeesMaxCapacityReached; 
 	}
 	
-	public void forceAddAcitivity(String title, String detailText, List<String> employeeInitials, Calendar startTime, Calendar endTime, int budgetedTime) 
-			throws EmployeeNotFoundException, DuplicateNameException, EmployeeMaxActivitiesReachedException, ProjectManagerNotLoggedInException, InvalidInformationException {
-		if (Tools.containsActivity(openActivities, title)) {
+	public void forceAddAcitivity(String title, 
+								  String detailText, 
+								  List<String> employeeInitials, 
+								  Calendar startTime, 
+								  Calendar endTime, 
+								  int budgetedTime) throws EmployeeNotFoundException, 
+														   DuplicateNameException, 
+														   EmployeeMaxActivitiesReachedException, 
+														   ProjectManagerNotLoggedInException, 
+														   InvalidInformationException, 
+														   MissingInformationException {	
+		if (Tools.isNullOrEmpty(title)) {
+			throw new MissingInformationException("Missing activity name");
+		} else if (!isNewValidActivityName(title)) {
 			throw new DuplicateNameException("An activity with that name already exists");
-		}	
+		} 
 		hasPermissionToEdit(); //Throws an error if not true.
 		//can't use stream here because oracle fucked up http://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams
 		List<Employee> activityEmployees = new ArrayList<Employee>();
@@ -293,6 +304,14 @@ public class Project {
 		}
 	}
 
+	public boolean isNewValidActivityName(String activityName)
+	{
+		final String lowerCaseActivityName = activityName.toLowerCase().trim();
+		return !Tools.isNullOrEmpty(lowerCaseActivityName) && 
+				!openActivities.stream()
+						 	   .anyMatch(x -> x.getName().toLowerCase().trim().equals(lowerCaseActivityName));
+	}
+	
 	/**
 	 * @return the isOpen
 	 */
@@ -345,14 +364,10 @@ public class Project {
 	 */
 	public void setName(String name) throws DuplicateNameException, MissingInformationException, ProjectManagerNotLoggedInException {
 		hasPermissionToEdit(); //Throws an error if one does not have permission to edit.
-		Project project = null;
-		try {
-			project = scheduler.getProject(name);
-		} catch (Exception e) { }
-		if (project != null) {
-			throw new DuplicateNameException("A project with that name already exist");
-		} else if (Tools.isNullOrEmpty(name)) {
+		if (Tools.isNullOrEmpty(name)) {
 			throw new MissingInformationException("No name was specified");
+		} else if (!scheduler.isNewValidProjectName(name) && !name.equals(getName())) {
+			throw new DuplicateNameException("A project with that name already exist");
 		}
 		this.name = name;
 	}
@@ -535,8 +550,7 @@ public class Project {
 	/**
 	 * @return the projectNumber
 	 */
-//	public int getProjectNumber() {
-//		return projectNumber;
-//	}
-
+	public int getProjectNumber() {
+		return projectNumber;
+	}
 }

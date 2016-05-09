@@ -17,6 +17,9 @@ public class ProjectPanel extends JPanel {
 	private JButton changeProjectButton;
 	private JButton addEmployeesButton;
 	private JButton createActivityButton;
+	private JButton closeProjectButton;
+	private JLabel statusLabel;
+	private JButton generateReportButton;
 
 	public ProjectPanel() {
 		setMaximumSize(new Dimension(800, 600));
@@ -60,9 +63,9 @@ public class ProjectPanel extends JPanel {
 		budgettedTimeLabel.setBounds(125, 86, 151, 14);
 		add(budgettedTimeLabel);
 		
-		followupButton = new JButton("Opf\u00F8lgning for projekt");
+		followupButton = new JButton("Opf\u00F8lgning");
 		followupButton.setEnabled(false);
-		followupButton.setBounds(176, 472, 253, 52);
+		followupButton.setBounds(309, 472, 120, 52);
 		add(followupButton);
 		
 		changeProjectButton = new JButton("\u00C6ndr projekt");
@@ -79,6 +82,24 @@ public class ProjectPanel extends JPanel {
 		createActivityButton.setEnabled(false);
 		createActivityButton.setBounds(309, 537, 120, 52);
 		add(createActivityButton);
+		
+		closeProjectButton = new JButton("Afslut projekt");
+		closeProjectButton.setEnabled(false);
+		closeProjectButton.setBounds(176, 472, 123, 52);
+		add(closeProjectButton);
+		
+		JLabel lblStatus = new JLabel("Status:");
+		lblStatus.setBounds(10, 111, 57, 14);
+		add(lblStatus);
+		
+		statusLabel = new JLabel("");
+		statusLabel.setBounds(125, 111, 151, 14);
+		add(statusLabel);
+		
+		generateReportButton = new JButton("Generere rapport");
+		generateReportButton.setEnabled(false);
+		generateReportButton.setBounds(10, 472, 156, 52);
+		add(generateReportButton);
 	}
 
 	/**
@@ -142,5 +163,26 @@ public class ProjectPanel extends JPanel {
 	 */
 	public JButton getFollowupButton() {
 		return followupButton;
+	}
+
+	/**
+	 * @return the closeProjectButton
+	 */
+	public JButton getCloseProjectButton() {
+		return closeProjectButton;
+	}
+
+	/**
+	 * @return the statusLabel
+	 */
+	public JLabel getStatusLabel() {
+		return statusLabel;
+	}
+
+	/**
+	 * @return the generateReportButton
+	 */
+	public JButton getGenerateReportButton() {
+		return generateReportButton;
 	}
 }
