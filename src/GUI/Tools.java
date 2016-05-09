@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -63,7 +64,11 @@ public class Tools {
 	 * @return JTable
 	 */
 	public static JTable createTableOfEmployees(List<Employee> employees) {
-		Collections.sort(employees, (a, b) -> b.getInitials().compareTo(a.getInitials()));
+		return createTableOfEmployees(employees, (a, b) -> b.getInitials().compareTo(a.getInitials()));
+	}
+	
+	public static JTable createTableOfEmployees(List<Employee> employees, Comparator<Employee> comparator) {
+		Collections.sort(employees, comparator);
 		final String[] columnNames = { "Employee Initials" };
 		final Object[][] employeesAsATable = new Object[employees.size()][1];
 		for (int i = employees.size() - 1; i >= 0; i--) {

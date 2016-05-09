@@ -51,7 +51,6 @@ public class AddActivityToProject {
 		TestTools.addEmployeeToProject(scheduler, "ELL", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "AGC", "Navision Stat");
 		TestTools.addEmployeeToProject(scheduler, "NR", "Navision Stat");
-		
 		assertTrue(scheduler.doAllEmployeesExist(project.getEmployees()));
 	}
 	
@@ -510,6 +509,8 @@ public class AddActivityToProject {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
 			Assert.fail();
+		} catch (MissingInformationException e) {
+			Assert.fail();
 		}
 		
 		//Test for adding an exisiting empoyee who is not part of the corresponding project. 
@@ -560,6 +561,8 @@ public class AddActivityToProject {
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
 			Assert.fail();
 		}
 	}
@@ -659,6 +662,8 @@ public class AddActivityToProject {
 		} catch (ProjectManagerNotLoggedInException e) {
 			Assert.fail();
 		} catch (InvalidInformationException e) {
+			Assert.fail();
+		} catch (MissingInformationException e) {
 			Assert.fail();
 		}
 	}

@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JOptionPane;
+
 import GUI.GUIController;
 import GUI.Tools;
 import GUI.DialogBoxes.AddEmployeesToActivityDialog;
@@ -16,6 +18,8 @@ import GUI.Panels.ProjectPanel;
 import SoftwareHouse.Activity;
 import SoftwareHouse.Project;
 import SoftwareHouse.Scheduler;
+import SoftwareHouse.ExceptionTypes.ActivityNotFoundException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 public class ActivityPage extends SuperPage<ActivityPanel> {
 
@@ -30,39 +34,52 @@ public class ActivityPage extends SuperPage<ActivityPanel> {
 	public ActivityPanel createPage(GUIController controlle) {
 		ActivityPanel activityPanel = new ActivityPanel();
 		
-		if (activity.getInProject().isProjectManagerLoggedIn()) {
-			activityPanel.getChangeActivityButton().setEnabled(true);
-			activityPanel.getChangeActivityButton().addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ChangeActivityDialog dialog = new ChangeActivityDialog(scheduler, activity);
-					dialog.addWindowListener(new WindowClosingListener() {
-						@Override
-						public void windowClosing(WindowEvent e) {
-							loadInformation();							
+		try {
+			if (activity.getInProject().hasPermissionToEdit()) {
+				activityPanel.getChangeActivityButton().setEnabled(true);
+				activityPanel.getChangeActivityButton().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						ChangeActivityDialog dialog = new ChangeActivityDialog(scheduler, activity);
+						dialog.addWindowListener(new WindowClosingListener() {
+							@Override
+							public void windowClosing(WindowEvent e) {
+								loadInformation();							
+							}
+						});
+						dialog.setVisible(true);
+						dialog.loadInformation();
+					}
+				});
+				
+				activityPanel.getAddEmployeesButton().setEnabled(true);
+				activityPanel.getAddEmployeesButton().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						AddEmployeesToActivityDialog dialog = new AddEmployeesToActivityDialog(scheduler, activity);
+						dialog.addWindowListener(new WindowClosingListener() {
+							@Override
+							public void windowClosing(WindowEvent e) {
+								loadInformation();							
+							}
+						});
+						dialog.setVisible(true);
+						dialog.loadInformation();
+					}
+				});
+				
+				activityPanel.getDeleteActivityButton().setEnabled(true);
+				activityPanel.getDeleteActivityButton().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int dialogResult = JOptionPane.showConfirmDialog(null, "Vil du slette denne aktivitet?");
+						if (dialogResult == JOptionPane.YES_OPTION) {
+							try {
+								activity.getInProject().deleteActivity(activity.getName());
+								controller.switchPage(new ProjectPage(controlle, scheduler, activity.getInProject()));
+							} catch (ActivityNotFoundException e1) {}
 						}
-					});
-					dialog.setVisible(true);
-					dialog.loadInformation();
-				}
-			});
-			
-			activityPanel.getAddEmployeesButton().setEnabled(true);
-			activityPanel.getAddEmployeesButton().addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					AddEmployeesToActivityDialog dialog = new AddEmployeesToActivityDialog(scheduler, activity);
-					dialog.addWindowListener(new WindowClosingListener() {
-						@Override
-						public void windowClosing(WindowEvent e) {
-							loadInformation();							
-						}
-					});
-					dialog.setVisible(true);
-					dialog.loadInformation();
-				}
-			});
-			
-			
-		}
+					}
+				});
+			}
+		} catch (ProjectManagerNotLoggedInException e1) { }
 		activityPanel.getRegisterTimeButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegisterTimeDialog dialog = new RegisterTimeDialog(scheduler, activity.getInProject(), activity);
