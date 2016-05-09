@@ -18,6 +18,7 @@ import SoftwareHouse.Scheduler;
 import SoftwareHouse.ExceptionTypes.EmployeeAlreadyAssignedException;
 import SoftwareHouse.ExceptionTypes.EmployeeMaxActivitiesReachedException;
 import SoftwareHouse.ExceptionTypes.EmployeeNotFoundException;
+import SoftwareHouse.ExceptionTypes.ProjectManagerNotLoggedInException;
 
 public class AddEmployeeToActivity {
 	Scheduler scheduler = null;
@@ -138,6 +139,8 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		} catch (EmployeeAlreadyAssignedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 
@@ -158,9 +161,11 @@ public class AddEmployeeToActivity {
 		} catch (EmployeeNotFoundException e) {
 			assertEquals(e.getMessage(), "Employee does not exists or is not part of this project");
 		} catch (EmployeeMaxActivitiesReachedException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		} catch (EmployeeAlreadyAssignedException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 
@@ -197,6 +202,8 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		} catch (EmployeeAlreadyAssignedException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 
 	}
@@ -240,6 +247,8 @@ public class AddEmployeeToActivity {
 			Assert.fail();
 		} catch (EmployeeNotFoundException e) {
 			Assert.fail();
+		} catch (ProjectManagerNotLoggedInException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 }
